@@ -34,6 +34,13 @@ namespace OAHub.Passport
                 .AddEntityFrameworkStores<PassportDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Auth/SignIn";
+                options.LogoutPath = "/Auth/SignOut";
+                options.AccessDeniedPath = "/Error/AccessDenied";
+            });
+
             services.AddTransient<IJwtTokenService, JwtTokenService>();
 
             services.AddControllersWithViews();
