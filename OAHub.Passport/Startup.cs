@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OAHub.Base.Models;
+using OAHub.Passport.Data;
+using OAHub.Passport.Services;
 
 namespace OAHub.Passport
 {
@@ -23,6 +28,14 @@ namespace OAHub.Passport
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PassportDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DbConnection")));
+
+            services.AddIdentity<OAUser, IdentityRole>()
+                .AddEntityFrameworkStores<PassportDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<IJwtTokenService, JwtTokenService>();
+
             services.AddControllersWithViews();
         }
 
@@ -43,7 +56,9 @@ namespace OAHub.Passport
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCookiePolicy();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

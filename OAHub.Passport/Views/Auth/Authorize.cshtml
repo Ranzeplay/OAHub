@@ -1,0 +1,33 @@
+﻿@model OAHub.Passport.Models.ViewModels.Auth.AuthorizeConfirmModel
+@{
+    ViewData["Title"] = "Authorize";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form method="post" asp-action="Authorize">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Authorize</strong>
+                </div>
+                <div class="card-body">
+                    <p><strong>@Model.AppName</strong> is requesting your identity</p>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Confirm" class="custom-control-input" id="applyCheck">
+                            <label class="custom-control-label" for="applyCheck">Apply the application read your infomation</label>
+                        </div>
+                    </div>
+                    <div style="display: none">
+                        <input asp-for="State" />
+                        <input asp-for="AppId" />
+                        <input asp-for="RedirectUri" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
