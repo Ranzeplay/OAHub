@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Home", "OAHub.Home\OAHub.Home.csproj", "{70FD96D6-BBB3-4DAD-9F82-31818575C95D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{77D613DB-30F6-4BEA-AAD0-54B95753159C} = {77D613DB-30F6-4BEA-AAD0-54B95753159C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support", "Support", "{60FF9A84-5122-48AF-B162-63699F03341D}"
 EndProject
@@ -15,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{FB2E93FA-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Base", "OAHub.Base\OAHub.Base.csproj", "{77D613DB-30F6-4BEA-AAD0-54B95753159C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAHub.Organization", "OAHub.Organization\OAHub.Organization.csproj", "{118A0C76-A7B4-426F-8EBE-645444CC08AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Organization", "OAHub.Organization\OAHub.Organization.csproj", "{118A0C76-A7B4-426F-8EBE-645444CC08AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

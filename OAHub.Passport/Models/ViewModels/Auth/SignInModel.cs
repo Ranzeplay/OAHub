@@ -19,5 +19,7 @@ namespace OAHub.Passport.Models.ViewModels.Auth
         public string AppId { get; set; }
 
         public string RedirectUri { get; set; }
+
+        public string State { get; set; }
     }
 }

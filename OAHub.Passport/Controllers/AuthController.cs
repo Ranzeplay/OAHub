@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using JWT.Builder;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,38 +41,46 @@ namespace OAHub.Passport.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(SignInModel model)
+        public async Task<IActionResult> SignIn(SignInModel model, string ReturnUrl)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
                     if (result.Succeeded)
                     {
+                        if (ReturnUrl != null)
+                        {
+                            return Redirect(ReturnUrl);
+                        }
+
                         if (!string.IsNullOrEmpty(model.AppId))
                         {
-                            return RedirectToAction(nameof(Authorize), new AuthorizeModel { AppId = model.AppId, RedirectUri = model.RedirectUri });
+                            return RedirectToAction(
+                                nameof(Authorize),
+                                new AuthorizeModel
+                                {
+                                    AppId = model.AppId,
+                                    RedirectUri = model.RedirectUri,
+                                    State = model.State
+                                });
                         }
                         else
                         {
-                            return Ok("You have successfully logged in");
+                            return Ok("You have successfully signed in");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Errors occured while signing in!");
+                        ModelState.AddModelError(string.Empty, "Errors occured while signing in");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password");
+                    ModelState.AddModelError(string.Empty, "User not found");
                 }
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "User not found");
             }
 
             return View(model);
@@ -86,7 +96,8 @@ namespace OAHub.Passport.Controllers
             {
                 if (!app.GetUsersAuthorized().Contains(user.Id))
                 {
-                    return View(new AuthorizeConfirmModel { 
+                    return View(new AuthorizeConfirmModel
+                    {
                         AppId = model.AppId,
                         AppName = app.Name,
                         Confirm = false,
@@ -96,10 +107,19 @@ namespace OAHub.Passport.Controllers
                 }
 
                 var code = GenerateCode(user);
-                return Redirect($"{model.RedirectUri.TrimEnd('/')}?code={code}&state={model.State}");
+                var url = new OAHubUrl
+                {
+                    UrlAddress = model.RedirectUri,
+                    Params = new Dictionary<string, string>
+                    {
+                        { "code", code },
+                        { "state", model.State }
+                    }
+                };
+                return Redirect(url.ToStringUrl());
             }
 
-            return Unauthorized("App not found");
+            return Unauthorized();
         }
 
         [HttpPost]
@@ -121,13 +141,30 @@ namespace OAHub.Passport.Controllers
                         await _context.SaveChangesAsync();
 
                         var code = GenerateCode(user);
-                        return Redirect($"{model.RedirectUri.TrimEnd('/')}?code={code}&state={model.State}");
+                        var url = new OAHubUrl
+                        {
+                            UrlAddress = model.RedirectUri,
+                            Params = new Dictionary<string, string>
+                            {
+                                { "code", code },
+                                { "state", model.State }
+                            }
+                        };
+                        return Redirect(url.ToStringUrl());
                     }
                 }
                 else
                 {
-                    string error = "user%20denied";
-                    return Redirect($"{model.RedirectUri.TrimEnd('/')}?error={error}");
+                    var url = new OAHubUrl
+                    {
+                        UrlAddress = model.RedirectUri,
+                        Params = new Dictionary<string, string>
+                            {
+                                { "error", "user_denied" },
+                                { "state", model.State }
+                            }
+                    };
+                    return Redirect(url.ToStringUrl());
                 }
             }
 
@@ -165,7 +202,7 @@ namespace OAHub.Passport.Controllers
 
         public async Task<OAUser> GetCurrentUserAsync()
         {
-            return await _userManager.GetUserAsync(HttpContext.User);
+            return await _userManager.GetUserAsync(User);
         }
 
         public string GenerateCode(OAUser user)

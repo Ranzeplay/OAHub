@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,18 +30,33 @@ namespace OAHub.Passport
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PassportDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DbConnection")));
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Auth/SignIn";
+                options.AccessDeniedPath = "/Error/AccessDenied";
+
+                options.Cookie = new CookieBuilder
+                {
+                    IsEssential = true
+                };
+            });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.ConsentCookie.IsEssential = true;
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddDbContext<PassportDbContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("DbConnection"));
+            });
 
             services.AddIdentity<OAUser, IdentityRole>()
                 .AddEntityFrameworkStores<PassportDbContext>()
                 .AddDefaultTokenProviders();
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Auth/SignIn";
-                options.LogoutPath = "/Auth/SignOut";
-                options.AccessDeniedPath = "/Error/AccessDenied";
-            });
 
             services.AddTransient<IJwtTokenService, JwtTokenService>();
 
@@ -61,9 +78,9 @@ namespace OAHub.Passport
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            // app.UseCookiePolicy();
 
             app.UseRouting();
-            app.UseCookiePolicy();
 
             app.UseAuthentication();
             app.UseAuthorization();
