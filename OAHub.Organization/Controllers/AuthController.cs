@@ -78,5 +78,12 @@ namespace OAHub.Organization.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
