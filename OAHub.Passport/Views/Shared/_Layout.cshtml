@@ -4,7 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OAHub.Passport</title>
-    <link rel="stylesheet" href="~/lib/@@coreui/coreui/dist/css/coreui.min.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/@@coreui/coreui/dist/css/coreui.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/@@coreui/coreui/dist/css/coreui.min.css" />
+    </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -42,7 +47,12 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/popper.js/dist/popper.min.js"></script>
-    <script src="~/lib/@@coreui/coreui/dist/js/coreui.min.js"></script>
+    <environment include="Development">
+        <script src="~/lib/@@coreui/coreui/dist/js/coreui.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/@@coreui/coreui/dist/js/coreui.min.js"></script>
+    </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
