@@ -77,6 +77,7 @@ namespace OAHub.Organization
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OAHub.Organization.Data;
+using OAHub.Organization.Models;
 using OAHub.Organization.Models.ViewModels.Orgainzations;
 
 namespace OAHub.Organization.Controllers
 {
     [Route("{Id}")]
-    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class OrganizationsController : Controller
     {
         private readonly OrganizationDbContext _context;
@@ -60,6 +61,21 @@ namespace OAHub.Organization.Controllers
         }
 
         [HttpGet]
+        [Route("/Select")]
+        public IActionResult Select()
+        {
+            var user = GetUserProfile();
+
+            var organizations = _context.Organizations.Where(o => o.GetMembers().Contains(user.Id) || o.FounderId == user.Id).ToList();
+            if(organizations == null)
+            {
+                organizations = new List<Base.Models.OrganizationModels.Organization>();
+            }
+
+            return View(organizations);
+        }
+
+        [HttpGet]
         [Route("[action]")]
         public IActionResult Dashboard(string id)
         {
@@ -70,6 +86,43 @@ namespace OAHub.Organization.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Members(string id)
+        {
+            var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
+            if (org != null)
+            {
+                var model = new List<OrganizationUser>();
+                model.Add(_context.Users.FirstOrDefault(u => u.Id == org.FounderId));
+                org.GetMembers().ForEach(userId =>
+                {
+                    model.Add(_context.Users.FirstOrDefault(u => u.Id == userId));
+                });
+
+                return View(model);
+            }
+
+            return NotFound();
+        }
+
+        private OrganizationUser GetUserProfile()
+        {
+            var user = new OrganizationUser();
+
+            try
+            {
+                var id = HttpContext.User.FindFirst("UserId").Value;
+                user = _context.Users.FirstOrDefault(u => u.Id == id);
+            }
+            catch
+            {
+                return null;
+            }
+
+            return user;
         }
     }
 }
