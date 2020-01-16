@@ -77,10 +77,13 @@ namespace OAHub.Organization.Controllers
         {
             var user = GetUserProfile();
 
-            var organizations = _context.Organizations.Where(o => o.GetMembers().Exists(u => u.UserId == user.Id) || o.FounderId == user.Id).ToList();
-            if (organizations == null)
+            var organizations = new List<Base.Models.OrganizationModels.Organization>();
+            foreach(var org in _context.Organizations.ToList())
             {
-                organizations = new List<Base.Models.OrganizationModels.Organization>();
+                if(org.GetMembers().Exists(m => m.UserId == user.Id))
+                {
+                    organizations.Add(org);
+                }
             }
 
             return View(organizations);
