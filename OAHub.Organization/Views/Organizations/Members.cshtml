@@ -1,0 +1,34 @@
+﻿@model List<OAHub.Organization.Models.ViewModels.Orgainzations.MemberModel>
+@{
+    ViewData["Title"] = "Members";
+}
+
+<div class="row">
+    <div class="col-md-9 justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-condensed table-head-fixed table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Email Address</th>
+                            <th scope="col">Join Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var member in Model)
+                        {
+                            <tr>
+                                <th>@member.User.FullName</th>
+                                <th>@member.Member.Position</th>
+                                <th>@member.User.Email</th>
+                                <th>@member.Member.JoinAt</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

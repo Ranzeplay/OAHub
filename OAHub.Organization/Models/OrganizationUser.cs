@@ -8,5 +8,6 @@ namespace OAHub.Organization.Models
 {
     public class OrganizationUser : OAuthUser
     {
+        public string FullName { get; set; }
     }
 }

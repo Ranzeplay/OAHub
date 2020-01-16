@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models.OrganizationModels;
 using OAHub.Organization.Data;
 using OAHub.Organization.Models;
 using OAHub.Organization.Models.ViewModels.Orgainzations;
@@ -51,6 +52,16 @@ namespace OAHub.Organization.Controllers
                     FounderId = HttpContext.User.FindFirst("UserId").Value
                 };
 
+                orgainzation.SetMembers(new List<Member> {
+                    new Member
+                    {
+                        UserId = orgainzation.FounderId,
+                        JoinAt = DateTime.UtcNow,
+                        Position = "Founder",
+                        IsLocked = true
+                    }
+                });
+
                 _context.Add(orgainzation);
                 await _context.SaveChangesAsync();
 
@@ -66,8 +77,8 @@ namespace OAHub.Organization.Controllers
         {
             var user = GetUserProfile();
 
-            var organizations = _context.Organizations.Where(o => o.GetMembers().Contains(user.Id) || o.FounderId == user.Id).ToList();
-            if(organizations == null)
+            var organizations = _context.Organizations.Where(o => o.GetMembers().Exists(u => u.UserId == user.Id) || o.FounderId == user.Id).ToList();
+            if (organizations == null)
             {
                 organizations = new List<Base.Models.OrganizationModels.Organization>();
             }
@@ -80,7 +91,7 @@ namespace OAHub.Organization.Controllers
         public IActionResult Dashboard(string id)
         {
             var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
-            if(org != null)
+            if (org != null)
             {
                 return View(org);
             }
@@ -95,12 +106,16 @@ namespace OAHub.Organization.Controllers
             var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
             if (org != null)
             {
-                var model = new List<OrganizationUser>();
-                model.Add(_context.Users.FirstOrDefault(u => u.Id == org.FounderId));
-                org.GetMembers().ForEach(userId =>
+                var model = new List<MemberModel>();
+                foreach(var member in org.GetMembers())
                 {
-                    model.Add(_context.Users.FirstOrDefault(u => u.Id == userId));
-                });
+                    var user = _context.Users.FirstOrDefault(u => u.Id == member.UserId);
+                    model.Add(new MemberModel
+                    {
+                        User = user,
+                        Member = member
+                    });
+                }
 
                 return View(model);
             }

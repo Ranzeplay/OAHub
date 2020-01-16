@@ -21,17 +21,17 @@ namespace OAHub.Base.Models.OrganizationModels
 
         public string Members { get; set; }
 
-        public List<string> GetMembers()
+        public List<Member> GetMembers()
         {
             if (!string.IsNullOrEmpty(Members))
             {
-                return JsonSerializer.Deserialize<List<string>>(Members);
+                return JsonSerializer.Deserialize<List<Member>>(Members);
             }
 
-            return new List<string>();
+            return new List<Member>();
         }
 
-        public void SetMembers(List<string> members)
+        public void SetMembers(List<Member> members)
         {
             Members = JsonSerializer.Serialize(members);
         }
