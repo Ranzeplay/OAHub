@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var orgId = Context.Request.Path.Value.Split('/')[1];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,15 +59,15 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item has-treeview menu-open">
-                        <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                        <a class="nav-link active" asp-action="Dashboard" asp-route-id="@orgId">
                             <i class="nav-icon fas fa-dashboard"></i>
                             <p>Dashboard</p>
                         </a>
-                        <a class="nav-link active" asp-controller="Problemset" asp-action="Index">
+                        <a class="nav-link active" asp-action="Members" asp-route-id="@orgId">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Members</p>
                         </a>
-                        <a class="nav-link active" asp-controller="Problemset" asp-action="Index">
+                        <a class="nav-link active" asp-action="Projects" asp-route-id="@orgId">
                             <i class="nav-icon fas fa-r-project"></i>
                             <p>Projects</p>
                         </a>
