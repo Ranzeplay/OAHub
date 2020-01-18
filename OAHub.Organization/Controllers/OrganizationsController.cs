@@ -78,9 +78,9 @@ namespace OAHub.Organization.Controllers
             var user = GetUserProfile();
 
             var organizations = new List<Base.Models.OrganizationModels.Organization>();
-            foreach(var org in _context.Organizations.ToList())
+            foreach (var org in _context.Organizations.ToList())
             {
-                if(org.GetMembers().Exists(m => m.UserId == user.Id))
+                if (org.GetMembers().Exists(m => m.UserId == user.Id))
                 {
                     organizations.Add(org);
                 }
@@ -110,7 +110,7 @@ namespace OAHub.Organization.Controllers
             if (org != null)
             {
                 var model = new List<MemberModel>();
-                foreach(var member in org.GetMembers())
+                foreach (var member in org.GetMembers())
                 {
                     var user = _context.Users.FirstOrDefault(u => u.Id == member.UserId);
                     model.Add(new MemberModel
@@ -121,6 +121,41 @@ namespace OAHub.Organization.Controllers
                 }
 
                 return View(model);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> Invite(string id, InviteModel model)
+        {
+            var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
+            if (org != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    var targetUser = _context.Users.FirstOrDefault(t => t.Id == model.UserId);
+                    if (targetUser != null)
+                    {
+                        var newMember = new Member
+                        {
+                            UserId = model.UserId,
+                            Position = model.Position,
+                            JoinAt = DateTime.UtcNow,
+                            IsLocked = false
+                        };
+
+                        var members = org.GetMembers();
+                        members.Add(newMember);
+                        org.SetMembers(members);
+
+                        _context.Organizations.Update(org);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                return RedirectToAction(nameof(Members), new { id });
             }
 
             return NotFound();
