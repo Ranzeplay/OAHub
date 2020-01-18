@@ -1,0 +1,29 @@
+﻿@model OAHub.Organization.Models.ViewModels.Orgainzations.MemberModel
+@{
+    ViewData["Title"] = "Member";
+}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Full name</dt>
+                    <dd class="col-sm-8">@Model.User.FullName</dd>
+                    <dt class="col-sm-4">Position</dt>
+                    <dd class="col-sm-8">@Model.Member.Position</dd>
+                    <dt class="col-sm-4">Email address</dt>
+                    <dd class="col-sm-8">@Model.User.Email</dd>
+                    <dt class="col-sm-4">Phone number</dt>
+                    <dd class="col-sm-8">@Model.User.PhoneNumber</dd>
+                    <dt class="col-sm-4">Actions</dt>
+                    <dd class="col-sm-8">
+                        <button class="btn btn-danger btn-block btn-sm">Remove</button>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

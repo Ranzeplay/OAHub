@@ -126,6 +126,28 @@ namespace OAHub.Organization.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        [Route("[action]/{memberId}")]
+        public IActionResult Member(string id, string memberId)
+        {
+            var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
+            if (org != null)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == memberId);
+                if (user != null && org.GetMembers().Exists(m => m.UserId == memberId))
+                {
+                    var model = new MemberModel
+                    {
+                        User = user,
+                        Member = org.GetMembers().FirstOrDefault(m => m.UserId == user.Id)
+                    };
+                    return View(model);
+                }
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> Invite(string id, InviteModel model)

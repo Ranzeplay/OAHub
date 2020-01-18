@@ -20,7 +20,7 @@
                     <tbody>
                         @foreach (var member in Model)
                         {
-                            <tr>
+                            <tr onclick="window.location.replace('/@Context.Request.Path.Value.Split('/')[1]/Member/@member.User.Id')">
                                 <th>@member.User.FullName</th>
                                 <th>@member.Member.Position</th>
                                 <th>@member.User.Email</th>
