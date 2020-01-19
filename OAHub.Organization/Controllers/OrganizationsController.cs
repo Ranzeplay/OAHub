@@ -149,6 +149,35 @@ namespace OAHub.Organization.Controllers
         }
 
         [HttpPost]
+        [Route("[action]/{memberId}")]
+        public async Task<IActionResult> Member(string id, string memberId, MemberModel model)
+        {
+            var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
+            if (org != null)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == memberId);
+                var members = org.GetMembers();
+                if (user != null && members.Exists(m => m.UserId == memberId))
+                {
+                    // Get member by Id and update member info
+                    // Then update the list of member, replace old as new
+                    var member = members.FirstOrDefault(m => m.UserId == model.Member.UserId);
+                    member.Position = model.Member.Position;
+                    members[members.IndexOf(members.FirstOrDefault(m => m.UserId == model.Member.UserId))] = member;
+                    org.SetMembers(members);
+
+                    // Update database
+                    _context.Organizations.Update(org);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Member), new { id, memberId });
+                }
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> Invite(string id, InviteModel model)
         {
@@ -171,7 +200,7 @@ namespace OAHub.Organization.Controllers
                         var members = org.GetMembers();
                         members.Add(newMember);
                         org.SetMembers(members);
-
+                        
                         _context.Organizations.Update(org);
                         await _context.SaveChangesAsync();
                     }
