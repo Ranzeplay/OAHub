@@ -14,5 +14,7 @@ namespace OAHub.Organization.Data
         }
 
         public DbSet<OrganizationUser> Users { get; set; }
+
+        public DbSet<Base.Models.OrganizationModels.Organization> Organizations { get; set; }
     }
 }

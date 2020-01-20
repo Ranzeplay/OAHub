@@ -70,9 +70,15 @@ namespace OAHub.Organization.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProps);
             var user = _context.Users.FirstOrDefault(u => u.Id == oauthUser.Id);
-            if(user != null)
+            if(user == null)
             {
-                _context.Users.Add(user);
+                _context.Users.Add(new Models.OrganizationUser { 
+                    Id = oauthUser.Id,
+                    FullName = oauthUser.UserName,
+                    UserName = oauthUser.UserName,
+                    Email = oauthUser.Email,
+                    PhoneNumber = oauthUser.PhoneNumber
+                });
                 await _context.SaveChangesAsync();
             }
 

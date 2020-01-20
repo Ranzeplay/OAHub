@@ -1,0 +1,29 @@
+﻿@model List<OAHub.Base.Models.OrganizationModels.Organization>
+@{
+    ViewData["Title"] = "Select";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="margin-top: 5%">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h3 class="card-title">Pick an organization</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills flex-column">
+                        @foreach (var org in Model)
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Dashboard" asp-route-id="@org.Id" class="nav-link">@org.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
