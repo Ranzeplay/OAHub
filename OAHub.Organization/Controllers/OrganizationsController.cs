@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models.Extensions;
 using OAHub.Base.Models.OrganizationModels;
 using OAHub.Organization.Data;
 using OAHub.Organization.Models;
@@ -200,13 +201,31 @@ namespace OAHub.Organization.Controllers
                         var members = org.GetMembers();
                         members.Add(newMember);
                         org.SetMembers(members);
-                        
+
                         _context.Organizations.Update(org);
                         await _context.SaveChangesAsync();
                     }
                 }
 
                 return RedirectToAction(nameof(Members), new { id });
+            }
+
+            return NotFound();
+        }
+
+        [Route("[action]")]
+        public IActionResult InstalledExtensions(string id)
+        {
+            var org = _context.Organizations.FirstOrDefault(o => o.Id == id);
+            if (org != null)
+            {
+                var model = new List<Extension>();
+                foreach (var ext in org.GetExtensionsInstalled())
+                {
+                    model.Add(_context.Extensions.FirstOrDefault(e => e.Id == ext.ExtId));
+                }
+
+                return View(model);
             }
 
             return NotFound();

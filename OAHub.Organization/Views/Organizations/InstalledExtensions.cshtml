@@ -1,0 +1,40 @@
+﻿@model List<OAHub.Base.Models.Extensions.Extension>
+@{
+    ViewData["Title"] = "Installed Extensions";
+}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Installed extensions</h3>
+                <div class="card-tools">
+                    <a asp-controller="Extensions" asp-action="Index" class="btn btn-tool"><i class="fas fa-plus"></i> Install a new extension</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td class="project-actions">
+                                    <a class="btn btn-outline-danger btn-sm" asp-controller="Extensions" asp-action="RevokeAccess" asp-route-extId="@item.Id" asp-route-orgId="@Context.Request.Path.Value.Split('/')[1]">Revoke access</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

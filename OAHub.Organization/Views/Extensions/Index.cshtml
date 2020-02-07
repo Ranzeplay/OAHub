@@ -1,0 +1,42 @@
+﻿@model List<OAHub.Organization.Models.ViewModels.Extensions.IndexViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Available extensions</h3>
+                <div class="card-tools">
+                    <a asp-action="New" class="btn btn-tool"><i class="fas fa-plus"></i> Create an extension</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>    
+                            <th>Name</th>
+                            <th>Create by</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.CreateBy</td>
+                                <td class="project-actions">
+                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-extId="@item.Id">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

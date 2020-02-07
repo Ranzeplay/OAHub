@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAHub.Base.Models.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
@@ -34,6 +35,23 @@ namespace OAHub.Base.Models.OrganizationModels
         public void SetMembers(List<Member> members)
         {
             Members = JsonSerializer.Serialize(members);
+        }
+
+        public string ExtensionsInstalled { get; set; }
+
+        public List<ExtensionCredential> GetExtensionsInstalled()
+        {
+            if (!string.IsNullOrEmpty(ExtensionsInstalled))
+            {
+                return JsonSerializer.Deserialize<List<ExtensionCredential>>(ExtensionsInstalled);
+            }
+
+            return new List<ExtensionCredential>();
+        }
+
+        public void SetExtensionsInstalled(List<ExtensionCredential> extensionsInstalled)
+        {
+            ExtensionsInstalled = JsonSerializer.Serialize(extensionsInstalled);
         }
     }
 }
