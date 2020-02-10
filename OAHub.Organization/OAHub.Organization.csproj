@@ -9,21 +9,64 @@
     <Compile Remove="Migrations\20200207073254_InitExtensionDb.Designer.cs" />
     <Compile Remove="Migrations\20200207083028_InitExtension.cs" />
     <Compile Remove="Migrations\20200207083028_InitExtension.Designer.cs" />
+    <Compile Remove="Migrations\20200208083609_SetKeyClumn.cs" />
+    <Compile Remove="Migrations\20200208083609_SetKeyClumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208085404_SetKeyClumn.cs" />
+    <Compile Remove="Migrations\20200208085404_SetKeyClumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208085501_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208085501_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208102443_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208102443_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208102642_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208102642_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208103722_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208103722_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208103824_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208103824_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208104107_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208104107_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208111923_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208111923_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208112450_SetKeyColumn.cs" />
+    <Compile Remove="Migrations\20200208112450_SetKeyColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200208113829_SetUserColumnPK.cs" />
+    <Compile Remove="Migrations\20200208113829_SetUserColumnPK.Designer.cs" />
+    <Compile Remove="Migrations\20200208114948_SetUserColumnPK.cs" />
+    <Compile Remove="Migrations\20200208114948_SetUserColumnPK.Designer.cs" />
+    <Compile Remove="Migrations\20200208131631_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208131631_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208132853_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208132853_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208133032_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208133032_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208133223_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208133223_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208133402_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208133402_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208133508_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208133508_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208133725_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208133725_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208134203_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208134203_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200208134354_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200208134354_MigrateToSqlServer.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 

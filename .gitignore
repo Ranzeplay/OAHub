@@ -346,3 +346,6 @@ healthchecksdb
 /OAHub.Organization/wwwroot/lib/font-awesome
 /OAHub.Organization/wwwroot/lib/iCheck
 OAHub.Passport/OAHub.Passport.db
+/OAHub.Workflow/OAHub.Workflow.db
+/OAHub.Workflow/wwwroot/lib/admin-lte
+/OAHub.Workflow/wwwroot/lib/font-awesome

@@ -27,6 +27,7 @@
                             <tr>
                                 <td>@item.Name</td>
                                 <td class="project-actions">
+                                    <a class="btn btn-primary btn-sm" href="@Html.Raw($"{item.WebSite.TrimEnd('/')}{item.OrganizationRootUri.Replace("{OrgId}", Context.Request.Path.Value.Split('/')[1])}")">Go to extension</a>
                                     <a class="btn btn-outline-danger btn-sm" asp-controller="Extensions" asp-action="RevokeAccess" asp-route-extId="@item.Id" asp-route-orgId="@Context.Request.Path.Value.Split('/')[1]">Revoke access</a>
                                 </td>
                             </tr>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models;
 using OAHub.Base.Models.Extensions;
 using OAHub.Organization.Data;
 using OAHub.Organization.Models;
@@ -113,16 +114,19 @@ namespace OAHub.Organization.Controllers
                 if (organization.GetMembers().Exists(m => m.UserId == user.Id))
                 {
                     var extensionsInstalled = organization.GetExtensionsInstalled();
-                    extensionsInstalled.Add(new ExtensionCredential
+
+                    var ext = new ExtensionCredential
                     {
                         ExtId = extension.Id,
                         ExtSecret = Guid.NewGuid().ToString("N")
-                    });
+                    };
+
+                    extensionsInstalled.Add(ext);
                     organization.SetExtensionsInstalled(extensionsInstalled);
                     _context.Organizations.Update(organization);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Dashboard", "Organizations", new { id = organization.Id });
+                    return Redirect($"{extension.WebSite.TrimEnd('/')}{extension.CreateDashboardUri}".Replace("{OrgId}", organization.Id).Replace("{ExtSecret}", ext.ExtSecret));
                 }
             }
 

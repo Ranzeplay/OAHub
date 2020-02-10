@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OAHub.Base.Models.Extensions;
+using OAHub.Workflow.Data;
 
 namespace OAHub.Workflow
 {
@@ -23,6 +26,10 @@ namespace OAHub.Workflow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<WorkflowDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DbConnection")));
+
+            services.Configure<ExtensionProps>(Configuration.GetSection("ExtensionProps"));
+
             services.AddControllersWithViews();
         }
 
