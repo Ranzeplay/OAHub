@@ -1,0 +1,75 @@
+﻿@model OAHub.Passport.Models.ViewModels.Account.MyAccountModel
+@{
+    ViewData["Title"] = "My";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <h1>My account</h1>
+                <p class="text-muted">@Model.User.UserName</p>
+                <br />
+
+                <h3>Basic settings</h3>
+                <form class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="hf-email">Email</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="hf-email" type="email" autocomplete="off" asp-for="User.Email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="hf-username">Username</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="hf-username" autocomplete="off" asp-for="User.UserName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="hf-phone">Phone Number</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="hf-phone" type="tel" autocomplete="off" asp-for="User.PhoneNumber">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Create time</label>
+                        <div class="col-md-9">
+                            <p class="form-control-plaintext">@Model.User.CreateTime</p>
+                        </div>
+                    </div>
+                    <br />
+
+                    <h3>Authorized OAuth Apps</h3>
+                    <div class="col-12">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var app in Model.AuthorizedApps)
+                            {
+                                <li class="list-group-item">
+                                    <p class="float-left">@app.Name</p>
+                                    <button class="btn btn-outline-danger btn-sm float-right">Revoke access</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <br />
+
+                    <h3>OAuth Apps You Created</h3>
+                    <div class="col-12">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var app in Model.AppsCreatedByUser)
+                            {
+                                <li class="list-group-item">
+                                    <p class="float-left">@app.Name</p>
+                                    <a class="btn btn-outline-primary btn-sm float-right" asp-controller="Apps" asp-action="Details" asp-route-AppId="@app.AppId">View</a>
+                                </li>
+                            }
+                            <li class="list-group-item">
+                                <a class="btn btn-link" asp-controller="Apps" asp-action="New">Create a new OAuth app</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
