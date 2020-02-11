@@ -45,7 +45,7 @@
                             @foreach (var app in Model.AuthorizedApps)
                             {
                                 <li class="list-group-item">
-                                    <p class="float-left">@app.Name</p>
+                                    @app.Name
                                     <button class="btn btn-outline-danger btn-sm float-right">Revoke access</button>
                                 </li>
                             }
@@ -59,7 +59,7 @@
                             @foreach (var app in Model.AppsCreatedByUser)
                             {
                                 <li class="list-group-item">
-                                    <p class="float-left">@app.Name</p>
+                                    @app.Name
                                     <a class="btn btn-outline-primary btn-sm float-right" asp-controller="Apps" asp-action="Details" asp-route-AppId="@app.AppId">View</a>
                                 </li>
                             }
