@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OAHub.Base.Models.WorkflowModels;
+using OAHub.Workflow.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace OAHub.Workflow.Data
         public WorkflowDbContext(DbContextOptions<WorkflowDbContext> options) : base(options)
         {
         }
+
+        public DbSet<WorkflowUser> Users { get; set; }
 
         public DbSet<WorkflowOrganization> WorkflowOrganizations { get; set; }
     }
