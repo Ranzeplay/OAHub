@@ -28,5 +28,11 @@ namespace OAHub.Base.Services
                 return null;
             }
         }
+
+        public async Task<bool> HasViewPermission(string userId, string orgId, string extId, string orgSecret, ExtensionProps extensionProps)
+        {
+            var members = await GetMembersAsync(orgId, extId, orgSecret, $"{extensionProps.ExtRootServerAddress.TrimEnd('/')}/Api/GetMembers?orgId={{OrgId}}&extId={{ExtId}}&extSecret={{OrgSecret}}");
+            return members.Exists(m => m.MemberId == userId);
+        }
     }
 }

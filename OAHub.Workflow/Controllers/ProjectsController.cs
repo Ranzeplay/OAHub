@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OAHub.Base.Interfaces;
 using OAHub.Base.Models.Extensions;
 using OAHub.Base.Models.WorkflowModels;
 using OAHub.Workflow.Data;
@@ -15,36 +14,41 @@ using OAHub.Workflow.Models;
 namespace OAHub.Workflow.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-    public class OrganizationRootController : Controller
+    public class ProjectsController : Controller
     {
         private readonly WorkflowDbContext _context;
-
         private readonly ExtensionProps _extensionProps;
-        private readonly IOrganizationService _organizationService;
 
-        public OrganizationRootController(IOptions<ExtensionProps> extensionProps, WorkflowDbContext context, IOrganizationService organizationService)
+        public ProjectsController(WorkflowDbContext context, IOptions<ExtensionProps> extensionProps)
         {
-            _extensionProps = extensionProps.Value;
             _context = context;
-            _organizationService = organizationService;
+            _extensionProps = extensionProps.Value;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Dashboard(string orgId)
+        public IActionResult List(string orgId)
         {
-            var user = GetUserProfile();
-            var targetOrganization = GetOrganization(orgId);
-            if(targetOrganization != null)
+            var organization = GetOrganization(orgId);
+            if(organization != null)
             {
-                if(await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, targetOrganization.Secret, _extensionProps))
-                {
-                    return View();
-                }
 
-                return Unauthorized("You don't have permission to enter the organization");
             }
 
-            return NotFound("Organization not found");
+            return View();
+        }
+
+        public IActionResult Create(string orgId)
+        {
+            return View();
+        }
+
+        public IActionResult Details(string orgId)
+        {
+            return View();
+        }
+
+        public IActionResult Delete(string orgId, string prjId)
+        {
+            return View();
         }
 
         private WorkflowUser GetUserProfile()

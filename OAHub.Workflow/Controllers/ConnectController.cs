@@ -77,18 +77,12 @@ namespace OAHub.Workflow.Controllers
             if (targetOrg != null)
             {
                 var user = GetUserProfile();
-                var organizationMembers = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, targetOrg.Secret, $"{_extensionProps.ExtRootServerAddress.TrimEnd('/')}/Api/GetMembers?orgId={{OrgId}}&extId={{ExtId}}&extSecret={{OrgSecret}}");
-                if (organizationMembers != null)
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, targetOrg.Secret, _extensionProps))
                 {
-                    if (organizationMembers.Exists(u => u.MemberId == user.Id))
-                    {
-                        return RedirectToAction("Dashboard", "OrganizationRoot", new { orgId = targetOrg.Id });
-                    }
-
-                    return Unauthorized("Your are not in the organization");
+                    return RedirectToAction("Dashboard", "OrganizationRoot", new { orgId = targetOrg.Id });
                 }
 
-                return BadRequest("API error");
+                return Unauthorized("Your are not in the organization");
             }
 
             return BadRequest("Organization not found");
