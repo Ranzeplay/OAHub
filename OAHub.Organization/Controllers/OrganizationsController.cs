@@ -53,8 +53,8 @@ namespace OAHub.Organization.Controllers
                     FounderId = HttpContext.User.FindFirst("UserId").Value
                 };
 
-                orgainzation.SetMembers(new List<Member> {
-                    new Member
+                orgainzation.SetMembers(new List<ApiMember> {
+                    new ApiMember
                     {
                         UserId = orgainzation.FounderId,
                         JoinAt = DateTime.UtcNow,
@@ -190,7 +190,7 @@ namespace OAHub.Organization.Controllers
                     var targetUser = _context.Users.FirstOrDefault(t => t.Id == model.UserId);
                     if (targetUser != null)
                     {
-                        var newMember = new Member
+                        var newMember = new ApiMember
                         {
                             UserId = model.UserId,
                             Position = model.Position,

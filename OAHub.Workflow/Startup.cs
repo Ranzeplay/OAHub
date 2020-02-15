@@ -10,8 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OAHub.Base.Interfaces;
 using OAHub.Base.Models;
 using OAHub.Base.Models.Extensions;
+using OAHub.Base.Services;
 using OAHub.Workflow.Data;
 
 namespace OAHub.Workflow
@@ -28,6 +30,8 @@ namespace OAHub.Workflow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<WorkflowDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DbConnection")));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -48,10 +52,9 @@ namespace OAHub.Workflow
             });
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
-
-            services.AddDbContext<WorkflowDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DbConnection")));
-
             services.Configure<ExtensionProps>(Configuration.GetSection("ExtensionProps"));
+
+            services.AddTransient<IOrganizationService, OrganizationService>();
 
             services.AddControllersWithViews();
         }
