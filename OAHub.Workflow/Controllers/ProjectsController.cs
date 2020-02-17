@@ -133,9 +133,57 @@ namespace OAHub.Workflow.Controllers
             return RedirectToAction(nameof(Create), new { orgId });
         }
 
-        public IActionResult Details(string orgId, string projectId)
+        public async Task<IActionResult> Details(string orgId, string projectId)
         {
-            return View();
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (project != null)
+                    {
+                        //Get the manager of the project
+                        var manager = _context.Users.FirstOrDefault(u => u.Id == project.ManagerId);
+
+                        // Show jobs by JobViewModel
+                        var projectJobs = new List<JobViewModel>();
+                        project.GetJobsId().ForEach(element =>
+                        {
+                            var currentJob = _context.Jobs.FirstOrDefault(j => j.Id == element);
+                            if (currentJob != null)
+                            {
+                                projectJobs.Add(new JobViewModel
+                                {
+                                    Id = currentJob.Id,
+                                    Name = currentJob.Name,
+                                    Description = currentJob.Description,
+                                    Manager = _context.Users.FirstOrDefault(m => m.Id == currentJob.ManagerId),
+                                    StepsCount = currentJob.GetSteps().Count,
+                                    Status = currentJob.Status
+                                });
+                            }
+                        });
+
+                        return View(new DetailsModel
+                        {
+                            Project = new ProjectViewModel
+                            {
+                                Id = project.Id,
+                                Name = project.Name,
+                                Description = project.Description,
+                                Manager = manager,
+                                CreateTime = project.CreateTime,
+                                Status = project.Status
+                            },
+                            Jobs = projectJobs
+                        });
+                    }
+                }
+            }
+
+            return Unauthorized();
         }
 
         public IActionResult Delete(string orgId, string projectId)
