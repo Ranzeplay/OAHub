@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     var orgId = Context.Request.Query["orgId"];
 }
 <!DOCTYPE html>
@@ -61,7 +61,7 @@
                             <i class="nav-icon fas fa-poll"></i>
                             <p>Dashboard</p>
                         </a>
-                        <a class="nav-link active" asp-controller="Projects" asp-action="List" asp-route-orgId="@orgId">
+                        <a class="nav-link active" asp-controller="Projects" asp-action="Overview" asp-route-orgId="@orgId">
                             <i class="nav-icon fas fa-tasks"></i>
                             <p>Projects</p>
                         </a>
@@ -89,9 +89,7 @@
             </section>
             <section class="content">
                 <div class="container-fluid">
-                    <div class="container">
-                        @RenderBody()
-                    </div>
+                    @RenderBody()
                 </div>
             </section>
         </div>

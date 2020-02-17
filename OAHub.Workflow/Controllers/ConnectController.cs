@@ -33,10 +33,8 @@ namespace OAHub.Workflow.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(string orgId, string extSecret)
         {
-            var httpClient = new HttpClient();
-            var httpResponse = await httpClient.GetAsync($"{_extensionProps.ExtRootServerAddress.TrimEnd('/')}{_extensionProps.GetOrganizationNamePath}".Replace("{orgId}", orgId));
+            var orgName = await _organizationService.GetOrganizationNameAsync(orgId, _extensionProps);
 
-            var orgName = await httpResponse.Content.ReadAsStringAsync();
             if (orgName == "null")
             {
                 return BadRequest();

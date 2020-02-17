@@ -29,6 +29,14 @@ namespace OAHub.Base.Services
             }
         }
 
+        public async Task<string> GetOrganizationNameAsync(string orgId, ExtensionProps extensionProps)
+        {
+            var request = new HttpClient();
+            var response = await request.GetAsync($"{extensionProps.ExtRootServerAddress.TrimEnd('/')}{extensionProps.GetOrganizationNamePath}".Replace("{orgId}", orgId));
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
         public async Task<bool> HasViewPermission(string userId, string orgId, string extId, string orgSecret, ExtensionProps extensionProps)
         {
             var members = await GetMembersAsync(orgId, extId, orgSecret, $"{extensionProps.ExtRootServerAddress.TrimEnd('/')}/Api/GetMembers?orgId={{OrgId}}&extId={{ExtId}}&extSecret={{OrgSecret}}");

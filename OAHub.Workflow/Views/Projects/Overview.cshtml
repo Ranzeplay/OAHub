@@ -1,0 +1,112 @@
+﻿@model OAHub.Workflow.Models.ViewModels.Projects.OverviewModel
+@{
+    ViewData["Title"] = "Overview";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card p-2">
+            <div class="card-header">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#list" data-toggle="tab">List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#history" data-toggle="tab">History</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane" id="list">
+                        @foreach (var project in Model.Projects)
+                        {
+                            <div class="row">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <a class="btn btn-link" asp-action="Details" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-prjId="@project.Id">@project.Name</a>
+                                        </h3>
+                                        <div class="card-tools">
+                                            @switch (project.Status)
+                                            {
+                                                case OAHub.Base.Models.WorkflowModels.WorkStatus.Pending:
+                                                    <span class="badge badge-info">Pending</span>
+                                                    break;
+                                                case OAHub.Base.Models.WorkflowModels.WorkStatus.InProgress:
+                                                    <span class="badge badge-primary">In Progress</span>
+                                                    break;
+                                                case OAHub.Base.Models.WorkflowModels.WorkStatus.Completed:
+                                                    <span class="badge badge-success">Completed</span>
+                                                    break;
+                                                case OAHub.Base.Models.WorkflowModels.WorkStatus.Failed:
+                                                    <span class="badge badge-warning">Failed</span>
+                                                    break;
+                                                case OAHub.Base.Models.WorkflowModels.WorkStatus.Cancelled:
+                                                    <span class="badge badge-secondary">Cancelled</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge badge-light">Unknown status</span>
+                                                    break;
+                                            }
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">Id</dt>
+                                            <dd class="col-sm-8">@project.Id</dd>
+                                            <dt class="col-sm-4">Manager</dt>
+                                            <dd class="col-sm-8">@project.Manager.UserName</dd>
+                                            <dt class="col-sm-4">Create time</dt>
+                                            <dd class="col-sm-8">@project.CreateTime</dd>
+                                            <dt class="col-sm-4">Description</dt>
+                                            <dd class="col-sm-8">@project.Description</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="tab-pane" id="timeline">
+                        <small>Feature not available</small>
+                    </div>
+                    <div class="tab-pane" id="history">
+                        <small>Feature not available</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="~/lib/admin-lte/dist/img/default-150x150.png" alt="@Model.OrganizationName">
+                </div>
+
+                <h3 class="profile-username text-center">@Model.OrganizationName</h3>
+
+                <p class="text-muted text-center">OAHub.Workflow.Organization</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                        <b>Projects created</b> <a class="float-right">@Model.Projects.Count</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Projects completed</b> <a class="float-right">@Model.Projects.Where(p => p.Status == OAHub.Base.Models.WorkflowModels.WorkStatus.Completed).LongCount()</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Projects not completed</b> <a class="float-right">@Model.Projects.Where(p => p.Status != OAHub.Base.Models.WorkflowModels.WorkStatus.Completed).LongCount()</a>
+                    </li>
+                </ul>
+
+                <a role="button" asp-action="Create" asp-route-orgId="@Context.Request.Query["orgId"]" class="btn btn-primary btn-block btn-flat">Create a new project</a>
+            </div>
+        </div>
+    </div>
+</div>

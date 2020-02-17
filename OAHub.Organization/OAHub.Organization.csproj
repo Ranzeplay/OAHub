@@ -51,6 +51,8 @@
     <Compile Remove="Migrations\20200208134203_MigrateToSqlServer.Designer.cs" />
     <Compile Remove="Migrations\20200208134354_MigrateToSqlServer.cs" />
     <Compile Remove="Migrations\20200208134354_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200216005604_InitWorkflow.cs" />
+    <Compile Remove="Migrations\20200216005604_InitWorkflow.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

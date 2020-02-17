@@ -12,5 +12,7 @@ namespace OAHub.Base.Interfaces
         Task<List<ApiMemberModel>> GetMembersAsync(string orgId, string extId, string orgSecret, string requestUrl);
 
         Task<bool> HasViewPermission(string userId, string orgId, string extId, string orgSecret, ExtensionProps extensionProps);
+
+        Task<string> GetOrganizationNameAsync(string orgId, ExtensionProps extensionProps);
     }
 }
