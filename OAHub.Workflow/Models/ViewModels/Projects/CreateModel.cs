@@ -17,5 +17,10 @@ namespace OAHub.Workflow.Models.ViewModels.Projects
 
         [Required]
         public WorkStatus Status { get; set; }
+
+        [Required]
+        public string ManagerId { get; set; }
+
+        public List<SelectMemberModel> MembersAvailable { get; set; }
     }
 }

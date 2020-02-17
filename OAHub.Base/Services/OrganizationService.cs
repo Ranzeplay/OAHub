@@ -12,10 +12,10 @@ namespace OAHub.Base.Services
 {
     public class OrganizationService : IOrganizationService
     {
-        public async Task<List<ApiMemberModel>> GetMembersAsync(string orgId, string extId, string orgSecret, string requestUrl)
+        public async Task<List<ApiMemberModel>> GetMembersAsync(string orgId, string extId, string orgSecret, ExtensionProps extensionProps)
         {
             var request = new HttpClient();
-            var response = await request.GetAsync($"{requestUrl}".Replace("{OrgId}", orgId).Replace("{ExtId}", extId).Replace("{OrgSecret}", orgSecret));
+            var response = await request.GetAsync($"{extensionProps.ExtRootServerAddress.TrimEnd('/')}/Api/GetMembers?orgId={{OrgId}}&extId={{ExtId}}&extSecret={{OrgSecret}}".Replace("{OrgId}", orgId).Replace("{ExtId}", extId).Replace("{OrgSecret}", orgSecret));
             var content = await response.Content.ReadAsStringAsync();
 
             try
@@ -39,7 +39,7 @@ namespace OAHub.Base.Services
 
         public async Task<bool> HasViewPermission(string userId, string orgId, string extId, string orgSecret, ExtensionProps extensionProps)
         {
-            var members = await GetMembersAsync(orgId, extId, orgSecret, $"{extensionProps.ExtRootServerAddress.TrimEnd('/')}/Api/GetMembers?orgId={{OrgId}}&extId={{ExtId}}&extSecret={{OrgSecret}}");
+            var members = await GetMembersAsync(orgId, extId, orgSecret, extensionProps);
             return members.Exists(m => m.MemberId == userId);
         }
     }

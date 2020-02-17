@@ -37,11 +37,11 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var projects = new List<Models.ProjectViewModel>();
+                    var projects = new List<ProjectViewModel>();
                     organization.GetProjectsId().ForEach(element =>
                     {
                         var currentProject = _context.Projects.FirstOrDefault(p => p.Id == element);
-                        projects.Add(new Models.ProjectViewModel
+                        projects.Add(new ProjectViewModel
                         {
                             Id = currentProject.Id,
                             Name = currentProject.Name,
@@ -64,17 +64,81 @@ namespace OAHub.Workflow.Controllers
             return NotFound();
         }
 
-        public IActionResult Create(string orgId)
+        [HttpGet]
+        public async Task<IActionResult> Create(string orgId)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
+                    var model = new CreateModel
+                    {
+                        Name = string.Empty,
+                        Description = string.Empty,
+                        MembersAvailable = new List<Models.ViewModels.SelectMemberModel>()
+                    };
+                    members.ForEach(element =>
+                    {
+                        model.MembersAvailable.Add(new Models.ViewModels.SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
+                    });
+
+                    return View(model);
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(string orgId, CreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = GetUserProfile();
+                var organization = GetOrganization(orgId);
+                if (organization != null)
+                {
+                    if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                    {
+                        var project = new Project
+                        {
+                            Id = Guid.NewGuid().ToString("N"),
+                            Name = model.Name,
+                            Description = model.Description,
+                            ManagerId = model.ManagerId,
+                            Status = model.Status,
+                            CreateTime = DateTime.UtcNow,
+                            JobsId = string.Empty
+                        };
+
+                        // Register the project to the organization
+                        var projectsCreated = organization.GetProjectsId();
+                        projectsCreated.Add(project.Id);
+                        organization.SetProjectsId(projectsCreated);
+                        _context.WorkflowOrganizations.Update(organization);
+
+                        _context.Projects.Add(project);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction(nameof(Details), new { orgId, projectId = project.Id });
+                    }
+                }
+
+                return Unauthorized();
+            }
+
+            return RedirectToAction(nameof(Create), new { orgId });
+        }
+
+        public IActionResult Details(string orgId, string projectId)
         {
             return View();
         }
 
-        public IActionResult Details(string orgId)
-        {
-            return View();
-        }
-
-        public IActionResult Delete(string orgId, string prjId)
+        public IActionResult Delete(string orgId, string projectId)
         {
             return View();
         }

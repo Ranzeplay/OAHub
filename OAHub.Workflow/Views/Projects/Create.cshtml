@@ -6,9 +6,9 @@
 
 <div class="container">
     <div class="row">
-        <form method="post" asp-action="Create" class="col-12">
+        <form method="post" asp-action="Create" asp-route-orgId="@Context.Request.Query["orgId"]" class="col-12">
             <div class="col-md-8">
-                <div class="card card-primary p-2">
+                <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Project Infomation</h3>
                     </div>
@@ -22,11 +22,20 @@
                             <textarea class="form-control" asp-for="Description"></textarea>
                         </div>
                         <div class="form-group">
+                            <label>Manager</label>
+                            <select class="custom-select" asp-for="ManagerId">
+                                @foreach (var item in Model.MembersAvailable)
+                                {
+                                    <option value="@item.UserId">@item.DisplayName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Status</label>
-                            <select class="form-control">
+                            <select class="custom-select" asp-for="Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ">
                                 @foreach (var item in Enum.GetValues(typeof(OAHub.Base.Models.WorkflowModels.WorkStatus)))
                                 {
-                                    <option>@item</option>
+                                    <option value="@item">@item</option>
                                 }
                             </select>
                         </div>
@@ -34,7 +43,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card card-secondary p-2">
+                <div class="card card-secondary">
                     <div class="card-header">
                         <h3 class="card-title">Actions</h3>
                     </div>

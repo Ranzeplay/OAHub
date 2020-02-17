@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace OAHub.Base.Models.WorkflowModels
 {
-    public class ProjectViewModel
+    public class Project
     {
         public string Id { get; set; }
 
