@@ -88,19 +88,15 @@ namespace OAHub.Workflow.Controllers
 
         private WorkflowUser GetUserProfile()
         {
-            var user = new WorkflowUser();
-
             try
             {
                 var id = HttpContext.User.FindFirst("UserId").Value;
-                user = _context.Users.FirstOrDefault(u => u.Id == id);
+                return _context.Users.FirstOrDefault(u => u.Id == id);
             }
             catch
             {
                 return null;
             }
-
-            return user;
         }
     }
 }
