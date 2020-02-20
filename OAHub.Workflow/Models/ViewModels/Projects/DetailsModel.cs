@@ -10,6 +10,6 @@ namespace OAHub.Workflow.Models.ViewModels.Projects
     {
         public ProjectViewModel Project { get; set; }
 
-        public List<JobViewModel> Jobs { get; set; }
+        public List<JobOverviewModel> Jobs { get; set; }
     }
 }

@@ -24,10 +24,10 @@
                         @foreach (var job in Model.Jobs)
                         {
                             <tr>
-                                <td>@job.Name</td>
+                                <td><a asp-controller="Jobs" asp-action="Details" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Model.Project.Id" asp-route-jobId="@job.Id">@job.Name</a></td>
                                 <td>@job.StepsCount</td>
                                 <td>@job.Manager.UserName</td>
-                                <th>@job.Status</th>
+                                <td>@job.Status</td>
                             </tr>
                         }
                     </tbody>
@@ -61,7 +61,8 @@
                     </li>
                 </ul>
 
-                <button class="btn btn-primary btn-block">Edit</button>
+                <a asp-controller="Jobs" asp-action="CreateJob" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Model.Project.Id" class="btn btn-primary btn-block">Create Job</a>
+                <br />
             </div>
         </div>
     </div>

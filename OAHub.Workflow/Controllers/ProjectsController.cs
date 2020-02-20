@@ -148,13 +148,13 @@ namespace OAHub.Workflow.Controllers
                         var manager = _context.Users.FirstOrDefault(u => u.Id == project.ManagerId);
 
                         // Show jobs by JobViewModel
-                        var projectJobs = new List<JobViewModel>();
+                        var projectJobs = new List<JobOverviewModel>();
                         project.GetJobsId().ForEach(element =>
                         {
                             var currentJob = _context.Jobs.FirstOrDefault(j => j.Id == element);
                             if (currentJob != null)
                             {
-                                projectJobs.Add(new JobViewModel
+                                projectJobs.Add(new JobOverviewModel
                                 {
                                     Id = currentJob.Id,
                                     Name = currentJob.Name,

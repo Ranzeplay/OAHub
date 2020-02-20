@@ -1,0 +1,60 @@
+﻿@model OAHub.Workflow.Models.JobStepsViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Steps</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Assignees</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var step in Model.Steps)
+                        {
+                            <tr>
+                                <td>@step.Name</td>
+                                <td>@step.AssigneesCount</td>
+                                <th>@step.Status</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-primary card-cyan">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="~/lib/admin-lte/dist/img/default-150x150.png" alt="@Model.Name">
+                </div>
+
+                <h3 class="profile-username text-center">@Model.Name</h3>
+
+                <p class="text-muted text-center">Manager: @Model.Manager.UserName</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                        <b>Description</b> <a class="float-right">@Model.Description</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Steps count</b> <a class="float-right">@Model.StepsCount</a>
+                    </li>
+                </ul>
+
+                <a role="button" asp-action="CreateStep" asp-route-orgId="@Context.Request.Query["orgId"]" class="btn btn-primary btn-block btn-flat">Create step</a>
+            </div>
+        </div>
+    </div>
+</div>

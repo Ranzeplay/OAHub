@@ -1,0 +1,38 @@
+﻿@model OAHub.Workflow.Models.ViewModels.Jobs.ListModel
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card col-md-12">
+            <div class="card-header">
+                <h3 class="card-title">@Model.OrganizationName / @Model.ProjectName</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover no-wrap">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Steps count</th>
+                            <th>Manager</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var job in Model.Jobs)
+                        {
+                            <tr style="cursor: pointer" onclick="window.location.href = '/Jobs/Details?orgId=@Context.Request.Query["orgId"]&projectId=@Context.Request.Query["projectId"]&jobId=@job.Id'">
+                                <td>@job.Name</td>
+                                <td>@job.StepsCount</td>
+                                <td>@job.Manager.UserName</td>
+                                <th>@job.Status</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

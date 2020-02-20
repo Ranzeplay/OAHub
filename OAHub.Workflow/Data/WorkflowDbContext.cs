@@ -18,7 +18,7 @@ namespace OAHub.Workflow.Data
 
         public DbSet<WorkflowOrganization> WorkflowOrganizations { get; set; }
 
-        public DbSet<Base.Models.WorkflowModels.Project> Projects { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         public DbSet<Job> Jobs { get; set; }
     }
