@@ -1,0 +1,67 @@
+﻿@model OAHub.Workflow.Models.ViewModels.Jobs.CreateStepModel
+@{
+    ViewData["Title"] = "CreateStep";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<form method="post" asp-action="CreateStep" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Context.Request.Query["projectId"]" asp-route-jobId="@Context.Request.Query["jobId"]">
+    <div class="row">
+        <div class="col-md-5 m-0">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Basic infomation</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" asp-for="Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" asp-for="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="custom-select" asp-for="Status">
+                            @foreach (var item in Enum.GetValues(typeof(OAHub.Base.Models.WorkflowModels.WorkStatus)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 m-0">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Assignees</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        @for (int i = 0; i < Model.Assignees.Count; i++)
+                        {
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="check-@Model.Assignees[i].AssignerId" asp-for="Assignees[i].IsSelected">
+                                <label for="check-@Model.Assignees[i].AssignerId" class="custom-control-label">@Model.Assignees[i].ShowName</label>
+                                <input asp-for="Assignees[i].AssignerId" hidden />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 m-0">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Actions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Confirm action</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

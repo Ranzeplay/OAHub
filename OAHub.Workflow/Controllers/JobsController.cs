@@ -11,6 +11,7 @@ using OAHub.Base.Models.Extensions;
 using OAHub.Base.Models.WorkflowModels;
 using OAHub.Workflow.Data;
 using OAHub.Workflow.Models;
+using OAHub.Workflow.Models.ViewModels;
 using OAHub.Workflow.Models.ViewModels.Jobs;
 
 namespace OAHub.Workflow.Controllers
@@ -183,8 +184,76 @@ namespace OAHub.Workflow.Controllers
             return NotFound();
         }
 
-        public IActionResult CreateStep(string orgId, string projectId, string jobId)
+        [HttpGet]
+        public async Task<IActionResult> CreateStep(string orgId, string projectId, string jobId)
         {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var model = new CreateStepModel
+                            {
+                                Assignees = new List<AssignerViewModel>()
+                            };
+
+                            var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
+                            members.ForEach(element =>
+                            {
+                                model.Assignees.Add(new AssignerViewModel { AssignerId = element.MemberId, ShowName = element.FullName, IsSelected = false });
+                            });
+
+                            return View(model);
+                        }
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStep(string orgId, string projectId, string jobId, CreateStepModel model)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var steps = job.GetSteps();
+                            var newStep = new Step
+                            {
+                                Name = model.Name,
+                                Description = model.Description,
+                                Status = model.Status
+                            };
+                            newStep.SetAssigneesId(model.Assignees.Select(q => q.AssignerId).ToList());
+                            steps.Add(newStep);
+                            job.SetSteps(steps);
+
+                            _context.Jobs.Update(job);
+                            await _context.SaveChangesAsync();
+
+                            return RedirectToAction(nameof(Details), new { orgId, projectId, jobId });
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 

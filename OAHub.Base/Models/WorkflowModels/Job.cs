@@ -19,7 +19,7 @@ namespace OAHub.Base.Models.WorkflowModels
 
         public string Steps { get; set; }
 
-        public void GetSteps(List<Step> steps)
+        public void SetSteps(List<Step> steps)
         {
             Steps = JsonSerializer.Serialize(steps);
         }

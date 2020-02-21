@@ -53,7 +53,7 @@
                     </li>
                 </ul>
 
-                <a role="button" asp-action="CreateStep" asp-route-orgId="@Context.Request.Query["orgId"]" class="btn btn-primary btn-block btn-flat">Create step</a>
+                <a role="button" asp-action="CreateStep" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Context.Request.Query["projectId"]" asp-route-jobId="@Context.Request.Query["jobId"]" class="btn btn-primary btn-block btn-flat">Create step</a>
             </div>
         </div>
     </div>
