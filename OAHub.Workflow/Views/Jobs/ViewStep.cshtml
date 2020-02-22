@@ -1,0 +1,128 @@
+﻿@model OAHub.Workflow.Models.StepViewModel
+@{
+    ViewData["Title"] = "ViewStep";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Step Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Description</h4>
+                        <p>@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-12">
+                @switch (Model.Status)
+                {
+                    case OAHub.Base.Models.WorkflowModels.WorkStatus.Pending:
+                        <div class="info-box bg-info">
+                            <span class="info-box-icon"><i class="fas fa-hourglass-half"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">Pending</span>
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.WorkflowModels.WorkStatus.InProgress:
+                        <div class="info-box bg-primary">
+                            <span class="info-box-icon"><i class="fas fa-spinner"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">In Progress</span>
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.WorkflowModels.WorkStatus.Completed:
+                        <div class="info-box bg-success">
+                            <span class="info-box-icon"><i class="fas fa-check"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">Completed</span>
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.WorkflowModels.WorkStatus.Failed:
+                        <div class="info-box bg-warning">
+                            <span class="info-box-icon"><i class="fas fa-times"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">Failed</span>
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.WorkflowModels.WorkStatus.Cancelled:
+                        <div class="info-box bg-secondary">
+                            <span class="info-box-icon"><i class="fas fa-ban"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">Cancelled</span>
+                            </div>
+                        </div>
+                        break;
+                    default:
+                        <div class="info-box bg-light">
+                            <span class="info-box-icon"><i class="fas fa-question"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status</span>
+                                <span class="info-box-number">Unknown</span>
+                            </div>
+                        </div>
+                        break;
+                }
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-pink card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="~/lib/admin-lte/dist/img/default-150x150.png" alt="@Model.Name">
+                        </div>
+
+                        <h3 class="profile-username text-center">@Model.Name</h3>
+
+                        <a role="button" asp-route-orgId="@Context.Request.Query["orgId"]"
+                           asp-route-projectId="@Context.Request.Query["projectId"]"
+                           asp-route-jobId="@Context.Request.Query["jobId"]"
+                           class="btn btn-primary btn-block btn-flat">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Assigned To</h3>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var assigner in Model.Assignees)
+                        {
+                            <div class="row col-12">
+                                <div class="user-block">
+                                    <img class="img-circle img-bordered-sm" src="~/lib/admin-lte/dist/img/avatar2.png" alt="User Image">
+                                    <span class="username">
+                                        <a href="#">@assigner.UserName</a>
+                                    </span>
+                                    <span class="description">@assigner.Email</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -168,6 +170,7 @@ namespace OAHub.Workflow.Controllers
                             {
                                 model.Steps.Add(new StepViewModel
                                 {
+                                    NameEncoded = element.Id,
                                     Name = element.Name,
                                     Description = element.Description,
                                     AssigneesCount = element.GetAssigneesId().LongCount(),
@@ -235,8 +238,12 @@ namespace OAHub.Workflow.Controllers
                         if (project.GetJobsId().Contains(jobId) && job != null)
                         {
                             var steps = job.GetSteps();
+
+                            var stepIdentifier = Guid.NewGuid().ToString("N");
                             var newStep = new Step
                             {
+                                // Just use first 25 chars to be the Id of the step
+                                Id = stepIdentifier.Substring(0, (stepIdentifier.Length > 12) ? 12 : stepIdentifier.Length),
                                 Name = model.Name,
                                 Description = model.Description,
                                 Status = model.Status
@@ -257,9 +264,47 @@ namespace OAHub.Workflow.Controllers
             return View();
         }
 
-        public IActionResult ViewStep(string orgId, string projectId, string jobId)
+        public async Task<IActionResult> ViewStep(string orgId, string projectId, string jobId, string stepNameEncoded)
         {
-            return View();
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var step = job.GetSteps().FirstOrDefault(s => s.Id == stepNameEncoded);
+                            var model = new StepViewModel
+                            {
+                                NameEncoded = step.Id,
+                                Name = step.Name,
+                                Description = step.Description,
+                                Status = step.Status,
+                                AssigneesCount = step.GetAssigneesId().Count,
+                                Assignees = new List<WorkflowUser>()
+                            };
+
+                            step.GetAssigneesId().ForEach(element =>
+                            {
+                                var member = _context.Users.FirstOrDefault(m => m.Id == element);
+                                if(element != null)
+                                {
+                                    model.Assignees.Add(member);
+                                }
+                            });
+
+                            return View(model);
+                        }
+                    }
+                }
+            }
+
+            return NotFound();
         }
 
         private WorkflowUser GetUserProfile()

@@ -23,7 +23,11 @@
                         @foreach (var step in Model.Steps)
                         {
                             <tr>
-                                <td>@step.Name</td>
+                                <td><a asp-action="ViewStep" 
+                                       asp-route-orgId="@Context.Request.Query["orgId"]" 
+                                       asp-route-projectId="@Context.Request.Query["projectId"]" 
+                                       asp-route-jobId="@Context.Request.Query["jobId"]" 
+                                       asp-route-stepNameEncoded="@step.NameEncoded">@step.Name</a></td>
                                 <td>@step.AssigneesCount</td>
                                 <th>@step.Status</th>
                             </tr>
