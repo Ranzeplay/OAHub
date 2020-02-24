@@ -186,9 +186,98 @@ namespace OAHub.Workflow.Controllers
             return Unauthorized();
         }
 
-        public IActionResult Delete(string orgId, string projectId)
+        [HttpGet]
+        public async Task<IActionResult> Edit(string orgId, string projectId)
         {
-            return View();
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (project != null)
+                    {
+                        var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
+                        var model = new EditModel
+                        {
+                            Name = project.Name,
+                            Description = project.Description,
+                            ManagerId = project.ManagerId,
+                            Status = project.Status,
+                            MembersAvailable = new List<Models.ViewModels.SelectMemberModel>()
+                        };
+                        members.ForEach(element =>
+                        {
+                            model.MembersAvailable.Add(new Models.ViewModels.SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
+                        });
+
+                        return View(model);
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string orgId, string projectId, EditModel model)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (project != null)
+                    {
+                        // Update project
+                        project.Name = model.Name;
+                        project.Description = model.Description;
+                        project.ManagerId = model.ManagerId;
+                        project.Status = model.Status;
+
+                        _context.Projects.Update(project);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction(nameof(Details), new { orgId, projectId });
+                    }
+                }
+            }
+
+            return BadRequest();
+        }
+
+
+        public async Task<IActionResult> Delete(string orgId, string projectId)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (project != null)
+                    {
+                        // Remove project
+                        _context.Projects.Remove(project);
+
+                        // Remove ProjectId from the organization
+                        var projects = organization.GetProjectsId();
+                        projects.Remove(projectId);
+                        organization.SetProjectsId(projects);
+                        _context.WorkflowOrganizations.Update(organization);
+
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction(nameof(Overview), new { orgId });
+                    }
+                }
+            }
+
+            return NotFound();
         }
 
         private WorkflowUser GetUserProfile()

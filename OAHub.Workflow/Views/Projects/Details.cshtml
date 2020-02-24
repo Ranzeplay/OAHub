@@ -61,6 +61,7 @@
                     </li>
                 </ul>
 
+                <a asp-controller="Projects" asp-action="Edit" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Model.Project.Id" class="btn btn-info btn-block">Edit Project</a>
                 <a asp-controller="Jobs" asp-action="CreateJob" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Model.Project.Id" class="btn btn-primary btn-block">Create Job</a>
             </div>
         </div>
