@@ -1,13 +1,14 @@
-﻿@model OAHub.Workflow.Models.ViewModels.Jobs.CreateStepModel
+﻿@model OAHub.Workflow.Models.ViewModels.Jobs.EditStepModel
 @{
-    ViewData["Title"] = "CreateStep";
+    ViewData["Title"] = "EditStep";
     Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
 }
 
-<form method="post" asp-action="CreateStep"
+<form method="post" asp-action="EditStep"
       asp-route-orgId="@Context.Request.Query["orgId"]"
       asp-route-projectId="@Context.Request.Query["projectId"]"
-      asp-route-jobId="@Context.Request.Query["jobId"]">
+      asp-route-jobId="@Context.Request.Query["jobId"]"
+      asp-route-stepNameEncoded="@Context.Request.Query["stepNameEncoded"]">
     <div class="row">
         <div class="col-md-5 m-0">
             <div class="card">
@@ -32,7 +33,10 @@
                                 {
                                     <option value="@item" selected>@item</option>
                                 }
-                                <option value="@item">@item</option>
+                                else
+                                {
+                                    <option value="@item">@item</option>
+                                }
                             }
                         </select>
                     </div>
@@ -66,7 +70,12 @@
                 <div class="card-body">
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Confirm action</button>
-                        
+                        <a class="btn btn-danger btn-block"
+                           asp-action="DeleteStep"
+                           asp-route-orgId="@Context.Request.Query["orgId"]"
+                           asp-route-projectId="@Context.Request.Query["projectId"]"
+                           asp-route-jobId="@Context.Request.Query["jobId"]"
+                           asp-route-stepNameEncoded="@Context.Request.Query["stepNameEncoded"]">Delete Step</a>
                     </div>
                 </div>
             </div>

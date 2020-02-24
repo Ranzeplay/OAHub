@@ -85,11 +85,11 @@ namespace OAHub.Workflow.Controllers
                     {
                         Name = string.Empty,
                         Description = string.Empty,
-                        MembersAvailable = new List<Models.ViewModels.SelectMemberModel>()
+                        MembersAvailable = new List<SelectMemberModel>()
                     };
                     members.ForEach(element =>
                     {
-                        model.MembersAvailable.Add(new Models.ViewModels.SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
+                        model.MembersAvailable.Add(new SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
                     });
 
                     ViewData["projectId"] = projectId;
@@ -185,6 +185,16 @@ namespace OAHub.Workflow.Controllers
             }
 
             return NotFound();
+        }
+
+        public IActionResult EditJob(string orgId, string projectId, string jobId)
+        {
+            return View();
+        }
+
+        public IActionResult DeleteJob(string orgId, string projectId, string jobId)
+        {
+            return View();
         }
 
         [HttpGet]
@@ -292,7 +302,7 @@ namespace OAHub.Workflow.Controllers
                             step.GetAssigneesId().ForEach(element =>
                             {
                                 var member = _context.Users.FirstOrDefault(m => m.Id == element);
-                                if(element != null)
+                                if (element != null)
                                 {
                                     model.Assignees.Add(member);
                                 }
@@ -305,6 +315,117 @@ namespace OAHub.Workflow.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditStep(string orgId, string projectId, string jobId, string stepNameEncoded)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var step = job.GetSteps().FirstOrDefault(s => s.Id == stepNameEncoded);
+
+                            var model = new EditStepModel
+                            {
+                                Name = step.Name,
+                                Description = step.Description,
+                                Status = step.Status,
+                                Assignees = new List<AssignerViewModel>()
+                            };
+
+                            var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
+                            members.ForEach(element =>
+                            {
+                                model.Assignees.Add(new AssignerViewModel { AssignerId = element.MemberId, ShowName = element.FullName, IsSelected = step.GetAssigneesId().Contains(element.MemberId) });
+                            });
+
+                            return View(model);
+                        }
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStep(string orgId, string projectId, string jobId, string stepNameEncoded, EditStepModel model)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var steps = job.GetSteps();
+                            var step = steps.FirstOrDefault(s => s.Id == stepNameEncoded);
+                            var index = steps.IndexOf(step);
+
+                            // Update the step
+                            step.Name = model.Name;
+                            step.Description = model.Description;
+                            step.Status = model.Status;
+                            step.SetAssigneesId(model.Assignees.Select(a => a.AssignerId).ToList());
+
+                            //Apply changes
+                            steps[index] = step;
+                            job.SetSteps(steps);
+                            _context.Jobs.Update(job);
+                            await _context.SaveChangesAsync();
+
+                            return RedirectToAction(nameof(Details), new { orgId, projectId, jobId });
+                        }
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        public async Task<IActionResult> DeleteStep(string orgId, string projectId, string jobId, string stepNameEncoded)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var steps = job.GetSteps();
+                            var step = steps.FirstOrDefault(s => s.Id == stepNameEncoded);
+                            steps.Remove(step);
+
+                            job.SetSteps(steps);
+                            _context.Jobs.Update(job);
+                            await _context.SaveChangesAsync();
+
+                            return RedirectToAction(nameof(Details), new { orgId, projectId, jobId });
+                        }
+                    }
+                }
+            }
+
+            return BadRequest();
         }
 
         private WorkflowUser GetUserProfile()
