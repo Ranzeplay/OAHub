@@ -201,7 +201,7 @@ namespace OAHub.Workflow.Controllers
                         if (project.GetJobsId().Contains(jobId) && job != null)
                         {
                             var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
-                            var model = new CreateJobModel
+                            var model = new EditJobModel
                             {
                                 Name = job.Name,
                                 Description = job.Description,
@@ -213,12 +213,48 @@ namespace OAHub.Workflow.Controllers
                             {
                                 model.MembersAvailable.Add(new SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
                             });
+
+                            return View(model);
                         }
                     }
                 }
             }
 
-            return View();
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditJob(string orgId, string projectId, string jobId, EditJobModel model)
+        {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            // Update
+                            job.Name = model.Name;
+                            job.Description = model.Description;
+                            job.ManagerId = model.ManagerId;
+                            job.Status = model.Status;
+
+                            // Apply changes
+                            _context.Jobs.Update(job);
+                            await _context.SaveChangesAsync();
+
+                            return RedirectToAction(nameof(Details), new { orgId, projectId, jobId });
+                        }
+                    }
+                }
+            }
+
+            return BadRequest();
         }
 
         public async Task<IActionResult> DeleteJob(string orgId, string projectId, string jobId)
@@ -243,8 +279,16 @@ namespace OAHub.Workflow.Controllers
                             project.SetJobsId(registeredJobs);
                             _context.Update(project);
 
+                            // Remove all Jobs under the project
+                            project.GetJobsId().ForEach(element =>
+                            {
+                                _context.Jobs.Remove(_context.Jobs.FirstOrDefault(j => j.Id == element));
+                            });
+
                             // Apply changes
                             await _context.SaveChangesAsync();
+
+                            return RedirectToAction("Details", "Projects", new { orgId, projectId });
                         }
                     }
                 }
