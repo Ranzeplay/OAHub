@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OAHub.Workflow.Models.ViewModels.Jobs
 {
-    public class CreateModel
+    public class CreateJobModel
     {
         [Required]
         public string Name { get; set; }

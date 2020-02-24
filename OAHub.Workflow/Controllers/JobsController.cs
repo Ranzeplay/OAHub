@@ -81,7 +81,7 @@ namespace OAHub.Workflow.Controllers
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
                     var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
-                    var model = new CreateModel
+                    var model = new CreateJobModel
                     {
                         Name = string.Empty,
                         Description = string.Empty,
@@ -92,8 +92,6 @@ namespace OAHub.Workflow.Controllers
                         model.MembersAvailable.Add(new SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
                     });
 
-                    ViewData["projectId"] = projectId;
-
                     return View(model);
                 }
             }
@@ -102,7 +100,7 @@ namespace OAHub.Workflow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateJob(string orgId, string projectId, CreateModel model)
+        public async Task<IActionResult> CreateJob(string orgId, string projectId, CreateJobModel model)
         {
             if (ModelState.IsValid)
             {
@@ -187,14 +185,72 @@ namespace OAHub.Workflow.Controllers
             return NotFound();
         }
 
-        public IActionResult EditJob(string orgId, string projectId, string jobId)
+        [HttpGet]
+        public async Task<IActionResult> EditJob(string orgId, string projectId, string jobId)
         {
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
+                            var model = new CreateJobModel
+                            {
+                                Name = job.Name,
+                                Description = job.Description,
+                                ManagerId = job.ManagerId,
+                                Status = job.Status,
+                                MembersAvailable = new List<SelectMemberModel>()
+                            };
+                            members.ForEach(element =>
+                            {
+                                model.MembersAvailable.Add(new SelectMemberModel { UserId = element.MemberId, DisplayName = element.FullName });
+                            });
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 
-        public IActionResult DeleteJob(string orgId, string projectId, string jobId)
+        public async Task<IActionResult> DeleteJob(string orgId, string projectId, string jobId)
         {
-            return View();
+            var user = GetUserProfile();
+            var organization = GetOrganization(orgId);
+            if (organization != null)
+            {
+                if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
+                {
+                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
+                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    {
+                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
+                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        {
+                            _context.Jobs.Remove(job);
+
+                            // Remove the JobId from the project
+                            var registeredJobs = project.GetJobsId();
+                            registeredJobs.Remove(jobId);
+                            project.SetJobsId(registeredJobs);
+                            _context.Update(project);
+
+                            // Apply changes
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+            }
+
+            return Unauthorized();
         }
 
         [HttpGet]
@@ -229,7 +285,7 @@ namespace OAHub.Workflow.Controllers
                 }
             }
 
-            return Unauthorized();
+            return BadRequest();
         }
 
         [HttpPost]

@@ -23,11 +23,13 @@
                         @foreach (var step in Model.Steps)
                         {
                             <tr>
-                                <td><a asp-action="ViewStep" 
-                                       asp-route-orgId="@Context.Request.Query["orgId"]" 
-                                       asp-route-projectId="@Context.Request.Query["projectId"]" 
-                                       asp-route-jobId="@Context.Request.Query["jobId"]" 
-                                       asp-route-stepNameEncoded="@step.NameEncoded">@step.Name</a></td>
+                                <td>
+                                    <a asp-action="ViewStep"
+                                       asp-route-orgId="@Context.Request.Query["orgId"]"
+                                       asp-route-projectId="@Context.Request.Query["projectId"]"
+                                       asp-route-jobId="@Context.Request.Query["jobId"]"
+                                       asp-route-stepNameEncoded="@step.NameEncoded">@step.Name</a>
+                                </td>
                                 <td>@step.AssigneesCount</td>
                                 <th>@step.Status</th>
                             </tr>
@@ -57,7 +59,14 @@
                     </li>
                 </ul>
 
-                <a role="button" asp-action="CreateStep" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Context.Request.Query["projectId"]" asp-route-jobId="@Context.Request.Query["jobId"]" class="btn btn-primary btn-block btn-flat">Create step</a>
+                <a role="button" class="btn btn-info btn-block" asp-action="EditJob"
+                   asp-route-orgId="@Context.Request.Query["orgId"]"
+                   asp-route-projectId="@Context.Request.Query["projectId"]"
+                   asp-route-jobId="@Context.Request.Query["jobId"]">Edit</a>
+                <a role="button" class="btn btn-primary btn-block" asp-action="CreateStep"
+                   asp-route-orgId="@Context.Request.Query["orgId"]"
+                   asp-route-projectId="@Context.Request.Query["projectId"]"
+                   asp-route-jobId="@Context.Request.Query["jobId"]">Create step</a>
             </div>
         </div>
     </div>
