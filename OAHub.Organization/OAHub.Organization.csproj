@@ -5,10 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200106150124_InitOrgainzationUser.cs" />
+    <Compile Remove="Migrations\20200106150124_InitOrgainzationUser.Designer.cs" />
+    <Compile Remove="Migrations\20200110142547_InitOrganization.cs" />
+    <Compile Remove="Migrations\20200110142547_InitOrganization.Designer.cs" />
+    <Compile Remove="Migrations\20200116142537_AddFullNameToOrganizationUser.cs" />
+    <Compile Remove="Migrations\20200116142537_AddFullNameToOrganizationUser.Designer.cs" />
     <Compile Remove="Migrations\20200207073254_InitExtensionDb.cs" />
     <Compile Remove="Migrations\20200207073254_InitExtensionDb.Designer.cs" />
     <Compile Remove="Migrations\20200207083028_InitExtension.cs" />
     <Compile Remove="Migrations\20200207083028_InitExtension.Designer.cs" />
+    <Compile Remove="Migrations\20200207142820_InitExtension.cs" />
+    <Compile Remove="Migrations\20200207142820_InitExtension.Designer.cs" />
     <Compile Remove="Migrations\20200208083609_SetKeyClumn.cs" />
     <Compile Remove="Migrations\20200208083609_SetKeyClumn.Designer.cs" />
     <Compile Remove="Migrations\20200208085404_SetKeyClumn.cs" />

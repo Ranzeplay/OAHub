@@ -30,7 +30,7 @@ namespace OAHub.Organization
         {
             services.AddDbContext<OrganizationDbContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("DbConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
             });
 
             services.Configure<CookiePolicyOptions>(options =>

@@ -9,8 +9,8 @@ using OAHub.Passport.Data;
 namespace OAHub.Passport.Migrations
 {
     [DbContext(typeof(PassportDbContext))]
-    [Migration("20200104021401_InitDbUsersAndApps")]
-    partial class InitDbUsersAndApps
+    [Migration("20200225010551_MigrateToSqlServer")]
+    partial class MigrateToSqlServer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

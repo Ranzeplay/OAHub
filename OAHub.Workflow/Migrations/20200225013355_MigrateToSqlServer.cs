@@ -3,15 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OAHub.Workflow.Migrations
 {
-    public partial class InitWorkflow : Migration
+    public partial class MigrateToSqlServer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ProjectsId",
-                table: "WorkflowOrganizations",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
@@ -44,6 +39,33 @@ namespace OAHub.Workflow.Migrations
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkflowOrganizations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Secret = table.Column<string>(nullable: true),
+                    ProjectsId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkflowOrganizations", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -54,9 +76,11 @@ namespace OAHub.Workflow.Migrations
             migrationBuilder.DropTable(
                 name: "Projects");
 
-            migrationBuilder.DropColumn(
-                name: "ProjectsId",
-                table: "WorkflowOrganizations");
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "WorkflowOrganizations");
         }
     }
 }

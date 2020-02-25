@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OAHub.Passport.Migrations
 {
-    public partial class InitDbUsersAndApps : Migration
+    public partial class MigrateToSqlServer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
