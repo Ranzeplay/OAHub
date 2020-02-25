@@ -1,0 +1,53 @@
+﻿@model OAHub.Organization.Models.ViewModels.Extensions.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Description</h4>
+                                @Model.Extension.Description
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="text-primary">
+                            <i class="fas fa-rocket"></i>
+                            @Model.Extension.Name
+                        </h3>
+                        <br />
+                        <div class="text-muted">
+                            <p class="text-sm">
+                                Author
+                                <b class="d-block">@Model.AuthorName</b>
+                            </p>
+                        </div>
+                        <br />
+                        <form method="post" asp-action="AddToOrg">
+                            <h5>Actions</h5>
+                            <div class="form-group">
+                                <label>Install to organization</label>
+                                <select class="form-control" name="OrganizationId" required>
+                                    @foreach(var org in Model.UserJoinedOrganizations)
+                                    {
+                                        <option value="@org.Key">@org.Value</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-outline-success btn-block">Install extension</button>
+                            <input name="ExtensionId" value="@Model.Extension.Id" style="display: none" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

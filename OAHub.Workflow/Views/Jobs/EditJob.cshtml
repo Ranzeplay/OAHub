@@ -1,0 +1,78 @@
+﻿@model OAHub.Workflow.Models.ViewModels.Jobs.EditJobModel
+@{
+    ViewData["Title"] = "EditJob";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <form method="post" class="col-12" asp-action="CreateJob" asp-route-orgId="@Context.Request.Query["orgId"]" asp-route-projectId="@Context.Request.Query["projectId"]" asp-route-jobId="@Context.Request.Query["jobId"]">
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Job Infomation</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" asp-for="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" asp-for="Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Manager</label>
+                            <select class="custom-select" asp-for="ManagerId">
+                                @foreach (var item in Model.MembersAvailable)
+                                {
+                                    if (item.UserId == Model.ManagerId)
+                                    {
+                                        <option value="@item.UserId" selected>@item.DisplayName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.UserId">@item.DisplayName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="custom-select" asp-for="Status">
+                                @foreach (var item in Enum.GetValues(typeof(OAHub.Base.Models.WorkflowModels.WorkStatus)))
+                                {
+                                    if (item.ToString() == Model.Status.ToString())
+                                    {
+                                        <option value="@item" selected>@item</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Comfirm action</button>
+                            <a class="btn btn-danger btn-block" asp-action="DeleteJob" 
+                               asp-route-orgId="@Context.Request.Query["orgId"]" 
+                               asp-route-projectId="@Context.Request.Query["projectId"]" 
+                               asp-route-jobId="@Context.Request.Query["jobId"]">Delete Job</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

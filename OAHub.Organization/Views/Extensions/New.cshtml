@@ -1,0 +1,49 @@
+﻿@model OAHub.Organization.Models.ViewModels.Extensions.NewModel
+@{
+    ViewData["Title"] = "New";
+}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <form method="post" asp-action="New">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Create a new extension</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" asp-for="Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Web Site Url</label>
+                        <input type="url" class="form-control" asp-for="WebSite" />
+                    </div>
+                    <div class="form-group">
+                        <label>Organization Root Url</label>
+                        <input class="form-control" asp-for="OrganizationRootUri" />
+                        <small class="form-text text-muted">
+                            The organization's page when the organization access the content of the application. Use "<code>{OrgId}</code>" to replace with the organization id
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Create Dashboard Uri</label>
+                        <input class="form-control" asp-for="CreateDashboardUri" />
+                        <small class="form-text text-muted">
+                            Once the extension installed to an organization, we will take the user to this page. Use "<code>{OrgId}</code>" to replace with the organization id
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-1"></div>
+</div>

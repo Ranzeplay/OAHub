@@ -1,0 +1,115 @@
+﻿@{
+    var orgId = Context.Request.Query["orgId"];
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OAHub.Workflow</title>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="sidebar-mini">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a>
+            </li>
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="#" class="brand-link">
+            <span class="brand-text font-weight-bold">Workflow</span>
+        </a>
+
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="~/lib/admin-lte/dist/img/avatar3.png" class="img-circle elevation-2" alt="User">
+                </div>
+                <div class="info">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Auth" asp-action="SignOut" class="d-block" data-toggle="tooltip" data-placement="bottom" title="Logout">Hello, @User.FindFirst("UserName").Value</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="PassportAuthorize" class="d-block">Sign In</a>
+                    }
+                </div>
+            </div>
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                    <li class="nav-item has-treeview menu-open">
+                        <a class="nav-link active" asp-controller="OrganizationRoot" asp-action="Dashboard" asp-route-orgId="@orgId">
+                            <i class="nav-icon fas fa-poll"></i>
+                            <p>Dashboard</p>
+                        </a>
+                        <a class="nav-link active" asp-controller="Projects" asp-action="Overview" asp-route-orgId="@orgId">
+                            <i class="nav-icon fas fa-tasks"></i>
+                            <p>Projects</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>@ViewData["Title"]</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Breadcrumb</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - OAHub.Workflow - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <environment include="Development">
+        <script src="~/lib/admin-lte/dist/js/adminlte.js"></script>
+        <script src="~/lib/font-awesome/js/all.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/admin-lte/dist/js/adminlte.min.js"></script>
+        <script src="~/lib/font-awesome/js/all.min.js"></script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

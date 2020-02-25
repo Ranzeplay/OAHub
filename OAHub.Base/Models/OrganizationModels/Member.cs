@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OAHub.Base.Models.OrganizationModels
 {
-    public class Member
+    public class ApiMember
     {
         public string UserId { get; set; }
 

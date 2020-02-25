@@ -8,7 +8,7 @@ namespace OAHub.Organization.Models.ViewModels.Orgainzations
 {
     public class MemberModel
     {
-        public Member Member { get; set; }
+        public ApiMember Member { get; set; }
 
         public OrganizationUser User { get; set; }
     }

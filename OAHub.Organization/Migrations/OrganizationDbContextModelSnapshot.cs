@@ -16,6 +16,34 @@ namespace OAHub.Organization.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
 
+            modelBuilder.Entity("OAHub.Base.Models.Extensions.Extension", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreateDashboardUri")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrganizationRootUri")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Extensions");
+                });
+
             modelBuilder.Entity("OAHub.Base.Models.OrganizationModels.Organization", b =>
                 {
                     b.Property<string>("Id")
@@ -25,6 +53,9 @@ namespace OAHub.Organization.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExtensionsInstalled")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FounderId")

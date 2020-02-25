@@ -1,0 +1,59 @@
+﻿@model OAHub.Workflow.Models.ViewModels.Projects.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_OrganizationLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <form method="post" asp-action="Create" asp-route-orgId="@Context.Request.Query["orgId"]" class="col-12">
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Project Infomation</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" asp-for="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" asp-for="Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Manager</label>
+                            <select class="custom-select" asp-for="ManagerId">
+                                @foreach (var item in Model.MembersAvailable)
+                                {
+                                    <option value="@item.UserId">@item.DisplayName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="custom-select" asp-for="Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ">
+                                @foreach (var item in Enum.GetValues(typeof(OAHub.Base.Models.WorkflowModels.WorkStatus)))
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Comfirm and Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAHub.Base.Models.Extensions;
 using OAHub.Organization.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace OAHub.Organization.Data
         public DbSet<OrganizationUser> Users { get; set; }
 
         public DbSet<Base.Models.OrganizationModels.Organization> Organizations { get; set; }
+
+        public DbSet<Extension> Extensions { get; set; }
     }
 }
