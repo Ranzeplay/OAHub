@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200209032924_OrganizationConnection.cs" />
+    <Compile Remove="Migrations\20200209032924_OrganizationConnection.Designer.cs" />
+    <Compile Remove="Migrations\20200212094146_PassportAuthorizeUser.cs" />
+    <Compile Remove="Migrations\20200212094146_PassportAuthorizeUser.Designer.cs" />
+    <Compile Remove="Migrations\20200216005637_InitWorkflow.cs" />
+    <Compile Remove="Migrations\20200216005637_InitWorkflow.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
