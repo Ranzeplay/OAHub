@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OAHub.Base.Utils;
+using OAHub.Storage.Data;
 
 namespace OAHub.Storage
 {
@@ -13,7 +15,10 @@ namespace OAHub.Storage
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build()
+                .MigrateDbContext<StorageDbContext>()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
