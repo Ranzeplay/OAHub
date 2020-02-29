@@ -8,5 +8,6 @@ namespace OAHub.Storage.Models
 {
     public class StorageUser : OAuthUser
     {
+        public string OwnedShelf { get; set; }
     }
 }

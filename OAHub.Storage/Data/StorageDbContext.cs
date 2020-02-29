@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Models;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,12 @@ namespace OAHub.Storage.Data
         }
 
         public DbSet<StorageUser> Users { get; set; }
+
+        // Storage Models
+        public DbSet<Shelf> Shelves { get; set; }
+
+        public DbSet<Case> Cases { get; set; }
+
+        public DbSet<Item> Items { get; set; }
     }
 }
