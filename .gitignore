@@ -348,3 +348,4 @@ healthchecksdb
 /OAHub.Workflow/OAHub.Workflow.db
 /OAHub.Workflow/wwwroot/lib/admin-lte
 /OAHub.Workflow/wwwroot/lib/font-awesome
+/OAHub.Storage/wwwroot/lib/carbon-components

@@ -4,64 +4,64 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OAHub.Storage</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/carbon-components/css/carbon-components.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OAHub.Storage</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <form asp-action="Logout" asp-controller="Auth" method="post">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <a class="nav-link text-dark" title="Welcome" asp-controller="Account" asp-action="My">Hello, @User.FindFirst("UserName").Value</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link text-dark" asp-controller="Auth" asp-action="SignOut">Sign out</a>
-                                </li>
-                            </ul>
-                        </form>
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a class="nav-link text-dark" asp-controller="Auth" asp-action="PassportAuthorize">Sign in</a></li>
-                        </ul>
-                    }
-
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <header class="bx--header" role="banner">
+        <a class="bx--header__name" asp-controller="Home" asp-action="Index">
+            <span class="bx--header__name--prefix">OAHub</span>
+            &nbsp;[Storage]
+        </a>
+        <nav class="bx--header__nav">
+            <ul class="bx--header__menu-bar" role="menubar">
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                        <span class="bx--text-truncate--end">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                        <span class="bx--text-truncate--end">Privacy</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
+        <div class="bx--header__global">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="bx--header__menu-item" role="menuitem" tabindex="0">
+                    <span class="bx--text-truncate--end">Hello, @User.FindFirst("UserName").Value</span>
+                </a>
+                <a asp-controller="Auth" asp-action="SignOut" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                    <span class="bx--text-truncate--end">Sign Out</span>
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Auth" asp-action="PassportAuthorize" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                    <span class="bx--text-truncate--end">Sign In</span>
+                </a>
+            }
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main id="main-content" class="bx--content">
+        <div class="bx--grid">
+            <div class="bx--row">
+                <section class="bx--offset-lg-3 bx--col-lg-13">
+                    @RenderBody()
+                </section>
+            </div>
+        </div>
+    </main>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
             &copy; 2020 - OAHub.Storage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/carbon-components/scripts/carbon-components.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
