@@ -16,20 +16,20 @@
         <nav class="bx--header__nav">
             <ul class="bx--header__menu-bar" role="menubar">
                 <li>
-                    <a asp-controller="Dashboard" asp-action="Overview" class="bx--header__menu-item" role="menuitem" tabindex="0">
-                        <span class="bx--text-truncate--end">Dashboard</span>
+                    <a asp-controller="Home" asp-action="Index" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                        <span class="bx--text-truncate--end">Home</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-controller="Shelves" asp-action="List" class="bx--header__menu-item" role="menuitem" tabindex="0">
-                        <span class="bx--text-truncate--end">Shelves</span>
+                    <a asp-controller="Home" asp-action="Privacy" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                        <span class="bx--text-truncate--end">Privacy</span>
                     </a>
                 </li>
             </ul>
         </nav>
         <div class="bx--header__global">
-            <a asp-controller="Home" asp-action="Index" class="bx--header__menu-item" role="menuitem" tabindex="0">
-                <span class="bx--text-truncate--end">Leave Dashboard</span>
+            <a asp-controller="Dashboard" asp-action="Overview" class="bx--header__menu-item" role="menuitem" tabindex="0">
+                <span class="bx--text-truncate--end">Dashboard</span>
             </a>
 
             @if (User.Identity.IsAuthenticated)
@@ -48,13 +48,11 @@
                 </a>
             }
         </div>
-
-        @RenderSection("Sidebar", required: false)
     </header>
     <main id="main-content" class="bx--content">
         <div class="bx--grid">
             <div class="bx--row">
-                <section class="bx--col-max-12">
+                <section class="bx--offset-lg-3 bx--col-lg-13">
                     @RenderBody()
                 </section>
             </div>
@@ -62,7 +60,7 @@
     </main>
 
     <footer class="footer">
-        <div class="bx--col-lg-13">
+        <div class="bx--offset-lg-2 bx--col-lg-13">
             &copy; 2020 - OAHub.Storage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>

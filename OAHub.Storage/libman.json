@@ -590,6 +590,11 @@
         "scss/globals/scss/vendor/@carbon/type/scss/_inlined/font-face/_serif.scss",
         "scss/globals/scss/vendor/@carbon/type/scss/_inlined/font-face/_settings.scss"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.12.1",
+      "destination": "wwwroot/lib/font-awesome/"
     }
   ]
 }
