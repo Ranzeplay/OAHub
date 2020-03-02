@@ -17,7 +17,7 @@ namespace OAHub.Base.Models.StorageModels
 
         public string OwnedItems { get; set; }
 
-        public List<string> GetOwnedItemss()
+        public List<string> GetOwnedItems()
         {
             try
             {

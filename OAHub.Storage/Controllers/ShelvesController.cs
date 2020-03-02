@@ -39,7 +39,24 @@ namespace OAHub.Storage.Controllers
 
         public IActionResult Details(string shelfId)
         {
-            return View();
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                var cases = new List<Case>();
+                shelf.GetOwnedCases().ForEach(element =>
+                {
+                    var @case = _context.Cases.FirstOrDefault(c => c.Id == element);
+                    if (@case != null)
+                    {
+                        cases.Add(@case);
+                    }
+                });
+
+                return View(new DetailsModel { Shelf = shelf, Cases = cases });
+            }
+
+            return Unauthorized();
         }
 
         private StorageUser GetUserProfile()
