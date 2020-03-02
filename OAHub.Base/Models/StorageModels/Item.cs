@@ -10,6 +10,6 @@ namespace OAHub.Base.Models.StorageModels
 
         public string Name { get; set; }
 
-        public string CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

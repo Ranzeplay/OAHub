@@ -19,7 +19,7 @@ namespace OAHub.Storage.Migrations
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    CreateTime = table.Column<string>(nullable: true),
+                    CreateTime = table.Column<DateTime>(nullable: false),
                     OwnedItems = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -33,7 +33,7 @@ namespace OAHub.Storage.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    CreateTime = table.Column<string>(nullable: true)
+                    CreateTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

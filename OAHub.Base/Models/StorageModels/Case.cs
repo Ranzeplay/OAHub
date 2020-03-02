@@ -13,7 +13,7 @@ namespace OAHub.Base.Models.StorageModels
 
         public string Description { get; set; }
 
-        public string CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
 
         public string OwnedItems { get; set; }
 

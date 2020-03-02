@@ -10,7 +10,7 @@ using OAHub.Storage.Data;
 namespace OAHub.Storage.Migrations
 {
     [DbContext(typeof(StorageDbContext))]
-    [Migration("20200229070556_CreateStorageModels")]
+    [Migration("20200302024224_CreateStorageModels")]
     partial class CreateStorageModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,8 @@ namespace OAHub.Storage.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreateTime")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -48,8 +48,8 @@ namespace OAHub.Storage.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CreateTime")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
