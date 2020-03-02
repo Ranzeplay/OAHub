@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200229035631_CreateStorageModels.cs" />
     <Compile Remove="Migrations\20200229035631_CreateStorageModels.Designer.cs" />
+    <Compile Remove="Migrations\20200229070556_CreateStorageModels.cs" />
+    <Compile Remove="Migrations\20200229070556_CreateStorageModels.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
