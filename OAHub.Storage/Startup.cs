@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OAHub.Base.Models;
 using OAHub.Storage.Data;
+using OAHub.Storage.Services;
 
 namespace OAHub.Storage
 {
@@ -53,6 +54,7 @@ namespace OAHub.Storage
             });
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
+            services.AddTransient<IStorageService, StorageService>();
 
             services.AddControllersWithViews();
         }

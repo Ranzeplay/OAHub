@@ -98,6 +98,40 @@ namespace OAHub.Storage.Controllers
             return Unauthorized();
         }
 
+        public IActionResult Details(string shelfId, string caseId)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                if (shelf.GetOwnedCases().Contains(caseId))
+                {
+                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
+                    if (@case != null)
+                    {
+                        var model = new DetailsModel
+                        {
+                            Case = @case,
+                            OwnedItems = new List<Item>()
+                        };
+
+                        @case.GetOwnedItems().ForEach(element =>
+                        {
+                            var item = _context.Items.FirstOrDefault(i => i.Id == element);
+                            if (item != null)
+                            {
+                                model.OwnedItems.Add(item);
+                            }
+                        });
+
+                        return View(model);
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
         private StorageUser GetUserProfile()
         {
             try
