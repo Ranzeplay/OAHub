@@ -23,7 +23,7 @@ namespace OAHub.Storage.Services
 
         public async Task AddFileAsync(string shelfId, string caseId, IFormFile file)
         {
-            ValidateAndCreateDirectory(shelfId, caseId, out string path);
+            ValidateOrCreateDirectory(shelfId, caseId, out string path);
             var databaseItem = new Item
             {
                 Id = Guid.NewGuid().ToString(),
@@ -53,9 +53,18 @@ namespace OAHub.Storage.Services
             await _context.SaveChangesAsync();
         }
 
+        public void DeleteCase(string shelfId, string caseId)
+        {
+            var path = Path.Combine(_storagePath, shelfId, caseId);
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+
         public async Task DeleteFileAsync(string shelfId, string caseId, string itemId)
         {
-            ValidateAndCreateDirectory(shelfId, caseId, out string path);
+            ValidateOrCreateDirectory(shelfId, caseId, out string path);
             var databaseItem = _context.Items.FirstOrDefault(i => i.Id == itemId);
             var targetFolder = Path.Combine(path, itemId);
             if (File.Exists(Path.Combine(targetFolder, databaseItem.Name)) && databaseItem != null)
@@ -68,7 +77,7 @@ namespace OAHub.Storage.Services
 
         public FileStream DownloadFile(string shelfId, string caseId, string itemId)
         {
-            ValidateAndCreateDirectory(shelfId, caseId, out string path);
+            ValidateOrCreateDirectory(shelfId, caseId, out string path);
             var databaseItem = _context.Items.FirstOrDefault(i => i.Id == itemId);
             var targetFile = Path.Combine(path, itemId, databaseItem.Name);
             if (File.Exists(targetFile) && databaseItem != null)
@@ -79,7 +88,7 @@ namespace OAHub.Storage.Services
             return null;
         }
 
-        public string ValidateAndCreateDirectory(string shelfId, string caseId, out string casePath)
+        public string ValidateOrCreateDirectory(string shelfId, string caseId, out string casePath)
         {
             casePath = Path.Combine(_storagePath, shelfId);
             if (!Directory.Exists(casePath))

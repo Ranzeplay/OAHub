@@ -9,6 +9,7 @@ using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
 using OAHub.Storage.Models;
 using OAHub.Storage.Models.ViewModels.Cases;
+using OAHub.Storage.Services;
 
 namespace OAHub.Storage.Controllers
 {
@@ -16,10 +17,12 @@ namespace OAHub.Storage.Controllers
     public class CasesController : Controller
     {
         private readonly StorageDbContext _context;
+        private readonly IStorageService _storageService;
 
         public CasesController(StorageDbContext context)
         {
             _context = context;
+            _storageService = new StorageService(context);
         }
 
         public IActionResult List(string shelfId)
@@ -125,6 +128,81 @@ namespace OAHub.Storage.Controllers
                         });
 
                         return View(model);
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(string shelfId, string caseId)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                if (shelf.GetOwnedCases().Contains(caseId))
+                {
+                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
+                    if (@case != null)
+                    {
+                        var model = new EditModel
+                        {
+                            Name = @case.Name,
+                            Description = @case.Description
+                        };
+
+                        return View(model);
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string shelfId, string caseId, EditModel model)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                if (shelf.GetOwnedCases().Contains(caseId))
+                {
+                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
+                    if (@case != null)
+                    {
+                        @case.Name = model.Name;
+                        @case.Description = model.Description;
+
+                        _context.Cases.Update(@case);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction(nameof(Details), new { shelfId, caseId });
+                    }
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        public async Task<IActionResult> Delete(string shelfId, string caseId)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                if (shelf.GetOwnedCases().Contains(caseId))
+                {
+                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
+                    if (@case != null)
+                    {
+                        _context.Cases.Remove(@case);
+                        _storageService.DeleteCase(shelfId, caseId);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction("Details", "Shelves", new { shelfId });
                     }
                 }
             }

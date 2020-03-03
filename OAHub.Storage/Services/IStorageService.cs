@@ -16,6 +16,8 @@ namespace OAHub.Storage.Services
 
         Task DeleteFileAsync(string shelfId, string caseId, string itemId);
 
-        string ValidateAndCreateDirectory(string shelfId, string caseId, out string casePath);
+        void DeleteCase(string shelfId, string caseId);
+
+        string ValidateOrCreateDirectory(string shelfId, string caseId, out string casePath);
     }
 }

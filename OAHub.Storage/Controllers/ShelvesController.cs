@@ -59,6 +59,45 @@ namespace OAHub.Storage.Controllers
             return Unauthorized();
         }
 
+        [HttpGet]
+        public IActionResult Edit(string shelfId)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                var model = new EditModel
+                {
+                    Name = shelf.Name,
+                    Description = shelf.Description
+                };
+
+                return View(model);
+            }
+
+            return Unauthorized();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string shelfId, EditModel model)
+        {
+            var user = GetUserProfile();
+            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
+            if (shelf != null && user.OwnedShelf == shelfId)
+            {
+                shelf.Name = model.Name;
+                shelf.Description = model.Description;
+
+                _context.Shelves.Update(shelf);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Details), new { shelfId });
+            }
+
+            return Unauthorized();
+        }
+
         private StorageUser GetUserProfile()
         {
             try
