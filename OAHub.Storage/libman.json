@@ -595,6 +595,10 @@
       "provider": "cdnjs",
       "library": "font-awesome@5.12.1",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "dropify@0.2.2",
+      "destination": "wwwroot/lib/dropify/"
     }
   ]
 }

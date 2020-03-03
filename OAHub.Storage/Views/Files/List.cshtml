@@ -41,7 +41,7 @@
                     </button>
                 </div>
             </div>
-            <button class="bx--btn bx--btn--sm bx--btn--primary">
+            <button class="bx--btn bx--btn--sm bx--btn--primary" type="button" data-modal-target="#upload-modal">
                 Upload
                 <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--btn__icon" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M17 15L17 7 15 7 15 15 7 15 7 17 15 17 15 25 17 25 17 17 25 17 25 15 17 15z"></path></svg>
             </button>
@@ -102,18 +102,18 @@
                             <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--overflow-menu__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="3" r="1"></circle><circle cx="8" cy="8" r="1"></circle><circle cx="8" cy="13" r="1"></circle></svg>
                             <ul class="bx--overflow-menu-options bx--overflow-menu--flip">
                                 <li class="bx--overflow-menu-options__option bx--table-row--menu-option">
-                                    <button class="bx--overflow-menu-options__btn">
+                                    <a class="bx--overflow-menu-options__btn" asp-action="Download" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]" asp-route-itemId="@item.Id">
                                         <div class="bx--overflow-menu-options__option-content">
                                             <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 7L12.3 6.3 8.5 10.1 8.5 1 7.5 1 7.5 10.1 3.7 6.3 3 7 8 12zM13 12v2H3v-2H2v2l0 0c0 .6.4 1 1 1h10c.6 0 1-.4 1-1l0 0v-2H13z"></path></svg> Download
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                                 <li class="bx--overflow-menu-options__option bx--table-row--menu-option">
-                                    <button class="bx--overflow-menu-options__btn">
+                                    <a class="bx--overflow-menu-options__btn" asp-action="Delete" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]" asp-route-itemId="@item.Id">
                                         <div class="bx--overflow-menu-options__option-content">
                                             <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 6H7V12H6zM9 6H10V12H9z"></path><path d="M2 3v1h1v10c0 .6.4 1 1 1h8c.6 0 1-.4 1-1V4h1V3H2zM4 14V4h8v10H4zM6 1H10V2H6z"></path></svg> Delete
                                         </div>
-                                    </button>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -123,3 +123,42 @@
         </tbody>
     </table>
 </div>
+
+<form method="post" enctype="multipart/form-data" asp-action="Upload" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]">
+    <div data-modal id="upload-modal" class="bx--modal " role="dialog"
+         aria-modal="true" aria-labelledby="upload-modal-label" aria-describedby="upload-modal-heading" tabindex="-1">
+        <div class="bx--modal-container">
+            <div class="bx--modal-header">
+                <p class="bx--modal-header__label bx--type-delta" id="upload-modal-label">@Model.Case.Name (@Model.Case.Id)</p>
+                <p class="bx--modal-header__heading bx--type-beta" id="upload-modal-heading">Upload a new file</p>
+                <button class="bx--modal-close" type="button" data-modal-close aria-label="close modal">
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--modal-close__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3 4.7 12 8 8.7 11.3 12 12 11.3 8.7 8z"></path></svg>
+                </button>
+            </div>
+
+            <div class="bx--modal-content">
+                <div class="bx--form-item" style="width: 100%">
+                    <input type="file" name="file" class="dropify" style="width: 100%; margin: 0 auto" />
+                </div>
+            </div>
+            <div class="bx--modal-content--overflow-indicator"></div>
+
+            <div class="bx--modal-footer">
+                <button type="button" class="bx--btn bx--btn--secondary" data-modal-close>Cancel</button>
+                <button type="submit" class="bx--btn bx--btn--primary" data-modal-primary-focus>Upload</button>
+            </div>
+        </div>
+        <span tabindex="0"></span>
+    </div>
+</form>
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/dropify/dist/css/dropify.min.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/dropify/dist/js/dropify.min.js"></script>
+    <script>
+        $('.dropify').dropify();
+    </script>
+}

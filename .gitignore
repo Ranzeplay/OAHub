@@ -350,3 +350,5 @@ healthchecksdb
 /OAHub.Workflow/wwwroot/lib/font-awesome
 /OAHub.Storage/wwwroot/lib/carbon-components
 /OAHub.Storage/wwwroot/lib/font-awesome
+/OAHub.Storage/wwwroot/lib/dropify
+/OAHub.Storage/Storage

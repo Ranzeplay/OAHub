@@ -1,22 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using OAHub.Base.Models.StorageModels;
 
 namespace OAHub.Storage.Services
 {
     public interface IStorageService
     {
-        void AddFile(string shelfId, string caseId, IFormFile file);
+        Task AddFileAsync(string shelfId, string caseId, IFormFile file);
 
         // Return the download link
-        string DownloadFile(string shelfId, string caseId, string fileId);
+        FileStream DownloadFile(string shelfId, string caseId, string itemId);
 
-        // Return the download link
-        string DownloadCase(string shelfId, string caseId);
+        Task DeleteFileAsync(string shelfId, string caseId, string itemId);
 
-        void DeleteFile(string shelfId, string caseId, string fileId);
+        string ValidateAndCreateDirectory(string shelfId, string caseId, out string casePath);
     }
 }
