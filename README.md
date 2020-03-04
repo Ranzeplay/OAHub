@@ -13,46 +13,33 @@ A working progress tracker for small teams
 ![GitHub issues](https://img.shields.io/github/issues/SimplePlatformWeb/OAHub)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/SimplePlatformWeb/OAHub)
 
-#### Build&Deploy Status (Azure DevOps Pipeline)
+#### Build Status (Azure DevOps Pipeline)
+
 - master: [![Build status](https://dev.azure.com/SimplePlatform/OAHub/_apis/build/status/%5BRelease%20master%20branch%5D%20OAHub-ASP.NET%20Core-CI)](https://dev.azure.com/SimplePlatform/OAHub/_build/latest?definitionId=24)
 
 - develop: [![Build Status](https://dev.azure.com/SimplePlatform/OAHub/_apis/build/status/SimplePlatformWeb.OAHub?branchName=master)](https://dev.azure.com/SimplePlatform/OAHub/_build/latest?definitionId=22&branchName=develop)
   
-- Deploy: [![Deploy status](https://vsrm.dev.azure.com/SimplePlatform/_apis/public/Release/badge/7c9e9522-309e-467b-b511-8c265e80ea3b/1/10)](https://vsrm.dev.azure.com/SimplePlatform/_apis/public/Release/badge/7c9e9522-309e-467b-b511-8c265e80ea3b/1/10)
 
 
 
 ## Available Services
 
-#### Support
-
-- Passport (Authentication & Authorization system)
-
-- Storage 
-
-  (Store all files including pictures and documents uploaded, it can also connect to other services)
-
-  **(In progress)**
-
-#### Business
-
-- Organization (Control)
-
-  - ##### Extensions
-
-    - Workflow
-  
-- Inside (Chat)  (Coming soon)
+- **Passport**
+  - Integrated OAuth authorization and User authentication using ASP.NET Core Identity.
+- **Storage**
+  - An online storage service, but not recommended to store personal files.
+- **Organization**
+  - A member management service.
+  - Extension-As-Body.
+- Workflow
+  - An extension for Organization.
+  - A working progress tracker.
 
 
 
-## Services Details
+## Database
 
-### Passport
+We are using **SQLServer** currently. But you can also use other databases(SQLite, MySQL, etc.) by editing the code.
 
-##### Features
 
-- Authentication
-- OAuth Authorization
-- 
 
