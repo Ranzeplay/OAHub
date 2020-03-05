@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Base", "OAHub.Base\OA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Organization", "OAHub.Organization\OAHub.Organization.csproj", "{118A0C76-A7B4-426F-8EBE-645444CC08AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAHub.Workflow", "OAHub.Workflow\OAHub.Workflow.csproj", "{9135E4CD-4C35-47C0-91E0-816D7C43BCDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAHub.Workflow", "OAHub.Workflow\OAHub.Workflow.csproj", "{9135E4CD-4C35-47C0-91E0-816D7C43BCDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAHub.Storage", "OAHub.Storage\OAHub.Storage.csproj", "{798285F1-2237-4B17-841F-11D40B644D2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{9135E4CD-4C35-47C0-91E0-816D7C43BCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9135E4CD-4C35-47C0-91E0-816D7C43BCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9135E4CD-4C35-47C0-91E0-816D7C43BCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798285F1-2237-4B17-841F-11D40B644D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798285F1-2237-4B17-841F-11D40B644D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798285F1-2237-4B17-841F-11D40B644D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798285F1-2237-4B17-841F-11D40B644D2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{77D613DB-30F6-4BEA-AAD0-54B95753159C} = {FB2E93FA-ADAE-4539-96C5-0E6302A6C1D6}
 		{118A0C76-A7B4-426F-8EBE-645444CC08AB} = {AE5A386B-39CF-4D12-90A3-9C70F12662B5}
 		{9135E4CD-4C35-47C0-91E0-816D7C43BCDC} = {AE5A386B-39CF-4D12-90A3-9C70F12662B5}
+		{798285F1-2237-4B17-841F-11D40B644D2B} = {60FF9A84-5122-48AF-B162-63699F03341D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D11F0457-C691-4E11-BBFA-567FD81DA4A1}

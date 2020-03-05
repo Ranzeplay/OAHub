@@ -22,6 +22,26 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="Logout" asp-controller="Auth" method="post">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a class="nav-link text-dark" title="Welcome" asp-controller="Account" asp-action="My">Hello, @User.Identity.Name</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-controller="Auth" asp-action="SignOut">Sign out</a>
+                                </li>
+                            </ul>
+                        </form>
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a class="nav-link text-dark" asp-controller="Auth" asp-action="SignIn">Sign in</a></li>
+                        </ul>
+                    }
+
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>

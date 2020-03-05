@@ -140,5 +140,10 @@ namespace OAHub.Passport.Controllers
 
             return Unauthorized();
         }
+
+        public IActionResult Login(string ReturnUrl)
+        {
+            return RedirectToAction("SignIn", "Auth");
+        }
     }
 }

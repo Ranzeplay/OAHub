@@ -1,0 +1,164 @@
+﻿@model OAHub.Storage.Models.ViewModels.Files.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<div class="bx--data-table-container " data-table>
+    <div class="bx--data-table-header">
+        <h4 class="bx--data-table-header__title">Items in Case @Model.Case.Name</h4>
+        <p class="bx--data-table-header__description">Total @Model.Case.GetOwnedItems().LongCount() items</p>
+    </div>
+    <section class="bx--table-toolbar ">
+        <div class="bx--batch-actions" aria-label="Table Action Bar">
+            <div class="bx--action-list">
+                <button class="bx--btn bx--btn--primary" type="button">
+                    Delete
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--btn__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 6H7V12H6zM9 6H10V12H9z"></path><path d="M2 3v1h1v10c0 .6.4 1 1 1h8c.6 0 1-.4 1-1V4h1V3H2zM4 14V4h8v10H4zM6 1H10V2H6z"></path></svg>
+                </button>
+                <button class="bx--btn bx--btn--primary" type="button">
+                    Download
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--btn__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 7L12.3 6.3 8.5 10.1 8.5 1 7.5 1 7.5 10.1 3.7 6.3 3 7 8 12zM13 12v2H3v-2H2v2l0 0c0 .6.4 1 1 1h10c.6 0 1-.4 1-1l0 0v-2H13z"></path></svg>
+                </button>
+                <button data-event="action-bar-cancel" class="bx--btn bx--btn--primary bx--batch-summary__cancel">Cancel</button>
+            </div>
+            <div class="bx--batch-summary">
+                <p class="bx--batch-summary__para">
+                    <span data-items-selected>3</span> items selected
+                </p>
+            </div>
+        </div>
+
+        <div class="bx--toolbar-content">
+            <div class="bx--toolbar-search-container-expandable">
+                <div data-search class="bx--search bx--search--sm" role="search">
+                    <div class="bx--search-magnifier" tabindex="0">
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--toolbar-action__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M15,14.3L10.7,10c1.9-2.3,1.6-5.8-0.7-7.7S4.2,0.7,2.3,3S0.7,8.8,3,10.7c2,1.7,5,1.7,7,0l4.3,4.3L15,14.3z M2,6.5	C2,4,4,2,6.5,2S11,4,11,6.5S9,11,6.5,11S2,9,2,6.5z"></path></svg>
+                    </div>
+                    <label id="search-input-label-1" class="bx--label" for="search__input-2">Search</label>
+                    <input class="bx--search-input" type="text" id="search__input-2" role="search" placeholder="Search" aria-labelledby="search-input-label-1">
+                    <button class="bx--search-close bx--search-close--hidden" title="Clear search input" aria-label="Clear search input">
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3 4.7 12 8 8.7 11.3 12 12 11.3 8.7 8z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <button class="bx--btn bx--btn--sm bx--btn--primary" type="button" data-modal-target="#upload-modal">
+                Upload
+                <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--btn__icon" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M17 15L17 7 15 7 15 15 7 15 7 17 15 17 15 25 17 25 17 17 25 17 25 15 17 15z"></path></svg>
+            </button>
+        </div>
+    </section>
+    <table class="bx--data-table bx--data-table--sort  ">
+        <thead>
+            <tr>
+                <th class="bx--table-column-checkbox">
+                    <input data-event="select-all" id="bx--checkbox-20" class="bx--checkbox" type="checkbox" value="green" name="checkbox-20">
+                    <label for="bx--checkbox-20" class="bx--checkbox-label" aria-label="Label name"></label>
+                </th>
+                <th>
+                    <button class="bx--table-sort" data-event="sort" title="Name">
+                        <span class="bx--table-header-label">Name</span>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12.3 9.3L8.5 13.1 8.5 1 7.5 1 7.5 13.1 3.7 9.3 3 10 8 15 13 10z"></path></svg>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon-unsorted" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.8 10.3L12 12.1 12 2 11 2 11 12.1 9.2 10.3 8.5 11 11.5 14 14.5 11zM4.5 2L1.5 5 2.2 5.7 4 3.9 4 14 5 14 5 3.9 6.8 5.7 7.5 5z"></path></svg>
+                    </button>
+                </th>
+                <th>
+                    <button class="bx--table-sort" data-event="sort" title="Protocol">
+                        <span class="bx--table-header-label">Id</span>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12.3 9.3L8.5 13.1 8.5 1 7.5 1 7.5 13.1 3.7 9.3 3 10 8 15 13 10z"></path></svg>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon-unsorted" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.8 10.3L12 12.1 12 2 11 2 11 12.1 9.2 10.3 8.5 11 11.5 14 14.5 11zM4.5 2L1.5 5 2.2 5.7 4 3.9 4 14 5 14 5 3.9 6.8 5.7 7.5 5z"></path></svg>
+                    </button>
+                </th>
+                <th>
+                    <button class="bx--table-sort" data-event="sort" title="Port">
+                        <span class="bx--table-header-label">Create time</span>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12.3 9.3L8.5 13.1 8.5 1 7.5 1 7.5 13.1 3.7 9.3 3 10 8 15 13 10z"></path></svg>
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--table-sort__icon-unsorted" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.8 10.3L12 12.1 12 2 11 2 11 12.1 9.2 10.3 8.5 11 11.5 14 14.5 11zM4.5 2L1.5 5 2.2 5.7 4 3.9 4 14 5 14 5 3.9 6.8 5.7 7.5 5z"></path></svg>
+                    </button>
+                </th>
+                <th class="bx--table-column-menu">
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td class="bx--table-column-checkbox">
+                        <input data-event="select" id="bx--checkbox-14" class="bx--checkbox" type="checkbox" value="green" name="checkbox-14">
+                        <label for="bx--checkbox-14" class="bx--checkbox-label" aria-label="Label name"></label>
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.CreateTime
+                    </td>
+                    <td class="bx--table-column-menu">
+                        <div data-overflow-menu role="menu" tabindex="0" aria-label="Overflow menu description" class="bx--overflow-menu">
+                            <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--overflow-menu__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="3" r="1"></circle><circle cx="8" cy="8" r="1"></circle><circle cx="8" cy="13" r="1"></circle></svg>
+                            <ul class="bx--overflow-menu-options bx--overflow-menu--flip">
+                                <li class="bx--overflow-menu-options__option bx--table-row--menu-option">
+                                    <a class="bx--overflow-menu-options__btn" asp-action="Download" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]" asp-route-itemId="@item.Id">
+                                        <div class="bx--overflow-menu-options__option-content">
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 7L12.3 6.3 8.5 10.1 8.5 1 7.5 1 7.5 10.1 3.7 6.3 3 7 8 12zM13 12v2H3v-2H2v2l0 0c0 .6.4 1 1 1h10c.6 0 1-.4 1-1l0 0v-2H13z"></path></svg> Download
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="bx--overflow-menu-options__option bx--table-row--menu-option">
+                                    <a class="bx--overflow-menu-options__btn" asp-action="Delete" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]" asp-route-itemId="@item.Id">
+                                        <div class="bx--overflow-menu-options__option-content">
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 6H7V12H6zM9 6H10V12H9z"></path><path d="M2 3v1h1v10c0 .6.4 1 1 1h8c.6 0 1-.4 1-1V4h1V3H2zM4 14V4h8v10H4zM6 1H10V2H6z"></path></svg> Delete
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<form method="post" enctype="multipart/form-data" asp-action="Upload" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Context.Request.Query["caseId"]">
+    <div data-modal id="upload-modal" class="bx--modal " role="dialog"
+         aria-modal="true" aria-labelledby="upload-modal-label" aria-describedby="upload-modal-heading" tabindex="-1">
+        <div class="bx--modal-container">
+            <div class="bx--modal-header">
+                <p class="bx--modal-header__label bx--type-delta" id="upload-modal-label">@Model.Case.Name (@Model.Case.Id)</p>
+                <p class="bx--modal-header__heading bx--type-beta" id="upload-modal-heading">Upload a new file</p>
+                <button class="bx--modal-close" type="button" data-modal-close aria-label="close modal">
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--modal-close__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3 4.7 12 8 8.7 11.3 12 12 11.3 8.7 8z"></path></svg>
+                </button>
+            </div>
+
+            <div class="bx--modal-content">
+                <div class="bx--form-item" style="width: 100%">
+                    <input type="file" name="file" class="dropify" style="width: 100%; margin: 0 auto" />
+                </div>
+            </div>
+            <div class="bx--modal-content--overflow-indicator"></div>
+
+            <div class="bx--modal-footer">
+                <button type="button" class="bx--btn bx--btn--secondary" data-modal-close>Cancel</button>
+                <button type="submit" class="bx--btn bx--btn--primary" data-modal-primary-focus>Upload</button>
+            </div>
+        </div>
+        <span tabindex="0"></span>
+    </div>
+</form>
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/dropify/dist/css/dropify.min.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/dropify/dist/js/dropify.min.js"></script>
+    <script>
+        $('.dropify').dropify();
+    </script>
+}
