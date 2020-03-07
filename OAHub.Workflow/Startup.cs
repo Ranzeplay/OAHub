@@ -15,6 +15,7 @@ using OAHub.Base.Models;
 using OAHub.Base.Models.Extensions;
 using OAHub.Base.Services;
 using OAHub.Workflow.Data;
+using OAHub.Workflow.Services;
 
 namespace OAHub.Workflow
 {
@@ -58,6 +59,7 @@ namespace OAHub.Workflow
             services.Configure<ExtensionProps>(Configuration.GetSection("ExtensionProps"));
 
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IValidationService, ValidationService>();
 
             services.AddControllersWithViews();
         }

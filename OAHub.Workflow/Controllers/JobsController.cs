@@ -15,6 +15,7 @@ using OAHub.Workflow.Data;
 using OAHub.Workflow.Models;
 using OAHub.Workflow.Models.ViewModels;
 using OAHub.Workflow.Models.ViewModels.Jobs;
+using OAHub.Workflow.Services;
 
 namespace OAHub.Workflow.Controllers
 {
@@ -24,12 +25,14 @@ namespace OAHub.Workflow.Controllers
         private readonly WorkflowDbContext _context;
         private readonly ExtensionProps _extensionProps;
         private readonly IOrganizationService _organizationService;
+        private readonly IValidationService _validationService;
 
-        public JobsController(WorkflowDbContext context, IOptions<ExtensionProps> extensionProps, IOrganizationService organizationService)
+        public JobsController(WorkflowDbContext context, IOptions<ExtensionProps> extensionProps, IOrganizationService organizationService, IValidationService validationService)
         {
             _context = context;
             _extensionProps = extensionProps.Value;
             _organizationService = organizationService;
+            _validationService = validationService;
         }
 
         public async Task<IActionResult> List(string orgId, string projectId)
@@ -40,31 +43,33 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = GetProject(orgId, projectId);
-                    var model = new ListModel
+                    if (_validationService.IsProjectExists(projectId, out Project project))
                     {
-                        OrganizationName = await _organizationService.GetOrganizationNameAsync(orgId, _extensionProps),
-                        ProjectName = project.Name,
-                        Jobs = new List<JobOverviewModel>()
-                    };
-                    project.GetJobsId().ForEach(element =>
-                    {
-                        var job = GetJob(orgId, projectId, element);
-                        if (job != null)
+                        var model = new ListModel
                         {
-                            model.Jobs.Add(new JobOverviewModel
-                            {
-                                Id = job.Id,
-                                Name = job.Name,
-                                Description = job.Description,
-                                Manager = _context.Users.FirstOrDefault(u => u.Id == job.ManagerId),
-                                Status = job.Status,
-                                StepsCount = job.GetSteps().Count
-                            });
-                        }
-                    });
+                            OrganizationName = await _organizationService.GetOrganizationNameAsync(orgId, _extensionProps),
+                            ProjectName = project.Name,
+                            Jobs = new List<JobOverviewModel>()
+                        };
+                        project.GetJobsId().ForEach(element =>
+                        {
 
-                    return View(model);
+                            if (_validationService.IsJobExists(element, out Job job))
+                            {
+                                model.Jobs.Add(new JobOverviewModel
+                                {
+                                    Id = job.Id,
+                                    Name = job.Name,
+                                    Description = job.Description,
+                                    Manager = _context.Users.FirstOrDefault(u => u.Id == job.ManagerId),
+                                    Status = job.Status,
+                                    StepsCount = job.GetSteps().Count
+                                });
+                            }
+                        });
+
+                        return View(model);
+                    }
                 }
             }
 
@@ -133,6 +138,8 @@ namespace OAHub.Workflow.Controllers
                             return RedirectToAction(nameof(Details), new { orgId, projectId, jobId = job.Id });
                         }
                     }
+
+                    return Unauthorized();
                 }
             }
 
@@ -147,11 +154,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var model = new JobStepsViewModel
                             {
@@ -194,11 +199,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
                             var model = new EditJobModel
@@ -232,11 +235,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             // Update
                             job.Name = model.Name;
@@ -265,11 +266,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             _context.Jobs.Remove(job);
 
@@ -306,11 +305,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var model = new CreateStepModel
                             {
@@ -341,11 +338,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var steps = job.GetSteps();
 
@@ -382,11 +377,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var step = job.GetSteps().FirstOrDefault(s => s.Id == stepNameEncoded);
                             var model = new StepViewModel
@@ -426,11 +419,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var step = job.GetSteps().FirstOrDefault(s => s.Id == stepNameEncoded);
 
@@ -466,11 +457,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var steps = job.GetSteps();
                             var step = steps.FirstOrDefault(s => s.Id == stepNameEncoded);
@@ -505,11 +494,9 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (organization.GetProjectsId().Contains(projectId) && project != null)
+                    if (organization.GetProjectsId().Contains(projectId) && _validationService.IsProjectExists(projectId, out Project project))
                     {
-                        var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                        if (project.GetJobsId().Contains(jobId) && job != null)
+                        if (project.GetJobsId().Contains(jobId) && _validationService.IsJobExists(jobId, out Job job))
                         {
                             var steps = job.GetSteps();
                             var step = steps.FirstOrDefault(s => s.Id == stepNameEncoded);
@@ -544,33 +531,6 @@ namespace OAHub.Workflow.Controllers
         private WorkflowOrganization GetOrganization(string orgId)
         {
             return _context.WorkflowOrganizations.FirstOrDefault(o => o.Id == orgId);
-        }
-
-        private Project GetProject(string orgId, string projectId)
-        {
-            var targetOrg = GetOrganization(orgId);
-            if (targetOrg != null)
-            {
-                if (targetOrg.GetProjectsId().Contains(projectId))
-                {
-                    return _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                }
-            }
-            return null;
-        }
-
-        private Job GetJob(string orgId, string projectId, string jobId)
-        {
-            var project = GetProject(orgId, jobId);
-            if (project != null)
-            {
-                if (project.GetJobsId().Contains(jobId))
-                {
-                    return _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-                }
-            }
-
-            return null;
         }
     }
 }
