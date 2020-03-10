@@ -59,7 +59,7 @@ namespace OAHub.Workflow.Controllers
                 new Claim("UserId", oauthUser.Id),
                 new Claim("Email", oauthUser.Email),
                 new Claim("UserName", oauthUser.UserName),
-                new Claim("PhoneNumber", oauthUser.PhoneNumber)
+                new Claim("PhoneNumber", oauthUser.PhoneNumber ?? "Unknown")
             }, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 

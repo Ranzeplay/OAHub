@@ -12,6 +12,7 @@ using OAHub.Base.Models.WorkflowModels;
 using OAHub.Workflow.Data;
 using OAHub.Workflow.Models;
 using OAHub.Workflow.Models.ViewModels.Projects;
+using OAHub.Workflow.Services;
 
 namespace OAHub.Workflow.Controllers
 {
@@ -21,12 +22,14 @@ namespace OAHub.Workflow.Controllers
         private readonly WorkflowDbContext _context;
         private readonly ExtensionProps _extensionProps;
         private readonly IOrganizationService _organizationService;
+        private readonly IValidationService _validationService;
 
-        public ProjectsController(WorkflowDbContext context, IOptions<ExtensionProps> extensionProps, IOrganizationService organizationService)
+        public ProjectsController(WorkflowDbContext context, IOptions<ExtensionProps> extensionProps, IOrganizationService organizationService, IValidationService validationService)
         {
             _context = context;
             _extensionProps = extensionProps.Value;
             _organizationService = organizationService;
+            _validationService = validationService;
         }
 
         public async Task<IActionResult> Overview(string orgId)
@@ -195,8 +198,8 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (project != null)
+                    
+                    if (_validationService.IsProjectExists(projectId, out Project project))
                     {
                         var members = await _organizationService.GetMembersAsync(orgId, _extensionProps.ExtId, organization.Secret, _extensionProps);
                         var model = new EditModel
@@ -229,8 +232,7 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (project != null)
+                    if (_validationService.IsProjectExists(projectId, out Project project))
                     {
                         // Update project
                         project.Name = model.Name;
@@ -258,8 +260,7 @@ namespace OAHub.Workflow.Controllers
             {
                 if (await _organizationService.HasViewPermission(user.Id, orgId, _extensionProps.ExtId, organization.Secret, _extensionProps))
                 {
-                    var project = _context.Projects.FirstOrDefault(p => p.Id == projectId);
-                    if (project != null)
+                    if (_validationService.IsProjectExists(projectId, out Project project))
                     {
                         // Remove project
                         _context.Projects.Remove(project);

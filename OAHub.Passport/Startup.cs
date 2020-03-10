@@ -51,7 +51,7 @@ namespace OAHub.Passport
 
             services.AddDbContext<PassportDbContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("DbConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
             });
 
             services.AddIdentity<OAUser, IdentityRole>()
@@ -77,8 +77,6 @@ namespace OAHub.Passport
                 app.UseHsts();
             }
 
-            UpdateDatabase(app);
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             // app.UseCookiePolicy();
@@ -94,19 +92,6 @@ namespace OAHub.Passport
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-
-        private static void UpdateDatabase(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetService<PassportDbContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
-        }
+        }        
     }
 }

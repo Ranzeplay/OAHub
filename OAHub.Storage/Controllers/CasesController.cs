@@ -18,18 +18,19 @@ namespace OAHub.Storage.Controllers
     {
         private readonly StorageDbContext _context;
         private readonly IStorageService _storageService;
+        private readonly IValidationService _validationService;
 
         public CasesController(StorageDbContext context)
         {
             _context = context;
             _storageService = new StorageService(context);
+            _validationService = new ValidationService(context);
         }
 
         public IActionResult List(string shelfId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 var cases = new List<Case>();
                 shelf.GetOwnedCases().ForEach(element =>
@@ -55,8 +56,7 @@ namespace OAHub.Storage.Controllers
         public IActionResult Create(string shelfId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 return View(new CreateModel { RootShelf = new KeyValuePair<string, string>(shelf.Id, shelf.Name) });
             }
@@ -68,8 +68,7 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Create(string shelfId, CreateModel model)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 if (ModelState.IsValid)
                 {
@@ -104,32 +103,24 @@ namespace OAHub.Storage.Controllers
         public IActionResult Details(string shelfId, string caseId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out Shelf shelf, user))
             {
-                if (shelf.GetOwnedCases().Contains(caseId))
+                var model = new DetailsModel
                 {
-                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                    if (@case != null)
+                    Case = @case,
+                    OwnedItems = new List<Item>()
+                };
+
+                @case.GetOwnedItems().ForEach(element =>
+                {
+                    var item = _context.Items.FirstOrDefault(i => i.Id == element);
+                    if (item != null)
                     {
-                        var model = new DetailsModel
-                        {
-                            Case = @case,
-                            OwnedItems = new List<Item>()
-                        };
-
-                        @case.GetOwnedItems().ForEach(element =>
-                        {
-                            var item = _context.Items.FirstOrDefault(i => i.Id == element);
-                            if (item != null)
-                            {
-                                model.OwnedItems.Add(item);
-                            }
-                        });
-
-                        return View(model);
+                        model.OwnedItems.Add(item);
                     }
-                }
+                });
+
+                return View(model);
             }
 
             return Unauthorized();
@@ -139,23 +130,15 @@ namespace OAHub.Storage.Controllers
         public IActionResult Edit(string shelfId, string caseId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out _, user))
             {
-                if (shelf.GetOwnedCases().Contains(caseId))
+                var model = new EditModel
                 {
-                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                    if (@case != null)
-                    {
-                        var model = new EditModel
-                        {
-                            Name = @case.Name,
-                            Description = @case.Description
-                        };
+                    Name = @case.Name,
+                    Description = @case.Description
+                };
 
-                        return View(model);
-                    }
-                }
+                return View(model);
             }
 
             return Unauthorized();
@@ -165,23 +148,15 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Edit(string shelfId, string caseId, EditModel model)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out Shelf shelf, user))
             {
-                if (shelf.GetOwnedCases().Contains(caseId))
-                {
-                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                    if (@case != null)
-                    {
-                        @case.Name = model.Name;
-                        @case.Description = model.Description;
+                @case.Name = model.Name;
+                @case.Description = model.Description;
 
-                        _context.Cases.Update(@case);
-                        await _context.SaveChangesAsync();
+                _context.Cases.Update(@case);
+                await _context.SaveChangesAsync();
 
-                        return RedirectToAction(nameof(Details), new { shelfId, caseId });
-                    }
-                }
+                return RedirectToAction(nameof(Details), new { shelfId, caseId });
             }
 
             return Unauthorized();
@@ -190,21 +165,13 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Delete(string shelfId, string caseId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out _, user))
             {
-                if (shelf.GetOwnedCases().Contains(caseId))
-                {
-                    var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                    if (@case != null)
-                    {
-                        _context.Cases.Remove(@case);
-                        _storageService.DeleteCase(shelfId, caseId);
-                        await _context.SaveChangesAsync();
+                _context.Cases.Remove(@case);
+                _storageService.DeleteCase(shelfId, caseId);
+                await _context.SaveChangesAsync();
 
-                        return RedirectToAction("Details", "Shelves", new { shelfId });
-                    }
-                }
+                return RedirectToAction("Details", "Shelves", new { shelfId });
             }
 
             return Unauthorized();

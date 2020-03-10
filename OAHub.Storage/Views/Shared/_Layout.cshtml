@@ -51,13 +51,14 @@
                 </a>
             }
         </div>
-
-        @RenderSection("Sidebar", required: false)
     </header>
+
+    @RenderSection("Sidebar", required: false)
+
     <main id="main-content" class="bx--content">
         <div class="bx--grid">
             <div class="bx--row">
-                <section class="bx--col-max-12">
+                <section class="bx--col-max-10 bx--offset-lg-2">
                     @RenderBody()
                 </section>
             </div>

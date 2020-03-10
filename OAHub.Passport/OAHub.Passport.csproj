@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200104021401_InitDbUsersAndApps.cs" />
     <Compile Remove="Migrations\20200104021401_InitDbUsersAndApps.Designer.cs" />
+    <Compile Remove="Migrations\20200225010551_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200225010551_MigrateToSqlServer.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
