@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
 using OAHub.Storage.Models;
 using OAHub.Storage.Models.ViewModels.Files;
@@ -18,39 +19,36 @@ namespace OAHub.Storage.Controllers
     {
         private readonly StorageDbContext _context;
         private readonly IStorageService _storageService;
+        private readonly IValidationService _validationService;
 
         public FilesController(StorageDbContext context)
         {
             _context = context;
             _storageService = new StorageService(context);
+            _validationService = new ValidationService(context);
         }
 
         public IActionResult List(string shelfId, string caseId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (user.OwnedShelf == shelfId && shelf != null)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out Shelf shelf, user))
             {
-                var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                if (shelf.GetOwnedCases().Contains(caseId) && @case != null)
+                var items = new List<ItemViewModel>();
+                @case.GetOwnedItems().ForEach(element =>
                 {
-                    var items = new List<ItemViewModel>();
-                    @case.GetOwnedItems().ForEach(element =>
+                    var item = _context.Items.FirstOrDefault(i => i.Id == element);
+                    if (item != null)
                     {
-                        var item = _context.Items.FirstOrDefault(i => i.Id == element);
-                        if (item != null)
+                        items.Add(new ItemViewModel
                         {
-                            items.Add(new ItemViewModel
-                            {
-                                Id = item.Id,
-                                Name = item.Name,
-                                CreateTime = item.CreateTime
-                            });
-                        }
-                    });
+                            Id = item.Id,
+                            Name = item.Name,
+                            CreateTime = item.CreateTime
+                        });
+                    }
+                });
 
-                    return View(new ListModel { Case = @case, Items = items });
-                }
+                return View(new ListModel { Case = @case, Items = items });
             }
 
             return Unauthorized();
@@ -60,16 +58,11 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Upload(string shelfId, string caseId, IFormFile file)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (user.OwnedShelf == shelfId && shelf != null)
+            if (_validationService.IsCaseExist(shelfId, caseId, out Case @case, out Shelf shelf, user))
             {
-                var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                if (shelf.GetOwnedCases().Contains(caseId) && @case != null)
-                {
-                    await _storageService.AddFileAsync(shelfId, caseId, file);
+                await _storageService.AddFileAsync(shelfId, caseId, file);
 
-                    return RedirectToAction(nameof(List), new { shelfId, caseId });
-                }
+                return RedirectToAction(nameof(List), new { shelfId, caseId });
             }
 
             return Unauthorized();
@@ -78,19 +71,11 @@ namespace OAHub.Storage.Controllers
         public IActionResult Download(string shelfId, string caseId, string itemId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (user.OwnedShelf == shelfId && shelf != null)
+            if (_validationService.IsItemExist(shelfId, caseId, itemId, out Item item, out Case @case, out Shelf shelf, user))
             {
-                var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                if (shelf.GetOwnedCases().Contains(caseId) && @case != null)
-                {
-                    var item = _context.Items.FirstOrDefault(i => i.Id == itemId);
-                    if (@case.GetOwnedItems().Contains(itemId) && item != null)
-                    {
-                        var stream = _storageService.DownloadFile(shelfId, caseId, itemId);
-                        return File(stream, "octlet/stream", item.Name);
-                    }
-                }
+
+                var stream = _storageService.DownloadFile(shelfId, caseId, itemId);
+                return File(stream, "octlet/stream", item.Name);
             }
 
             return Unauthorized();
@@ -99,20 +84,11 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Delete(string shelfId, string caseId, string itemId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (user.OwnedShelf == shelfId && shelf != null)
+            if (_validationService.IsItemExist(shelfId, caseId, itemId, out Item item, out Case @case, out Shelf shelf, user))
             {
-                var @case = _context.Cases.FirstOrDefault(c => c.Id == caseId);
-                if (shelf.GetOwnedCases().Contains(caseId) && @case != null)
-                {
-                    var item = _context.Items.FirstOrDefault(i => i.Id == itemId);
-                    if (@case.GetOwnedItems().Contains(itemId) && item != null)
-                    {
-                        await _storageService.DeleteFileAsync(shelfId, caseId, itemId);
+                await _storageService.DeleteFileAsync(shelfId, caseId, itemId);
 
-                        return RedirectToAction(nameof(List), new { shelfId, caseId });
-                    }
-                }
+                return RedirectToAction(nameof(List), new { shelfId, caseId });
             }
 
             return Unauthorized();

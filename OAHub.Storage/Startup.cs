@@ -56,6 +56,7 @@ namespace OAHub.Storage
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
             services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IValidationService, ValidationService>();
 
             services.AddControllersWithViews();
         }

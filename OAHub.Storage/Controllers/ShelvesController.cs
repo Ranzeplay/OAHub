@@ -9,6 +9,7 @@ using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
 using OAHub.Storage.Models;
 using OAHub.Storage.Models.ViewModels.Shelves;
+using OAHub.Storage.Services;
 
 namespace OAHub.Storage.Controllers
 {
@@ -16,10 +17,12 @@ namespace OAHub.Storage.Controllers
     public class ShelvesController : Controller
     {
         private readonly StorageDbContext _context;
+        private readonly IValidationService _validationService;
 
         public ShelvesController(StorageDbContext context)
         {
             _context = context;
+            _validationService = new ValidationService(context);
         }
 
         [HttpGet]
@@ -40,8 +43,7 @@ namespace OAHub.Storage.Controllers
         public IActionResult Details(string shelfId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 var cases = new List<Case>();
                 shelf.GetOwnedCases().ForEach(element =>
@@ -63,8 +65,7 @@ namespace OAHub.Storage.Controllers
         public IActionResult Edit(string shelfId)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 var model = new EditModel
                 {
@@ -83,8 +84,7 @@ namespace OAHub.Storage.Controllers
         public async Task<IActionResult> Edit(string shelfId, EditModel model)
         {
             var user = GetUserProfile();
-            var shelf = _context.Shelves.FirstOrDefault(s => s.Id == shelfId);
-            if (shelf != null && user.OwnedShelf == shelfId)
+            if (_validationService.IsShelfExist(shelfId, out Shelf shelf, user))
             {
                 shelf.Name = model.Name;
                 shelf.Description = model.Description;
