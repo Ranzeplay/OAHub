@@ -5,12 +5,12 @@
 
 <div class="bx--grid">
     <div class="bx--row" style="margin-top: 32px">
-        <div class="bx--col-max-4">
+        <div class="bx--col-max-5">
             <div class="bx--tile">
-                <div class="bx--tile-content">
+                <div class="bx--tile-content" style="max-width: 100%">
                     <h2>@Model.Case.Name</h2>
                     <h5>Details</h5>
-                    <section class="bx--structured-list">
+                    <div class="bx--structured-list">
                         <div class="bx--structured-list-thead">
                             <div class="bx--structured-list-row bx--structured-list-row--header-row">
                                 <div class="bx--structured-list-th">Key</div>
@@ -35,12 +35,12 @@
                                 <div class="bx--structured-list-td">@Model.Case.CreateTime</div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
                 <a asp-action="Edit" asp-route-shelfId="@Context.Request.Query["shelfId"]" asp-route-caseId="@Model.Case.Id" class="bx--btn bx--btn--secondary" style="width: 100%">Edit</a>
             </div>
         </div>
-        <div class="bx--col-max-8">
+        <div class="bx--col-max-7">
             <div class="bx--data-table-container " data-table>
                 <div class="bx--data-table-header">
                     <h4 class="bx--data-table-header__title">Items in Case @Model.Case.Name</h4>
