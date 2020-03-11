@@ -19,5 +19,7 @@ namespace OAHub.Storage.Services
         void DeleteCase(string shelfId, string caseId);
 
         string ValidateOrCreateDirectory(string shelfId, string caseId, out string casePath);
+
+        double CalculateTotalSize(string absolutePath, bool recursive);
     }
 }

@@ -14,7 +14,6 @@ namespace OAHub.Storage.Services
     {
         private readonly StorageDbContext _context;
         private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "Storage");
-        private readonly string _tempPath = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
 
         public StorageService(StorageDbContext context)
         {
@@ -103,6 +102,39 @@ namespace OAHub.Storage.Services
             }
 
             return casePath;
+        }
+
+
+        /// <summary>
+        ///     Calculate files total size in a folder
+        /// </summary>
+        /// <param name="absolutePathDirectory">The folder wanted to calculate</param>
+        /// <param name="recursive">Search all sub folders</param>
+        /// <returns>Returns -1 if appeared any errors during the operation, return as byte</returns>
+        public double CalculateTotalSize(string absolutePathDirectory, bool recursive)
+        {
+            if (Directory.Exists(absolutePathDirectory))
+            {
+                var info = new DirectoryInfo(absolutePathDirectory);
+                double size = 0;
+                if (recursive)
+                {
+                    foreach (var subDirectory in info.GetDirectories())
+                    {
+                        string searchPath = Path.Combine(absolutePathDirectory, subDirectory.Name);
+
+                        // Search sub folders
+                        size += CalculateTotalSize(searchPath, true);
+                        size += CalculateTotalSize(searchPath, false);
+                    }
+                }
+
+                info.GetFiles().ToList().ForEach(file => size += file.Length);
+
+                return size;
+            }
+
+            return -1;
         }
     }
 }

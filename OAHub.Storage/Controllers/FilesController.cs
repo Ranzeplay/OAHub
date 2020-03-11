@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models;
 using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
 using OAHub.Storage.Models;
@@ -39,12 +41,17 @@ namespace OAHub.Storage.Controllers
                     var item = _context.Items.FirstOrDefault(i => i.Id == element);
                     if (item != null)
                     {
-                        items.Add(new ItemViewModel
+                        var cItem = new ItemViewModel
                         {
                             Id = item.Id,
                             Name = item.Name,
-                            CreateTime = item.CreateTime
-                        });
+                            CreateTime = item.CreateTime,
+                            Size = new FileSize()
+                        };
+
+                        cItem.Size.Byte = _storageService.CalculateTotalSize(Path.Combine(Directory.GetCurrentDirectory(), "Storage", shelfId, caseId, item.Id), false);
+
+                        items.Add(cItem);
                     }
                 });
 
