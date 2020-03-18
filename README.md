@@ -4,7 +4,7 @@ A working progress tracker for small teams
 
 ---
 
-#### GitHub status
+#### Project Status (Mainly on GitHub)
 ![License](https://img.shields.io/github/license/SimplePlatformWeb/OAHub)
 ![Language](https://img.shields.io/github/languages/top/SimplePlatformWeb/OAHub)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/SimplePlatformWeb/OAHub)
@@ -30,7 +30,7 @@ A working progress tracker for small teams
   - An online storage service, but not recommended to store personal files.
 - **Organization**
   - A member management service.
-  - Extension-As-Body.
+  - *Extension-As-Body*.
 - Workflow
   - An extension for Organization.
   - A working progress tracker.
