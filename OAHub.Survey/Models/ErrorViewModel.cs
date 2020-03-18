@@ -1,6 +1,6 @@
 using System;
 
-namespace OAHub.Answers.Models
+namespace OAHub.Survey.Models
 {
     public class ErrorViewModel
     {

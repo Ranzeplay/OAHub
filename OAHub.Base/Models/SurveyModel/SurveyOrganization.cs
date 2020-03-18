@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OAHub.Base.Models.AnswersModel
+namespace OAHub.Base.Models.SurveyModel
 {
-    public class AnswersOrganization
+    public class SurveyOrganization
     {
         public string Id { get; set; }
 

@@ -10,19 +10,19 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OAHub.Answers.Models;
 using OAHub.Base.Models;
 using OAHub.Base.Utils;
-using OAHub.Answers.Data;
+using OAHub.Survey.Data;
+using OAHub.Survey.Models;
 
-namespace OAHub.Workflow.Controllers
+namespace OAHub.Survey.Controllers
 {
     public class AuthController : Controller
     {
         private readonly AuthenticationInfomation _authenticationInfomation;
-        private readonly AnswersDbContext _context;
+        private readonly SurveyDbContext _context;
 
-        public AuthController(IOptions<AuthenticationInfomation> authenticationInfomation, AnswersDbContext context)
+        public AuthController(IOptions<AuthenticationInfomation> authenticationInfomation, SurveyDbContext context)
         {
             _authenticationInfomation = authenticationInfomation.Value;
             _context = context;
@@ -73,7 +73,7 @@ namespace OAHub.Workflow.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Id == oauthUser.Id);
             if(user == null)
             {
-                _context.Users.Add(new AnswersUser { 
+                _context.Users.Add(new SurveyUser { 
                     Id = oauthUser.Id,
                     UserName = oauthUser.UserName,
                     Email = oauthUser.Email,

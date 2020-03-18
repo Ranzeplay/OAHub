@@ -7,23 +7,23 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OAHub.Answers.Data;
-using OAHub.Answers.Models;
-using OAHub.Answers.Models.ViewModels.Connect;
 using OAHub.Base.Interfaces;
-using OAHub.Base.Models.AnswersModel;
 using OAHub.Base.Models.Extensions;
+using OAHub.Base.Models.SurveyModel;
+using OAHub.Survey.Data;
+using OAHub.Survey.Models;
+using OAHub.Survey.Models.ViewModels.Connect;
 
-namespace OAHub.Workflow.Controllers
+namespace OAHub.Survey.Controllers
 {
     public class ConnectController : Controller
     {
-        private readonly AnswersDbContext _context;
+        private readonly SurveyDbContext _context;
 
         private readonly ExtensionProps _extensionProps;
         private readonly IOrganizationService _organizationService;
 
-        public ConnectController(IOptions<ExtensionProps> extensionProps, AnswersDbContext context, IOrganizationService organizationService)
+        public ConnectController(IOptions<ExtensionProps> extensionProps, SurveyDbContext context, IOrganizationService organizationService)
         {
             _context = context;
             _extensionProps = extensionProps.Value;
@@ -54,7 +54,7 @@ namespace OAHub.Workflow.Controllers
         {
             if (model.ConfirmAction)
             {
-                _context.AnswersOrganizations.Add(new AnswersOrganization
+                _context.SurveyOrganizations.Add(new SurveyOrganization
                 {
                     Id = model.OrganizationId,
                     Secret = model.OrganizationSecret
@@ -71,7 +71,7 @@ namespace OAHub.Workflow.Controllers
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Go(string orgId)
         {
-            var targetOrg = _context.AnswersOrganizations.FirstOrDefault(o => o.Id == orgId);
+            var targetOrg = _context.SurveyOrganizations.FirstOrDefault(o => o.Id == orgId);
             if (targetOrg != null)
             {
                 var user = GetUserProfile();
@@ -86,7 +86,7 @@ namespace OAHub.Workflow.Controllers
             return BadRequest("Organization not found");
         }
 
-        private AnswersUser GetUserProfile()
+        private SurveyUser GetUserProfile()
         {
             try
             {

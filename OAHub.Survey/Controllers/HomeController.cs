@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OAHub.Answers.Models;
+using OAHub.Survey.Models;
 
-namespace OAHub.Answers.Controllers
+namespace OAHub.Survey.Controllers
 {
     public class HomeController : Controller
     {

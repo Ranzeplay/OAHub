@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "provider": "jsdelivr",
+      "library": "uikit@3.3.6",
+      "destination": "wwwroot/lib/uikit/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.12.1",
+      "destination": "wwwroot/lib/font-awesome/"
+    }
+  ]
+}

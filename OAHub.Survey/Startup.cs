@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OAHub.Base.Models;
 using OAHub.Base.Models.Extensions;
+using OAHub.Survey.Data;
 
-namespace OAHub.Answers
+namespace OAHub.Survey
 {
     public class Startup
     {
@@ -45,6 +47,8 @@ namespace OAHub.Answers
                 options.AccessDeniedPath = "/Error/AccessDenied";
                 options.ExpireTimeSpan = TimeSpan.FromDays(2);
             });
+
+            services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
             services.Configure<ExtensionProps>(Configuration.GetSection("ExtensionProps"));

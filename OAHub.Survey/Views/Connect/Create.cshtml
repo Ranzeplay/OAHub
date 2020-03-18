@@ -1,0 +1,34 @@
+﻿@model OAHub.Survey.Models.ViewModels.Connect.SetupModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="uk-grid">
+    <div style="width: 60%; margin: 0 auto; margin-top: 15%">
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+            <form method="post">
+                <fieldset class="uk-fieldset">
+                    <legend class="uk-legend">Summary</legend>
+                    <div class="uk-margin">
+                        <dl class="uk-description-list uk-description-list-divider">
+                            <dt>Organizarion Name</dt>
+                            <dd>@Model.OrganizationName</dd>
+
+                            <dt>Extension Name</dt>
+                            <dd>OAHub.Survey</dd>
+                        </dl>
+                    </div>
+                    <div class="uk-margin">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" asp-for="ConfirmAction">
+                            Confirm this action
+                        </label>
+                    </div>
+                    <div class="uk-margin">
+                        <button class="uk-button uk-button-secondary uk-width-1-1">Done</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

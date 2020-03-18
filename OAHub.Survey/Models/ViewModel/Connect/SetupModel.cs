@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OAHub.Answers.Models.ViewModels.Connect
+namespace OAHub.Survey.Models.ViewModels.Connect
 {
     public class SetupModel
     {
