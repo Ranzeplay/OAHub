@@ -6,5 +6,6 @@ namespace OAHub.Base.Models.SurveyModel.Forms.Questions
 {
     public class BlankFill : Body
     {
+        public bool IsLongText { get; set; }
     }
 }
