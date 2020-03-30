@@ -48,6 +48,8 @@ namespace OAHub.Survey
                 options.ExpireTimeSpan = TimeSpan.FromDays(2);
             });
 
+            services.AddRazorPages();
+
             services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
@@ -80,6 +82,9 @@ namespace OAHub.Survey
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "MyArea",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

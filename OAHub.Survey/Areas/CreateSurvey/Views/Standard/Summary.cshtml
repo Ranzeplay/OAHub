@@ -1,0 +1,67 @@
+﻿@model OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard.SummaryModel
+@{
+    ViewData["Title"] = "Summary";
+    Layout = "~/Views/Inside/_Layout.cshtml";
+}
+
+<div uk-grid>
+    <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+        <h1 class="uk-card-title">Summary</h1>
+
+        <div class="uk-margin">
+            <div class="uk-card uk-card-hover uk-card-large uk-card-body">
+                <form method="post" action="/CreateSurvey/Standard/UpdateBasicSettings?formId=@Model.Id">
+                    <fieldset class="uk-fieldset">
+                        <legend class="uk-legend">Basic settings</legend>
+
+                        <div class="uk-margin">
+                            <input class="uk-input" type="text" name="Title" placeholder="Survey Name" value="@Model.Title" />
+                            <small class="uk-text-small">The name of your survey</small>
+                        </div>
+                        <div class="uk-margin">
+                            <label><input class="uk-checkbox" type="checkbox" name="AllowAnonymous" checked="true"> Allow Anonymous Submit</label>
+                            @("\n")
+                            <small class="uk-text-small">If enable this, "AllowMultipleSubmits" will be always true</small>
+                        </div>
+                        <div class="uk-margin">
+                            <label><input class="uk-checkbox" type="checkbox" name="AllowMultipleSubmits" checked="true"> Allow Multiple Submits</label>
+                            @("\n")
+                            <small class="uk-text-small">You must disable "AllowAnonymous" section</small>
+                        </div>
+                        <div class="uk-margin">
+                            <button class="uk-button uk-button-secondary uk-width-1-1">Update settings</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+                <h3 class="uk-card-title">All Questions</h3>
+                <ul uk-accordion="multiple: true">
+                    @foreach (var question in Model.Content)
+                    {
+                        switch (question.Key)
+                        {
+                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
+                                break;
+                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
+                                break;
+                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
+                                break;
+                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
+                                break;
+                            default:
+                                break;
+                        }
+                        <li>
+                            <a class="uk-accordion-title" href="#">Developng...</a>
+                            <div class="uk-accordion-content">Content</div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

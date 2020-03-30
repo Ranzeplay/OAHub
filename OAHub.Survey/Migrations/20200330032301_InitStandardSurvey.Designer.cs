@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OAHub.Survey.Data;
 
 namespace OAHub.Survey.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200330032301_InitStandardSurvey")]
+    partial class InitStandardSurvey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

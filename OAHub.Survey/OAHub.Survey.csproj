@@ -25,4 +25,8 @@
     <ProjectReference Include="..\OAHub.Base\OAHub.Base.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\CreateSurvey\Data\" />
+  </ItemGroup>
+
 </Project>
