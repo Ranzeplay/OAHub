@@ -11,6 +11,11 @@
       "provider": "cdnjs",
       "library": "font-awesome@5.12.1",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "iCheck@1.0.2",
+      "destination": "wwwroot/lib/iCheck/"
     }
   ]
 }
