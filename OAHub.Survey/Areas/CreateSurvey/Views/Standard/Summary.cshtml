@@ -46,7 +46,7 @@
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
                                 var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(question.Value.ToString());
                                 <li>
-                                    <a class="uk-accordion-title" href="#">@(singleSelect.Description.Substring(0, singleSelect.Description.Length > 20 ? singleSelect.Description.Length : 20))</a>
+                                    <a class="uk-accordion-title" href="#">@(singleSelect.Description.Substring(0, singleSelect.Description.Length > 20 ? 20 : singleSelect.Description.Length))</a>
                                     <div class="uk-accordion-content">
                                         <div class="uk-margin">
                                             <dl class="uk-description-list">
@@ -69,6 +69,29 @@
                                 </li>
                                 break;
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
+                                var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(multiSelect.Description.Substring(0, multiSelect.Description.Length > 20 ? 20 : multiSelect.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@multiSelect.Description</dd>
+                                                <dt>Selections</dt>
+                                                <dd>
+                                                    <ul>
+                                                        @foreach (var item in multiSelect.Selections)
+                                                        {
+                                                            <li>@item</li>
+                                                        }
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
                                 break;
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
                                 break;

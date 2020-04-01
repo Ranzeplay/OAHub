@@ -121,6 +121,43 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult MultiSelect(string formId)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                return View();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MultiSelect(string formId, string description, string encodedData)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                var model = new MultiSelect
+                {
+                    QuestionId = Guid.NewGuid().ToString("N"),
+                    Description = description,
+                    Selections = JsonSerializer.Deserialize<List<string>>(Base64Tool.Decode(encodedData))
+                };
+
+                var content = form.GetContent();
+                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect, model));
+                form.SetContent(content);
+                _context.StandardForms.Update(form);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Summary), new { formId = form.Id });
+            }
+
+            return NotFound();
+        }
+
         private SurveyUser GetUserProfile()
         {
             try
