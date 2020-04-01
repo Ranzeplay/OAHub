@@ -19,6 +19,6 @@ namespace OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard
 
         public DateTime Deadline { get; set; }
 
-        public Dictionary<Base.Models.SurveyModel.Forms.Questions.Type, object> Content { get; set; }
+        public List<KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>> Content { get; set; }
     }
 }

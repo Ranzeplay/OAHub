@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OAHub.Base.Models.SurveyModel.Forms;
+using OAHub.Base.Models.SurveyModel.Forms.Questions;
+using OAHub.Base.Utils;
 using OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard;
 using OAHub.Survey.Data;
 using OAHub.Survey.Models;
@@ -66,13 +69,49 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateBasicSettings(string formId, UpdateSettingsModel model)
         {
-            var user = GetUserProfile();
             var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
             if (form != null)
             {
                 form.Title = model.Title;
                 form.AllowAnonymous = model.AllowAnonymous;
                 form.AllowMultipleSubmits = model.AllowMultipleSubmits;
+                _context.StandardForms.Update(form);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Summary), new { formId = form.Id });
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult Select(string formId)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                return View();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Select(string formId, string description, string encodedData)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                var model = new Select
+                {
+                    QuestionId = Guid.NewGuid().ToString("N"),
+                    Description = description,
+                    Selections = JsonSerializer.Deserialize<List<string>>(Base64Tool.Decode(encodedData))
+                };
+
+                var content = form.GetContent();
+                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect, model));
+                form.SetContent(content);
                 _context.StandardForms.Update(form);
                 await _context.SaveChangesAsync();
 

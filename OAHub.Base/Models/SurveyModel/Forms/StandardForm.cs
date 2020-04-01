@@ -20,26 +20,32 @@ namespace OAHub.Base.Models.SurveyModel.Forms
         // Will be save as <Type, Details>
         public string Content { get; set; }
 
-        public Dictionary<Questions.Type, object> GetContent()
+        public List<KeyValuePair<Questions.Type, object>> GetContent()
         {
             try
             {
-                return JsonSerializer.Deserialize<Dictionary<Questions.Type, object>>(Content);
+                return JsonSerializer.Deserialize<List<KeyValuePair<Questions.Type, object>>>(Content);
             }
             catch
             {
-                return new Dictionary<Questions.Type, object>();
+                return new List<KeyValuePair<Questions.Type, object>>();
             }
         }
 
-        public void SetContent(Dictionary<Questions.Type, object> kvp)
+        public void SetContent(List<KeyValuePair<Questions.Type, object>> kvp)
         {
-            Content = JsonSerializer.Serialize(kvp);
+            List<KeyValuePair<Questions.Type, object>> kvpFinal = new List<KeyValuePair<Questions.Type, object>>();
+            foreach (var item in kvp)
+            {
+                kvpFinal.Add(new KeyValuePair<Questions.Type, object>(item.Key, item.Value));
+            }
+
+            Content = JsonSerializer.Serialize(kvpFinal);
         }
 
         public DateTime CreateTime { get; set; }
 
-        public DateTime Deadline { get; set; } 
+        public DateTime Deadline { get; set; }
 
         public string Submitters { get; set; }
     }

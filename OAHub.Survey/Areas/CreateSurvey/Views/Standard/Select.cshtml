@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Select";
+    Layout = "~/Views/Inside/_Layout.cshtml";
+}
+
+<div uk-grid>
+    <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+        <h1 class="uk-card-title">Create <strong>Select</strong> Question</h1>
+
+        <form method="post" id="selectionsForm" asp-action="Select" asp-route-formId="@Context.Request.Query["formId"]">
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">Description</legend>
+
+                <div class="uk-margin">
+                    <textarea name="description" class="uk-textarea"></textarea>
+                </div>
+            </fieldset>
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">Selections</legend>
+
+                <div class="uk-margin">
+                    <button type="button" class="uk-button uk-button-default uk-width-1-1" onclick="addSelection()">Add a new selection</button>
+                </div>
+
+                <div class="uk-margin" id="selections">
+
+                </div>
+
+                <div class="uk-margin">
+                    <input name="encodedData" style="display: none" />
+                    <button type="button" class="uk-button uk-button-primary uk-width-1-1" onclick="packData()">Submit (Create)</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/areas/createSurv/standard/select.js"></script>
+}
