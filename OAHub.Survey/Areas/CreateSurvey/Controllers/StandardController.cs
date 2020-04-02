@@ -158,6 +158,42 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult Check(string formId)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                return View();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Check(string formId, string description)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                var model = new Check
+                {
+                    QuestionId = Guid.NewGuid().ToString("N"),
+                    Description = description,
+                };
+
+                var content = form.GetContent();
+                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.Check, model));
+                form.SetContent(content);
+                _context.StandardForms.Update(form);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Summary), new { formId = form.Id });
+            }
+
+            return NotFound();
+        }
+
         private SurveyUser GetUserProfile()
         {
             try

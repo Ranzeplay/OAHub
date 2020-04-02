@@ -96,6 +96,20 @@
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
                                 break;
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
+                                var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(check.Description.Substring(0, check.Description.Length > 20 ? 20 : check.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@check.Description</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
                                 break;
                             default:
                                 break;
