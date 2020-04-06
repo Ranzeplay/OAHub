@@ -194,6 +194,58 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult Blankfill(string formId)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                return View();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Blankfill(string formId, string description, string encodedData)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                var model = new BlankFill
+                {
+                    QuestionId = Guid.NewGuid().ToString("N"),
+                    Description = description,
+                    IsLongText = bool.Parse(Base64Tool.Decode(encodedData))
+                };
+
+                var content = form.GetContent();
+                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.BlankFill, model));
+                form.SetContent(content);
+                _context.StandardForms.Update(form);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Summary), new { formId = form.Id });
+            }
+
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Publish(string formId)
+        {
+            var form = _context.StandardForms.FirstOrDefault(f => f.Id == formId);
+            if (form != null)
+            {
+                form.IsPublished = true;
+                _context.StandardForms.Update(form);
+                await _context.SaveChangesAsync();
+
+                return Redirect("/Dashboard/Summary");
+            }
+
+            return NotFound();
+        }
+
         private SurveyUser GetUserProfile()
         {
             try

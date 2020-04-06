@@ -94,6 +94,22 @@
                                 </li>
                                 break;
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
+                                var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.BlankFill>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(blankFill.Description.Substring(0, blankFill.Description.Length > 20 ? 20 : blankFill.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@blankFill.Description</dd>
+                                                <dt>Input form format</dt>
+                                                <dd>@(blankFill.IsLongText ? "Text area" : "One line input")</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
                                 break;
                             case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
                                 var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(question.Value.ToString());
@@ -124,7 +140,7 @@
                                 <a asp-action="Select" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Select</a>
                                 <a asp-action="MultiSelect" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">MultiSelect</a>
                                 <a asp-action="Check" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Check</a>
-                                <a asp-action="Blankfill" class="uk-button uk-button-primary uk-width-1-4">Blankfill</a>
+                                <a asp-action="Blankfill" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Blankfill</a>
                             </div>
                         </div>
                     </li>
@@ -132,7 +148,7 @@
             </div>
         </div>
         <div class="uk-margin">
-            <a asp-action="Complete" class="uk-button uk-button-danger uk-width-1-1">Complete &amp; Publish</a>
+            <a asp-action="Publish" asp-route-formId="@Model.Id" class="uk-button uk-button-danger uk-width-1-1">Complete &amp; Publish</a>
         </div>
     </div>
 </div>

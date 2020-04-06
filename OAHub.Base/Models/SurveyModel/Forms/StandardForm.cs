@@ -48,5 +48,7 @@ namespace OAHub.Base.Models.SurveyModel.Forms
         public DateTime Deadline { get; set; }
 
         public string Submitters { get; set; }
+
+        public bool IsPublished { get; set; }
     }
 }
