@@ -22,7 +22,7 @@
                         <form asp-action="Logout" asp-controller="Auth" method="post">
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a class="nav-link text-dark" title="Welcome" asp-controller="Account" asp-action="My">Hello, @User.FindFirst("UserName").Value</a>
+                                    <a class="nav-link text-dark" title="Welcome" asp-controller="Dashboard" asp-action="Summary">Hello, @User.FindFirst("UserName").Value</a>
                                 </li>
                                 <li>
                                     <a class="nav-link text-dark" asp-controller="Auth" asp-action="SignOut">Sign out</a>
