@@ -1,0 +1,46 @@
+﻿@model List<OAHub.Base.Models.SurveyModel.Forms.StandardForm>
+@{
+    ViewData["Title"] = "AllSurveys";
+    Layout = "~/Views/Inside/_Layout.cshtml";
+}
+
+<div uk-grid>
+    <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+        <h1 class="uk-card-title">All Survey</h1>
+
+        <div class="uk-margin">
+            <table class="uk-table uk-table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Create Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@(item.IsPublished ? "Published" : "Editable")</td>
+                            <td>@item.CreateTime</td>
+                            <td>
+                                @if (item.IsPublished)
+                                {
+                                    <a class="uk-button uk-button-primary uk-button-small" disabled>View</a>
+                                }
+                                else
+                                {
+                                    <a asp-area="CreateSurvey" asp-controller="Standard" asp-action="Summary" asp-route-formId="@item.Id" class="uk-button uk-button-primary uk-button-small">Edit</a>
+                                }
+
+                                <a class="uk-button uk-button-danger uk-button-small" disabled>Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
