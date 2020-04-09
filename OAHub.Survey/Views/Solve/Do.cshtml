@@ -1,0 +1,111 @@
+﻿@model OAHub.Survey.Models.ViewModels.Solve.DoModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Inside/_Layout.cshtml";
+}
+
+<div uk-grid>
+    <form asp-action="Submit" asp-route-formId="@Model.FormId" class="uk-card uk-card-large uk-card-default uk-width-1-1">
+        <div class="uk-card-header">
+            <h1 class="uk-card-title">@Model.Title</h1>
+            <p class="uk-text-meta uk-margin-remove-top">Id: @Model.FormId</p>
+        </div>
+
+        <div class="uk-card-body">
+            @foreach (var item in Model.Questions)
+            {
+                switch (item.Key)
+                {
+                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
+                        var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(item.Value.ToString());
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@singleSelect.QuestionId">
+                            <h5 class="uk-card-title">@singleSelect.Description</h5>
+                            <div id="@singleSelect.QuestionId-selections">
+                                @foreach (var selection in singleSelect.Selections)
+                                {
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="ss-@singleSelect.QuestionId" icheck="icheck" />
+                                            &nbsp; @selection
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
+                        var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.MultiSelect>(item.Value.ToString());
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@multiSelect.QuestionId">
+                            <h5 class="uk-card-title">@multiSelect.Description</h5>
+                            <div id="@multiSelect.QuestionId-selections">
+                                @foreach (var selection in multiSelect.Selections)
+                                {
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" name="ss-@multiSelect.QuestionId" icheck="icheck" />
+                                            &nbsp; @selection
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
+                        var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.BlankFill>(item.Value.ToString());
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@blankFill.QuestionId">
+                            <h5 class="uk-card-title">@blankFill.Description</h5>
+                            <div id="@blankFill.QuestionId-input">
+                                @if (blankFill.IsLongText)
+                                {
+                                    <textarea class="uk-textarea" name="bf-@blankFill.QuestionId" rows="5" placeholder="Type your answer"></textarea>
+                                }
+                                else
+                                {
+                                    <input class="uk-input" type="text" name="bf-@blankFill.QuestionId" placeholder="Type your answer">
+                                }
+                            </div>
+                        </div>
+                        break;
+                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
+                        var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(item.Value.ToString());
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@check.QuestionId">
+                            <h5 class="uk-card-title">@check.Description</h5>
+                            <div id="@check.QuestionId-box">
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="ch-@check.QuestionId" icheck="icheck" />
+                                        &nbsp; Answer here
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </div>
+
+        <div class="uk-card-footer">
+            <button type="button" onclick="packData()" class="uk-button uk-button-primary uk-width-1-1">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/iCheck/skins/all.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/iCheck/icheck.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('[icheck]').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+                increaseArea: '20%'
+            });
+        });
+    </script>
+}
