@@ -5,54 +5,59 @@
 }
 
 <div uk-grid>
-    <form asp-action="Submit" asp-route-formId="@Model.FormId" class="uk-card uk-card-large uk-card-default uk-width-1-1">
+    <form asp-action="Submit" asp-route-formId="@Model.FormId" method="post" class="uk-card uk-card-large uk-card-default uk-width-1-1" id="answerForm">
         <div class="uk-card-header">
             <h1 class="uk-card-title">@Model.Title</h1>
             <p class="uk-text-meta uk-margin-remove-top">Id: @Model.FormId</p>
         </div>
 
-        <div class="uk-card-body">
-            @foreach (var item in Model.Questions)
+        <div class="uk-card-body" id="question-body">
+            @for (int i = 0; i < Model.Questions.Count; i++)
             {
+                var item = Model.Questions[i];
                 switch (item.Key)
                 {
                     case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
                         var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(item.Value.ToString());
-                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@singleSelect.QuestionId">
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@singleSelect.QuestionId" question-type="singleSelect">
                             <h5 class="uk-card-title">@singleSelect.Description</h5>
-                            <div id="@singleSelect.QuestionId-selections">
+                            <div id="@singleSelect.QuestionId-ss-selections">
+                                @{int t = 0;}
                                 @foreach (var selection in singleSelect.Selections)
                                 {
                                     <div>
                                         <label>
-                                            <input type="radio" name="ss-@singleSelect.QuestionId" icheck="icheck" />
+                                            <input type="radio" name="ss-@singleSelect.QuestionId" icheck="icheck" index="@t" />
                                             &nbsp; @selection
                                         </label>
                                     </div>
+                                    t++;
                                 }
                             </div>
                         </div>
                         break;
                     case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
                         var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.MultiSelect>(item.Value.ToString());
-                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@multiSelect.QuestionId">
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@multiSelect.QuestionId" question-type="multiSelect">
                             <h5 class="uk-card-title">@multiSelect.Description</h5>
-                            <div id="@multiSelect.QuestionId-selections">
+                            <div id="@multiSelect.QuestionId-ms-selections">
+                                @{t = 0;}
                                 @foreach (var selection in multiSelect.Selections)
                                 {
                                     <div>
                                         <label>
-                                            <input type="checkbox" name="ss-@multiSelect.QuestionId" icheck="icheck" />
+                                            <input type="checkbox" name="ms-@multiSelect.QuestionId" icheck="icheck" index="@t" />
                                             &nbsp; @selection
                                         </label>
                                     </div>
+                                    t++;
                                 }
                             </div>
                         </div>
                         break;
                     case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
                         var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.BlankFill>(item.Value.ToString());
-                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@blankFill.QuestionId">
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@blankFill.QuestionId" question-type="blankFill">
                             <h5 class="uk-card-title">@blankFill.Description</h5>
                             <div id="@blankFill.QuestionId-input">
                                 @if (blankFill.IsLongText)
@@ -68,7 +73,7 @@
                         break;
                     case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
                         var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(item.Value.ToString());
-                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@check.QuestionId">
+                        <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@check.QuestionId" question-type="check">
                             <h5 class="uk-card-title">@check.Description</h5>
                             <div id="@check.QuestionId-box">
                                 <div>
@@ -87,6 +92,7 @@
         </div>
 
         <div class="uk-card-footer">
+            <input style="display: none" name="encodedData" />
             <button type="button" onclick="packData()" class="uk-button uk-button-primary uk-width-1-1">Submit</button>
         </div>
     </form>
@@ -108,4 +114,6 @@
             });
         });
     </script>
+
+    <script src="~/js/solve/do.js"></script>
 }

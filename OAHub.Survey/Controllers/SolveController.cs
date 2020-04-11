@@ -38,9 +38,10 @@ namespace OAHub.Survey.Controllers
             return NotFound();
         }
 
-        public IActionResult Submit(string formId)
+        [HttpPost]
+        public string Submit(string formId, string encodedData)
         {
-            return BadRequest();
+            return encodedData;
         }
     }
 }
