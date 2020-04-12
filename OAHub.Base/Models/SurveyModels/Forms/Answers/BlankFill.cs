@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OAHub.Base.Models.SurveyModel.Forms.Questions
+namespace OAHub.Base.Models.SurveyModels.Forms.Answers
 {
     public class BlankFill : Body
     {
-        public bool IsLongText { get; set; }
+        public string Text { get; set; }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OAHub.Base.Models.SurveyModel.Forms;
-using OAHub.Base.Models.SurveyModel.Forms.Questions;
+using OAHub.Base.Models.SurveyModels.Forms.Questions;
+using OAHub.Base.Models.SurveyModels.Forms.Standard;
 using OAHub.Base.Utils;
 using OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard;
 using OAHub.Survey.Data;
@@ -110,7 +110,7 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
                 };
 
                 var content = form.GetContent();
-                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect, model));
+                content.Add(new KeyValuePair<QuestionType, object>(QuestionType.SingleSelect, model));
                 form.SetContent(content);
                 _context.StandardForms.Update(form);
                 await _context.SaveChangesAsync();
@@ -147,7 +147,7 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
                 };
 
                 var content = form.GetContent();
-                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect, model));
+                content.Add(new KeyValuePair<QuestionType, object>(QuestionType.MultiSelect, model));
                 form.SetContent(content);
                 _context.StandardForms.Update(form);
                 await _context.SaveChangesAsync();
@@ -183,7 +183,7 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
                 };
 
                 var content = form.GetContent();
-                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.Check, model));
+                content.Add(new KeyValuePair<QuestionType, object>(QuestionType.Check, model));
                 form.SetContent(content);
                 _context.StandardForms.Update(form);
                 await _context.SaveChangesAsync();
@@ -220,7 +220,7 @@ namespace OAHub.Survey.Areas.CreateSurvey.Controllers
                 };
 
                 var content = form.GetContent();
-                content.Add(new KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>(Base.Models.SurveyModel.Forms.Questions.Type.BlankFill, model));
+                content.Add(new KeyValuePair<QuestionType, object>(QuestionType.BlankFill, model));
                 form.SetContent(content);
                 _context.StandardForms.Update(form);
                 await _context.SaveChangesAsync();

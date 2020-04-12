@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OAHub.Base.Models.SurveyModel
+namespace OAHub.Base.Models.SurveyModels
 {
     public class SurveyOrganization
     {

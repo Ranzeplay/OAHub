@@ -17,8 +17,8 @@
                 var item = Model.Questions[i];
                 switch (item.Key)
                 {
-                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
-                        var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(item.Value.ToString());
+                    case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.SingleSelect:
+                        var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Select>(item.Value.ToString());
                         <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@singleSelect.QuestionId" question-type="singleSelect">
                             <h5 class="uk-card-title">@singleSelect.Description</h5>
                             <div id="@singleSelect.QuestionId-ss-selections">
@@ -36,8 +36,8 @@
                             </div>
                         </div>
                         break;
-                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
-                        var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.MultiSelect>(item.Value.ToString());
+                    case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.MultiSelect:
+                        var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.MultiSelect>(item.Value.ToString());
                         <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@multiSelect.QuestionId" question-type="multiSelect">
                             <h5 class="uk-card-title">@multiSelect.Description</h5>
                             <div id="@multiSelect.QuestionId-ms-selections">
@@ -55,8 +55,8 @@
                             </div>
                         </div>
                         break;
-                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
-                        var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.BlankFill>(item.Value.ToString());
+                    case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.BlankFill:
+                        var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.BlankFill>(item.Value.ToString());
                         <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@blankFill.QuestionId" question-type="blankFill">
                             <h5 class="uk-card-title">@blankFill.Description</h5>
                             <div id="@blankFill.QuestionId-input">
@@ -71,8 +71,8 @@
                             </div>
                         </div>
                         break;
-                    case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
-                        var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(item.Value.ToString());
+                    case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.Check:
+                        var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Check>(item.Value.ToString());
                         <div class="uk-margin uk-card uk-card-large uk-card-default uk-card-hover uk-card-body uk-width-1-1" id="container-@check.QuestionId" question-type="check">
                             <h5 class="uk-card-title">@check.Description</h5>
                             <div id="@check.QuestionId-box">

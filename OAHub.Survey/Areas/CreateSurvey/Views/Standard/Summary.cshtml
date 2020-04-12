@@ -43,8 +43,8 @@
                     {
                         @switch (question.Key)
                         {
-                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.SingleSelect:
-                                var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(question.Value.ToString());
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.SingleSelect:
+                                var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Select>(question.Value.ToString());
                                 <li>
                                     <a class="uk-accordion-title" href="#">@(singleSelect.Description.Substring(0, singleSelect.Description.Length > 20 ? 20 : singleSelect.Description.Length))</a>
                                     <div class="uk-accordion-content">
@@ -68,8 +68,8 @@
                                     </div>
                                 </li>
                                 break;
-                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.MultiSelect:
-                                var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Select>(question.Value.ToString());
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.MultiSelect:
+                                var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Select>(question.Value.ToString());
                                 <li>
                                     <a class="uk-accordion-title" href="#">@(multiSelect.Description.Substring(0, multiSelect.Description.Length > 20 ? 20 : multiSelect.Description.Length))</a>
                                     <div class="uk-accordion-content">
@@ -93,8 +93,8 @@
                                     </div>
                                 </li>
                                 break;
-                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.BlankFill:
-                                var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.BlankFill>(question.Value.ToString());
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.BlankFill:
+                                var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.BlankFill>(question.Value.ToString());
                                 <li>
                                     <a class="uk-accordion-title" href="#">@(blankFill.Description.Substring(0, blankFill.Description.Length > 20 ? 20 : blankFill.Description.Length))</a>
                                     <div class="uk-accordion-content">
@@ -111,8 +111,8 @@
                                     </div>
                                 </li>
                                 break;
-                            case OAHub.Base.Models.SurveyModel.Forms.Questions.Type.Check:
-                                var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModel.Forms.Questions.Check>(question.Value.ToString());
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.Check:
+                                var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Check>(question.Value.ToString());
                                 <li>
                                     <a class="uk-accordion-title" href="#">@(check.Description.Substring(0, check.Description.Length > 20 ? 20 : check.Description.Length))</a>
                                     <div class="uk-accordion-content">

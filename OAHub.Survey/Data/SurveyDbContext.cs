@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OAHub.Base.Models.SurveyModel;
-using OAHub.Base.Models.SurveyModel.Forms;
+using OAHub.Base.Models.SurveyModels;
+using OAHub.Base.Models.SurveyModels.Forms.Standard;
 using OAHub.Survey.Models;
 using System;
 using System.Collections.Generic;
@@ -20,5 +20,7 @@ namespace OAHub.Survey.Data
         public DbSet<SurveyOrganization> SurveyOrganizations { get; set; } 
 
         public DbSet<StandardForm> StandardForms { get; set; }
+
+        public DbSet<StandardAnswer> StandardAnswers { get; set; }
     }
 }

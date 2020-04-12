@@ -1,9 +1,10 @@
-﻿using System;
+﻿using OAHub.Base.Models.SurveyModels.Forms.Questions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace OAHub.Base.Models.SurveyModel.Forms
+namespace OAHub.Base.Models.SurveyModels.Forms.Standard
 {
     public class StandardForm
     {
@@ -20,24 +21,24 @@ namespace OAHub.Base.Models.SurveyModel.Forms
         // Will be save as <Type, Details>
         public string Content { get; set; }
 
-        public List<KeyValuePair<Questions.Type, object>> GetContent()
+        public List<KeyValuePair<QuestionType, object>> GetContent()
         {
             try
             {
-                return JsonSerializer.Deserialize<List<KeyValuePair<Questions.Type, object>>>(Content);
+                return JsonSerializer.Deserialize<List<KeyValuePair<QuestionType, object>>>(Content);
             }
             catch
             {
-                return new List<KeyValuePair<Questions.Type, object>>();
+                return new List<KeyValuePair<QuestionType, object>>();
             }
         }
 
-        public void SetContent(List<KeyValuePair<Questions.Type, object>> kvp)
+        public void SetContent(List<KeyValuePair<QuestionType, object>> kvp)
         {
-            List<KeyValuePair<Questions.Type, object>> kvpFinal = new List<KeyValuePair<Questions.Type, object>>();
+            List<KeyValuePair<QuestionType, object>> kvpFinal = new List<KeyValuePair<QuestionType, object>>();
             foreach (var item in kvp)
             {
-                kvpFinal.Add(new KeyValuePair<Questions.Type, object>(item.Key, item.Value));
+                kvpFinal.Add(new KeyValuePair<QuestionType, object>(item.Key, item.Value));
             }
 
             Content = JsonSerializer.Serialize(kvpFinal);
@@ -46,8 +47,6 @@ namespace OAHub.Base.Models.SurveyModel.Forms
         public DateTime CreateTime { get; set; }
 
         public DateTime Deadline { get; set; }
-
-        public string Submitters { get; set; }
 
         public bool IsPublished { get; set; }
     }

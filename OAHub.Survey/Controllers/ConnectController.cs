@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OAHub.Base.Interfaces;
 using OAHub.Base.Models.Extensions;
-using OAHub.Base.Models.SurveyModel;
+using OAHub.Base.Models.SurveyModels;
 using OAHub.Survey.Data;
 using OAHub.Survey.Models;
 using OAHub.Survey.Models.ViewModels.Connect;

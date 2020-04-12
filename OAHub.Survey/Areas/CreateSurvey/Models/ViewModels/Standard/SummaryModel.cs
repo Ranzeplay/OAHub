@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAHub.Base.Models.SurveyModels.Forms.Questions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,6 @@ namespace OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard
 
         public DateTime Deadline { get; set; }
 
-        public List<KeyValuePair<Base.Models.SurveyModel.Forms.Questions.Type, object>> Content { get; set; }
+        public List<KeyValuePair<QuestionType, object>> Content { get; set; }
     }
 }
