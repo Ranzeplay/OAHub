@@ -122,10 +122,17 @@ namespace OAHub.Survey.Controllers
                     answer.SetContent(answerContent);
                     _context.StandardAnswers.Add(answer);
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Complete));
                 }
             }
 
             return NotFound();
+        }
+
+        public IActionResult Complete()
+        {
+            return View();
         }
 
         private SurveyUser GetUserProfile()
