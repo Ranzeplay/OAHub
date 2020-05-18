@@ -1,0 +1,155 @@
+﻿@model OAHub.Survey.Areas.CreateSurvey.Models.ViewModels.Standard.SummaryModel
+@{
+    ViewData["Title"] = "Summary";
+    Layout = "~/Views/Inside/_Layout.cshtml";
+}
+
+<div uk-grid>
+    <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+        <h1 class="uk-card-title">Summary</h1>
+
+        <div class="uk-margin">
+            <div class="uk-card uk-card-hover uk-card-large uk-card-body">
+                <form method="post" asp-action="UpdateBasicSettings" asp-route-formId="@Model.Id">
+                    <fieldset class="uk-fieldset">
+                        <legend class="uk-legend">Basic settings</legend>
+
+                        <div class="uk-margin">
+                            <input class="uk-input" type="text" name="Title" placeholder="Survey Name" value="@Model.Title" />
+                            <small class="uk-text-small">The name of your survey</small>
+                        </div>
+                        <div class="uk-margin">
+                            <label><input class="uk-checkbox" type="checkbox" asp-for="AllowAnonymous"> Allow Anonymous Submit</label>
+                            @("\n")
+                            <small class="uk-text-small">If enable this, "AllowMultipleSubmits" will be always true</small>
+                        </div>
+                        <div class="uk-margin">
+                            <label><input class="uk-checkbox" type="checkbox" asp-for="AllowMultipleSubmits"> Allow Multiple Submits</label>
+                            @("\n")
+                            <small class="uk-text-small">You must disable "AllowAnonymous" section</small>
+                        </div>
+                        <div class="uk-margin">
+                            <button class="uk-button uk-button-secondary uk-width-1-1">Update settings</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-card uk-card-large uk-card-default uk-card-body uk-width-1-1">
+                <h3 class="uk-card-title">All Questions</h3>
+                <ul uk-accordion="multiple: true">
+                    @foreach (var question in Model.Content)
+                    {
+                        @switch (question.Key)
+                        {
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.SingleSelect:
+                                var singleSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Select>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(singleSelect.Description.Substring(0, singleSelect.Description.Length > 20 ? 20 : singleSelect.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@singleSelect.Description</dd>
+                                                <dt>Selections</dt>
+                                                <dd>
+                                                    <ul>
+                                                        @foreach (var item in singleSelect.Selections)
+                                                        {
+                                                            <li>@item</li>
+                                                        }
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
+                                break;
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.MultiSelect:
+                                var multiSelect = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Select>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(multiSelect.Description.Substring(0, multiSelect.Description.Length > 20 ? 20 : multiSelect.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@multiSelect.Description</dd>
+                                                <dt>Selections</dt>
+                                                <dd>
+                                                    <ul>
+                                                        @foreach (var item in multiSelect.Selections)
+                                                        {
+                                                            <li>@item</li>
+                                                        }
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
+                                break;
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.BlankFill:
+                                var blankFill = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.BlankFill>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(blankFill.Description.Substring(0, blankFill.Description.Length > 20 ? 20 : blankFill.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@blankFill.Description</dd>
+                                                <dt>Input form format</dt>
+                                                <dd>@(blankFill.IsLongText ? "Text area" : "One line input")</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
+                                break;
+                            case OAHub.Base.Models.SurveyModels.Forms.Questions.QuestionType.Check:
+                                var check = System.Text.Json.JsonSerializer.Deserialize<OAHub.Base.Models.SurveyModels.Forms.Questions.Check>(question.Value.ToString());
+                                <li>
+                                    <a class="uk-accordion-title" href="#">@(check.Description.Substring(0, check.Description.Length > 20 ? 20 : check.Description.Length))</a>
+                                    <div class="uk-accordion-content">
+                                        <div class="uk-margin">
+                                            <dl class="uk-description-list">
+                                                <dt>Question Type</dt>
+                                                <dd>@question.Key</dd>
+                                                <dt>Full description</dt>
+                                                <dd>@check.Description</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </li>
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+
+                    <li class="uk-open">
+                        <a class="uk-accordion-title" href="#">New Question</a>
+                        <div class="uk-accordion-content uk-width-1-1">
+                            <div class="uk-button-group uk-width-1-1">
+                                <a asp-action="Select" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Select</a>
+                                <a asp-action="MultiSelect" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">MultiSelect</a>
+                                <a asp-action="Check" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Check</a>
+                                <a asp-action="Blankfill" asp-route-formId="@Model.Id" class="uk-button uk-button-primary uk-width-1-4">Blankfill</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <a asp-action="Publish" asp-route-formId="@Model.Id" class="uk-button uk-button-danger uk-width-1-1">Complete &amp; Publish</a>
+        </div>
+    </div>
+</div>
+

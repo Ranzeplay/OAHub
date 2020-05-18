@@ -32,7 +32,7 @@ namespace OAHub.Organization.Controllers
         {
             string signInUrl = $"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerAuthorizePath}?" +
                 $"AppId={_authenticationInfomation.AppId}&" +
-                $"State={Guid.NewGuid().ToString("N")}&" +
+                $"State={Guid.NewGuid():N}&" +
                 $"RedirectUri={_authenticationInfomation.AppServerAddress}{_authenticationInfomation.AppServerCallbackPath}";
 
             return Redirect(signInUrl);
@@ -40,6 +40,7 @@ namespace OAHub.Organization.Controllers
 
         public async Task<IActionResult> FinishAuth(string code)
         {
+            #region GetAccessTokenAndUserProfile
             var request = new HttpClient();
             var token = await request.GetAsync($"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerGetTokenPath}?" +
                 $"appid={_authenticationInfomation.AppId}&appsecret={_authenticationInfomation.AppSecret}&code={code}");
@@ -48,7 +49,9 @@ namespace OAHub.Organization.Controllers
 
             var profile = await request.GetAsync($"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerRequestProfilePath}?" +
                 $"token={tokenContent}&appId={_authenticationInfomation.AppId}");
+            #endregion
 
+            #region SignIn
             var content = await profile.Content.ReadAsStringAsync();
 
             var oauthUser = JsonSerializer.Deserialize<OAuthUser>(Base64Tool.Decode(content));
@@ -69,6 +72,9 @@ namespace OAHub.Organization.Controllers
             };
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProps);
+            #endregion
+
+            #region CreateUserIfNotExists
             var user = _context.Users.FirstOrDefault(u => u.Id == oauthUser.Id);
             if(user == null)
             {
@@ -81,6 +87,7 @@ namespace OAHub.Organization.Controllers
                 });
                 await _context.SaveChangesAsync();
             }
+            #endregion
 
             return RedirectToAction("Index", "Home");
         }

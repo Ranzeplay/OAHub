@@ -32,7 +32,7 @@ namespace OAHub.Storage.Controllers
         {
             string signInUrl = $"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerAuthorizePath}?" +
                 $"AppId={_authenticationInfomation.AppId}&" +
-                $"State={Guid.NewGuid().ToString("N")}&" +
+                $"State={Guid.NewGuid():N}&" +
                 $"RedirectUri={_authenticationInfomation.AppServerAddress}{_authenticationInfomation.AppServerCallbackPath}";
 
             return Redirect(signInUrl);
@@ -40,6 +40,7 @@ namespace OAHub.Storage.Controllers
 
         public async Task<IActionResult> FinishAuth(string code)
         {
+            #region GetAccessTokenAndUserProfile
             var request = new HttpClient();
             var token = await request.GetAsync($"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerGetTokenPath}?" +
                 $"appid={_authenticationInfomation.AppId}&appsecret={_authenticationInfomation.AppSecret}&code={code}");
@@ -48,7 +49,9 @@ namespace OAHub.Storage.Controllers
 
             var profile = await request.GetAsync($"{_authenticationInfomation.PassportServerAddress}{_authenticationInfomation.PassportServerRequestProfilePath}?" +
                 $"token={tokenContent}&appId={_authenticationInfomation.AppId}");
+            #endregion
 
+            #region SignIn
             var content = await profile.Content.ReadAsStringAsync();
 
             var oauthUser = JsonSerializer.Deserialize<OAuthUser>(Base64Tool.Decode(content));
@@ -68,11 +71,15 @@ namespace OAHub.Storage.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
             };
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProps);   
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProps);
+            #endregion
+
+            #region CreateUserIfNotExists
             var user = _context.Users.FirstOrDefault(u => u.Id == oauthUser.Id);
-            if(user == null)
+            if (user == null)
             {
-                _context.Users.Add(new Models.StorageUser { 
+                _context.Users.Add(new Models.StorageUser
+                {
                     Id = oauthUser.Id,
                     UserName = oauthUser.UserName,
                     Email = oauthUser.Email,
@@ -80,6 +87,7 @@ namespace OAHub.Storage.Controllers
                 });
                 await _context.SaveChangesAsync();
             }
+            #endregion
 
             return RedirectToAction("Index", "Home");
         }

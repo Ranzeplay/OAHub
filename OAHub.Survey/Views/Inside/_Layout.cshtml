@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OAHub.Survey</title>
+    <link rel="stylesheet" href="~/lib/uikit/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @RenderSection("Head", required: false)
+</head>
+<body>
+    <header>
+        <nav class="uk-navbar-container uk-margin" uk-navbar>
+            <div class="uk-navbar-left">
+                <a class="uk-navbar-item uk-logo" href="#">[Survey] Dashboard</a>
+
+                <ul class="uk-navbar-nav">
+                    <li>
+                        <a href="#">Create</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a asp-area="CreateSurvey" asp-controller="Standard" asp-action="Summary">Standard Survey</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">View</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a asp-area="" asp-controller="Dashboard" asp-action="AllSurveys">All Surveys</a></li>
+                                <li><a asp-area="" asp-controller="Dashboard" asp-action="Analytics">Analytics</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="uk-container">
+        <main role="main" style="margin-top: 20px">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - OAHub.Survey - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/uikit/dist/js/uikit.min.js"></script>
+    <script src="~/lib/uikit/dist/js/uikit-icons.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
