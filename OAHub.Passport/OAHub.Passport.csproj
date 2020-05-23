@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20200225010551_MigrateToSqlServer.Designer.cs" />
     <Compile Remove="Migrations\20200412114531_InitAnswerModels.cs" />
     <Compile Remove="Migrations\20200412114531_InitAnswerModels.Designer.cs" />
+    <Compile Remove="Migrations\20200518003128_InitStorageToken.cs" />
+    <Compile Remove="Migrations\20200518003128_InitStorageToken.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
