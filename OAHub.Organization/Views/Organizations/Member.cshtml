@@ -1,6 +1,6 @@
 ﻿@model OAHub.Organization.Models.ViewModels.Orgainzations.MemberModel
 @{
-    ViewData["Title"] = "Member";
+    ViewData["Title"] = Model.User.UserName + "\'s profile";
 }
 
 <form method="post" asp-action="Member" asp-route-id="@Context.Request.Path.Value.Split('/')[1]" asp-route-memberId="@Model.Member.UserId">
