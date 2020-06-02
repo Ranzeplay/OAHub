@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/OAHub.Passport",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:54287",
       "sslPort": 44313

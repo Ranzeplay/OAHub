@@ -69,7 +69,7 @@ namespace OAHub.Passport.Controllers
                         }
                         else
                         {
-                            return Ok("You have successfully signed in");
+                            return RedirectToAction("Index", "Home");
                         }
                     }
                     else

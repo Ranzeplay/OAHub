@@ -16,6 +16,8 @@ namespace OAHub.Storage.Data
 
         public DbSet<StorageUser> Users { get; set; }
 
+        public DbSet<StorageApiToken> ApiTokens { get; set; }
+
         // Storage Models
         public DbSet<Shelf> Shelves { get; set; }
 

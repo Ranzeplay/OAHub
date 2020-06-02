@@ -1,0 +1,27 @@
+﻿@model OAHub.Storage.Models.ViewModels.Token.AddModel
+@{
+    ViewData["Title"] = "Add";
+}
+
+<form method="post">
+    <div class="bx--form-item" style="margin-bottom: 32px">
+        <h2>New API Token</h2>
+    </div>
+    <div class="bx--form-item" style="margin-bottom: 24px">
+        <h6 for="text-input-3" class="bx--label">Token title</h6>
+        <div class="bx--form__helper-text">
+            Just a title, describe where to use
+        </div>
+        <input id="text-input-3" type="text" asp-for="Title" class="bx--text-input" placeholder="Enter here...">
+    </div>
+    <div class="bx--form-item" style="margin-bottom: 24px">
+        <h6 for="text-area-2" class="bx--label">Token description</h6>
+        <div class="bx--form__helper-text">
+            One line description
+        </div>
+        <textarea id="text-area-2" class="bx--text-area" rows="4" placeholder="Enter here..." asp-for="Description"></textarea>
+    </div>
+    <div class="bx--form-item" style="margin-top: 32px">
+        <button type="submit" class="bx--btn bx--btn--primary">Submit</button>
+    </div>
+</form>
