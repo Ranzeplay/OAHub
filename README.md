@@ -1,6 +1,6 @@
 # OAHub
 
-A working progress tracker for small teams
+An office automation web service for small teams
 
 ---
 
