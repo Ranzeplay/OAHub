@@ -15,14 +15,8 @@ namespace OAHub.Status.Models.ViewModels.Manage
             if (track.Posts != null)
             {
                 LastStatusAnnounced = track.Posts.Where(p => p.ShowOnHeader)
-                                .OrderByDescending(p => p.PublishTime.Year)                     // Make the last post on top by publish time
-                                .ThenByDescending(p => p.PublishTime.Month)
-                                .ThenByDescending(p => p.PublishTime.Day)
-                                .ThenByDescending(p => p.PublishTime.Hour)
-                                .ThenByDescending(p => p.PublishTime.Minute)
-                                .ThenByDescending(p => p.PublishTime.Second)
-                                .ThenByDescending(p => p.PublishTime.Millisecond)
-                                .First().Title;                                                 // Get the title on header
+                                .OrderByDescending(p => p.PublishTime)                     // Make the last post on top by ordering publish time
+                                .First().Title;                                            // Get the title on header
             }
             else
             {

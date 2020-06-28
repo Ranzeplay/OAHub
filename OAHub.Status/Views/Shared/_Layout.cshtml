@@ -42,11 +42,20 @@
         </nav>
     </header>
 
-    <main class="container" style="margin-top: 32px">
-        <div class="content">
+    @if (ViewData["UseContainer"] == null)
+    {
+        <main class="container" style="margin-top: 32px">
+            <div class="content">
+                @RenderBody()
+            </div>
+        </main>
+    }
+    else
+    {
+        <main class="content">
             @RenderBody()
-        </div>
-    </main>
+        </main>
+    }
 
     <footer class="footer">
         <div class="content text-left">

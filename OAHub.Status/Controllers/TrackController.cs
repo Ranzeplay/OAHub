@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OAHub.Base.Models.StatusModels;
 using OAHub.Status.Data;
 using OAHub.Status.Models;
 using OAHub.Status.Models.ViewModels.Track;
@@ -57,7 +58,31 @@ namespace OAHub.Status.Controllers
 
         public IActionResult Summary(string trackId)
         {
-            return View();
+            var user = GetUserProfile();
+            var track = _context.Tracks.FirstOrDefault(t => t.Id == Guid.Parse(trackId));
+            if (track != null)
+            {
+                if (track.Posts == null)
+                {
+                    track.Posts = new List<Post>();
+                }
+
+                return View(new SummaryModel
+                {
+                    Name = track.Name,
+                    RecentPosts = track.Posts.ToList().Count > 0 ? track.Posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
+                    HeadingPost = track.Posts.ToList().Count > 0 ? track.Posts.OrderByDescending(t => t.PublishTime).First() : new Post
+                    {
+                        Title = "Unknown",
+                        Description = "Not set",
+                        PublishTime = DateTime.Now,
+                        Color = PostColor.Dark,
+                        ShowOnHeader = true,
+                    },
+                });
+            }
+
+            return NotFound();
         }
 
         private StatusUser GetUserProfile()

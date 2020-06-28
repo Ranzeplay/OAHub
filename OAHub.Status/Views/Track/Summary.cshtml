@@ -1,7 +1,18 @@
 ﻿@model OAHub.Status.Models.ViewModels.Track.SummaryModel
 @{
     ViewData["Title"] = "Summary";
+    ViewData["UseContainer"] = true;
 }
 
-<h1>Summary</h1>
-
+<section class="hero @OAHub.Base.Models.StatusModels.BulmaConfig.BulmaColorTag[Model.HeadingPost.Color] is-bold is-large">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.HeadingPost.Title
+            </h1>
+            <h2 class="subtitle">
+                @Model.HeadingPost.Description # @Model.HeadingPost.PublishTime
+            </h2>
+        </div>
+    </div>
+</section>
