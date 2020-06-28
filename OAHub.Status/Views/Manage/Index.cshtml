@@ -1,0 +1,48 @@
+﻿@model OAHub.Status.Models.ViewModels.Manage.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="columns">
+    <div class="column is-two-thirds">
+        <table class="table is-primary">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var track in Model.Tracks)
+                {
+                    <tr>
+                        <td>@track.Name</td>
+                        <td>@track.LastStatusAnnounced</td>
+                        <td>
+                            <div class="buttons all-small">
+                                <a asp-area="" asp-controller="Track" asp-action="Summary" asp-route-trackId="@track.Id" role="button" class="button is-primary is-small">View</a>
+                                <a asp-area="" asp-controller="Track" asp-action="Delete" asp-route-trackId="@track.Id" role="button" class="button is-danger is-small">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="column">
+        <article class="panel is-link">
+            <p class="panel-heading">
+                Quick Access
+            </p>
+            <div class="panel-block">
+                <a asp-area="" asp-controller="Track" asp-action="Create" role="button" class="button is-link is-outlined is-fullwidth">
+                    <span class="panel-icon">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </span>
+                    New Track
+                </a>
+            </div>
+        </article>
+    </div>
+</div>

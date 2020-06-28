@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OAHub.Status.Data;
 
 namespace OAHub.Status.Migrations
 {
     [DbContext(typeof(StatusDbContext))]
-    partial class StatusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200628001734_InitTracks")]
+    partial class InitTracks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

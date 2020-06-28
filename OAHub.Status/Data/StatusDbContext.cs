@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAHub.Base.Models.Status;
 using OAHub.Status.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,16 @@ namespace OAHub.Status.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StatusUser>().HasMany(u => u.Tracks).WithOne(t => t.CreatedBy);
+            modelBuilder.Entity<Track>().HasMany(t => t.Posts).WithOne(p => p.ForTrack);
+        }
+
         public DbSet<StatusUser> Users { get; set; }
+
+        public DbSet<Track> Tracks { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
     }
 }

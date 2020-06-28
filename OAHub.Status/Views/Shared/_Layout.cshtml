@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OAHub.Status</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="~/lib/bulma/css/bulma.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -25,7 +26,7 @@
                 <div class="navbar-end">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="navbar-item">
+                        <a asp-controller="Manage" asp-action="Index" class="navbar-item">
                             Hello, @User.FindFirst("UserName").Value
                         </a>
                         <a asp-controller="Auth" asp-action="SignOut" class="navbar-item">

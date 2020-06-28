@@ -1,4 +1,4 @@
-﻿using OAHub.Base.Models;
+﻿using OAHub.Base.Models.Status;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace OAHub.Status.Models
 {
-    public class StatusUser : OAuthUser
+    public class Post : PostBase
     {
-        public IEnumerable<Track> Tracks { get; set; }
+        public Track ForTrack { get; set; }
     }
 }
