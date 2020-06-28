@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OAHub.Base.Models.Status
+namespace OAHub.Base.Models.StatusModels
 {
     public enum PostColor
     {

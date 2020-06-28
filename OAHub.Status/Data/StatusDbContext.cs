@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OAHub.Base.Models.Status;
 using OAHub.Status.Models;
 using System;
 using System.Collections.Generic;

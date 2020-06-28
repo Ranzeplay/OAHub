@@ -1,4 +1,4 @@
-﻿using OAHub.Base.Models.Status;
+﻿using OAHub.Base.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
