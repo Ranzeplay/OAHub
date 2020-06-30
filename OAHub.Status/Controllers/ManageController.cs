@@ -33,9 +33,43 @@ namespace OAHub.Status.Controllers
             });
         }
 
-        public IActionResult AddStatus(string trackId)
+        [HttpGet]
+        public IActionResult NewPost(string trackId)
         {
-            return View();
+            var user = GetUserProfile();
+            var track = _context.Tracks.Where(t => t.CreatedBy == user).FirstOrDefault(t => t.Id == Guid.Parse(trackId));
+            if (track != null)
+            {
+                return View();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewPost(NewPostModel model, string trackId)
+        {
+            var user = GetUserProfile();
+            var track = _context.Tracks.Where(t => t.CreatedBy == user).FirstOrDefault(t => t.Id == Guid.Parse(trackId));
+            if (track != null)
+            {
+                var post = new Post
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Color = model.PostColor,
+                    ShowOnHeader = model.ShowOnHeader,
+                    PublishTime = DateTime.UtcNow,
+                    ForTrack = track
+                };
+
+                _context.Posts.Add(post);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(ManageController.Index), "Manage");
+            }
+
+            return NotFound();
         }
 
         private StatusUser GetUserProfile()

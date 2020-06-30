@@ -62,23 +62,13 @@ namespace OAHub.Status.Controllers
             var track = _context.Tracks.FirstOrDefault(t => t.Id == Guid.Parse(trackId));
             if (track != null)
             {
-                if (track.Posts == null)
-                {
-                    track.Posts = new List<Post>();
-                }
+                var posts = _context.Posts.Where(p => p.ForTrack == track);
 
                 return View(new SummaryModel
                 {
                     Name = track.Name,
-                    RecentPosts = track.Posts.ToList().Count > 0 ? track.Posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
-                    HeadingPost = track.Posts.ToList().Count > 0 ? track.Posts.OrderByDescending(t => t.PublishTime).First() : new Post
-                    {
-                        Title = "Unknown",
-                        Description = "Not set",
-                        PublishTime = DateTime.Now,
-                        Color = PostColor.Dark,
-                        ShowOnHeader = true,
-                    },
+                    RecentPosts = posts.ToList().Count > 0 ? posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
+                    HeadingPost = posts.ToList().Count > 0 ? posts.OrderByDescending(t => t.PublishTime).First() : Post.BlankPost()
                 });
             }
 

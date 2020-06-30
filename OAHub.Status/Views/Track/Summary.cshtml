@@ -1,7 +1,7 @@
 ﻿@model OAHub.Status.Models.ViewModels.Track.SummaryModel
 @{
     ViewData["Title"] = "Summary";
-    ViewData["UseContainer"] = true;
+    ViewData["UseContainer"] = false;
 }
 
 <section class="hero @OAHub.Base.Models.StatusModels.BulmaConfig.BulmaColorTag[Model.HeadingPost.Color] is-bold is-large">
@@ -15,4 +15,20 @@
             </h2>
         </div>
     </div>
+</section>
+
+<section class="container" style="margin-top: 64px">
+    <h1 class="title">Recent Posts</h1>
+    @foreach (var post in Model.RecentPosts)
+    {
+        <article class="message @OAHub.Base.Models.StatusModels.BulmaConfig.BulmaColorTag[Model.HeadingPost.Color]">
+            <div class="message-header">
+                <p>@post.Title @@ @post.PublishTime </p>
+            </div>
+
+            <div class="message-body">
+                @post.Description
+            </div>
+        </article>
+    }
 </section>

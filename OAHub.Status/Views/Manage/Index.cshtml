@@ -22,6 +22,7 @@
                         <td>
                             <div class="buttons all-small">
                                 <a asp-area="" asp-controller="Track" asp-action="Summary" asp-route-trackId="@track.Id" role="button" class="button is-primary is-small">View</a>
+                                <a asp-area="" asp-controller="Manage" asp-action="NewPost" asp-route-trackId="@track.Id" role="button" class="button is-info is-small">New Post</a>
                                 <a asp-area="" asp-controller="Track" asp-action="Delete" asp-route-trackId="@track.Id" role="button" class="button is-danger is-small">Delete</a>
                             </div>
                         </td>

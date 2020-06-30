@@ -22,8 +22,6 @@ namespace OAHub.Status.Models.ViewModels.Manage
             {
                 LastStatusAnnounced = "None";
             }
-
-
         }
 
         public string Id { get; set; }
