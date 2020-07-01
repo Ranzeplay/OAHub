@@ -23,7 +23,7 @@ namespace OAHub.Status.Migrations
                         column: x => x.CreatedById,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +47,7 @@ namespace OAHub.Status.Migrations
                         column: x => x.ForTrackId,
                         principalTable: "Tracks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

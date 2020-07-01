@@ -93,14 +93,16 @@ namespace OAHub.Status.Migrations
                 {
                     b.HasOne("OAHub.Status.Models.Track", "ForTrack")
                         .WithMany("Posts")
-                        .HasForeignKey("ForTrackId");
+                        .HasForeignKey("ForTrackId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("OAHub.Status.Models.Track", b =>
                 {
                     b.HasOne("OAHub.Status.Models.StatusUser", "CreatedBy")
                         .WithMany("Tracks")
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

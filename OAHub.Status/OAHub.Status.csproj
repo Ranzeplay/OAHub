@@ -9,6 +9,12 @@
     <Compile Remove="Migrations\20200617142049_InitTracks.Designer.cs" />
     <Compile Remove="Migrations\20200628000221_InitTracks.cs" />
     <Compile Remove="Migrations\20200628000221_InitTracks.Designer.cs" />
+    <Compile Remove="Migrations\20200628001734_InitTracks.cs" />
+    <Compile Remove="Migrations\20200628001734_InitTracks.Designer.cs" />
+    <Compile Remove="Migrations\20200701134833_InitTracksa.cs" />
+    <Compile Remove="Migrations\20200701134833_InitTracksa.Designer.cs" />
+    <Compile Remove="Migrations\20200701134856_InitTracks.cs" />
+    <Compile Remove="Migrations\20200701134856_InitTracks.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

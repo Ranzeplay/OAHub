@@ -15,8 +15,8 @@ namespace OAHub.Status.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StatusUser>().HasMany(u => u.Tracks).WithOne(t => t.CreatedBy);
-            modelBuilder.Entity<Track>().HasMany(t => t.Posts).WithOne(p => p.ForTrack);
+            modelBuilder.Entity<StatusUser>().HasMany(u => u.Tracks).WithOne(t => t.CreatedBy).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Track>().HasMany(t => t.Posts).WithOne(p => p.ForTrack).OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<StatusUser> Users { get; set; }

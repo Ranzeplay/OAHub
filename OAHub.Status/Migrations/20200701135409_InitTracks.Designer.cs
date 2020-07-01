@@ -10,7 +10,7 @@ using OAHub.Status.Data;
 namespace OAHub.Status.Migrations
 {
     [DbContext(typeof(StatusDbContext))]
-    [Migration("20200628001734_InitTracks")]
+    [Migration("20200701135409_InitTracks")]
     partial class InitTracks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,14 +95,16 @@ namespace OAHub.Status.Migrations
                 {
                     b.HasOne("OAHub.Status.Models.Track", "ForTrack")
                         .WithMany("Posts")
-                        .HasForeignKey("ForTrackId");
+                        .HasForeignKey("ForTrackId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("OAHub.Status.Models.Track", b =>
                 {
                     b.HasOne("OAHub.Status.Models.StatusUser", "CreatedBy")
                         .WithMany("Tracks")
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
