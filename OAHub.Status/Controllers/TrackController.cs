@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OAHub.Base.Models.StatusModels;
 using OAHub.Status.Data;
 using OAHub.Status.Models;
 using OAHub.Status.Models.ViewModels.Track;
@@ -39,7 +38,7 @@ namespace OAHub.Status.Controllers
                 {
                     Name = model.Name,
                     Posts = new List<Post>(),
-                    CreatedBy = user,
+                    CreatedBy = user, 
                 };
 
                 _context.Tracks.Add(track);
@@ -51,8 +50,28 @@ namespace OAHub.Status.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Delete(string trackId)
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string trackId, DeleteModel model)
+        {
+            var user = GetUserProfile();
+            var track = _context.Tracks.Where(t => t.CreatedBy == user).FirstOrDefault(t => t.Id == Guid.Parse(trackId));
+            if(track != null)
+            {
+                if (model.Confirm && model.TrackName.ToLower() == "yes")
+                {
+                    _context.Tracks.Remove(track);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(ManageController.Index), "Manage");
+                }
+            }
+
             return View();
         }
 

@@ -47,7 +47,7 @@ namespace OAHub.Status.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewPost(NewPostModel model, string trackId)
+        public async Task<IActionResult> NewPost(string trackId, NewPostModel model)
         {
             var user = GetUserProfile();
             var track = _context.Tracks.Where(t => t.CreatedBy == user).FirstOrDefault(t => t.Id == Guid.Parse(trackId));

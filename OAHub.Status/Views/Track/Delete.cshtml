@@ -1,7 +1,34 @@
-﻿
+﻿@model OAHub.Status.Models.ViewModels.Track.DeleteModel
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<form method="post" class="form" asp-route-trackId="@Context.Request.Query["trackId"]">
+    <h1 class="title">Delete Track "<a asp-controller="Track" asp-action="Summary" asp-route-trackId="@Context.Request.Query["trackId"]">@Context.Request.Query["trackId"]</a>"</h1>
+
+    <div class="field">
+        <label class="label">Security check: enter "yes"</label>
+        <div class="control">
+            <input asp-for="TrackName" class="input" type="text" placeholder="Enter 'yes' to confirm action">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="control">
+            <label class="checkbox">
+                <input asp-for="Confirm" type="checkbox">
+                Confirm action
+            </label>
+        </div>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-danger">Delete permanently</button>
+        </div>
+        <div class="control">
+            <a class="button is-link is-light">Cancel</a>
+        </div>
+    </div>
+</form>
 
