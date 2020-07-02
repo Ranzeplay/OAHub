@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "bulma@0.9.0",
+      "destination": "wwwroot/lib/bulma/"
+    }
+  ]
+}
