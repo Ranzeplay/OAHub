@@ -25,9 +25,9 @@
         <div class="control">
             <div class="select">
                 <select asp-for="PostColor">
-                    @foreach (var color in Enum.GetValues(typeof(OAHub.Base.Models.StatusModels.PostColor)))
+                    @foreach (var color in Enum.GetNames(typeof(OAHub.Base.Models.StatusModels.PostColor)))
                     {
-                        <option value="color">@color</option>
+                        <option value="@color">@color</option>
                     }
                 </select>
             </div>

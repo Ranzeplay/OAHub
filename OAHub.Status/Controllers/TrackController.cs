@@ -87,7 +87,7 @@ namespace OAHub.Status.Controllers
                 {
                     Name = track.Name,
                     RecentPosts = posts.ToList().Count > 0 ? posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
-                    HeadingPost = posts.ToList().Count > 0 ? posts.OrderByDescending(t => t.PublishTime).First() : Post.BlankPost()
+                    HeadingPost = posts.ToList().Count > 0 ? posts.Where(p => p.ShowOnHeader).OrderByDescending(t => t.PublishTime).First() : Post.BlankPost()
                 });
             }
 
