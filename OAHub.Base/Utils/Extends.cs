@@ -25,7 +25,7 @@ namespace OAHub.Base.Utils
                 var configuration = services.GetService<IConfiguration>();
                 var env = services.GetService<IWebHostEnvironment>();
 
-                var connectionString = configuration.GetConnectionString("SqlServerConnection");
+                var connectionString = configuration.GetConnectionString("MySQLConnection");
                 try
                 {
                     logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");

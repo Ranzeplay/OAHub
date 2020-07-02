@@ -30,7 +30,8 @@ namespace OAHub.Organization
         {
             services.AddDbContext<OrganizationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                // options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
             });
 
             services.Configure<CookiePolicyOptions>(options =>

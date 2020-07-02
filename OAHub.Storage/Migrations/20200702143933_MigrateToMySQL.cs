@@ -3,14 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OAHub.Storage.Migrations
 {
-    public partial class CreateStorageModels : Migration
+    public partial class MigrateToMySQL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "OwnedShelf",
-                table: "Users",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "ApiTokens",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    TokenContent = table.Column<string>(nullable: true),
+                    CreateTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiTokens", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Cases",
@@ -54,10 +64,29 @@ namespace OAHub.Storage.Migrations
                 {
                     table.PrimaryKey("PK_Shelves", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    OwnedShelf = table.Column<string>(nullable: true),
+                    OwnedApiTokens = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApiTokens");
+
             migrationBuilder.DropTable(
                 name: "Cases");
 
@@ -67,9 +96,8 @@ namespace OAHub.Storage.Migrations
             migrationBuilder.DropTable(
                 name: "Shelves");
 
-            migrationBuilder.DropColumn(
-                name: "OwnedShelf",
-                table: "Users");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OAHub.Workflow.Migrations
 {
-    public partial class MigrateToSqlServer : Migration
+    public partial class MigrateToMySQL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

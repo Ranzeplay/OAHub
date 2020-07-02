@@ -23,14 +23,15 @@ namespace OAHub.Status
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; } 
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StatusDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                // options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
             });
 
             services.Configure<CookiePolicyOptions>(options =>
