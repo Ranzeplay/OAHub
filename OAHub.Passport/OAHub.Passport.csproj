@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,10 +9,14 @@
     <Compile Remove="Migrations\20200104021401_InitDbUsersAndApps.Designer.cs" />
     <Compile Remove="Migrations\20200225010551_MigrateToSqlServer.cs" />
     <Compile Remove="Migrations\20200225010551_MigrateToSqlServer.Designer.cs" />
+    <Compile Remove="Migrations\20200306024928_MigrateToSqlServer.cs" />
+    <Compile Remove="Migrations\20200306024928_MigrateToSqlServer.Designer.cs" />
     <Compile Remove="Migrations\20200412114531_InitAnswerModels.cs" />
     <Compile Remove="Migrations\20200412114531_InitAnswerModels.Designer.cs" />
     <Compile Remove="Migrations\20200518003128_InitStorageToken.cs" />
     <Compile Remove="Migrations\20200518003128_InitStorageToken.Designer.cs" />
+    <Compile Remove="Migrations\20200702141557_MigrateToMySQL.cs" />
+    <Compile Remove="Migrations\20200702141557_MigrateToMySQL.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +35,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0-preview2-final" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
