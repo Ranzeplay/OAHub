@@ -39,7 +39,9 @@ An office automation web service for small teams
 
 ## Database
 
-We are using **SQLServer** currently. But you can also use other databases(SQLite, MySQL, etc.) by editing the code.
+We are using **MySQL** currently. But you can also use other databases(SQLite, SQLServer, etc.) by editing the code.
+
+Because **SQLServer** is too expensive, I can only use *Express Edition* :)
 
 
 
