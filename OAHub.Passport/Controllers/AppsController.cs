@@ -60,7 +60,7 @@ namespace OAHub.Passport.Controllers
         public async Task<IActionResult> Details(string AppId)
         {
             var app = await GetAppAsync(AppId);
-            if(app != null)
+            if (app != null)
             {
                 var user = await _userManager.GetUserAsync(User);
 
@@ -73,6 +73,12 @@ namespace OAHub.Passport.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Update(string AppId, App app)
+        {
+            return RedirectToAction(nameof(Details), new { AppId });
         }
 
         private async Task<App> GetAppAsync(string appId)

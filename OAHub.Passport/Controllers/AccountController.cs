@@ -68,6 +68,28 @@ namespace OAHub.Passport.Controllers
             return "Invalid token";
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> My(MyAccountModel model)
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    user.Email = model.User.Email;
+                    user.PhoneNumber = model.User.PhoneNumber;
+                    user.UserName = model.User.UserName;
+
+                    await _userManager.UpdateAsync(user);
+
+                    return RedirectToAction(nameof(My));
+                }
+            }
+
+            return Unauthorized();
+        }
+
         [HttpGet]
         public IActionResult SignUp(string AppId, string RedirectUri)
         {
@@ -117,13 +139,13 @@ namespace OAHub.Passport.Controllers
                 {
                     var authorizedApps = new List<App>();
                     var appsCreatedByUser = new List<App>();
-                    foreach(var app in _context.Apps)
+                    foreach (var app in _context.Apps)
                     {
                         if (app.GetUsersAuthorized().Contains(user.Id))
                         {
                             authorizedApps.Add(app);
                         }
-                        if(app.ManagerId == user.Id)
+                        if (app.ManagerId == user.Id)
                         {
                             appsCreatedByUser.Add(app);
                         }
