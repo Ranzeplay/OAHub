@@ -38,7 +38,7 @@ namespace OAHub.Status.Controllers
                 {
                     Name = model.Name,
                     Posts = new List<Post>(),
-                    CreatedBy = user, 
+                    CreatedBy = user,
                 };
 
                 _context.Tracks.Add(track);
@@ -61,7 +61,7 @@ namespace OAHub.Status.Controllers
         {
             var user = GetUserProfile();
             var track = _context.Tracks.Where(t => t.CreatedBy == user).FirstOrDefault(t => t.Id == Guid.Parse(trackId));
-            if(track != null)
+            if (track != null)
             {
                 if (model.Confirm && model.TrackName.ToLower() == "yes")
                 {
@@ -83,11 +83,22 @@ namespace OAHub.Status.Controllers
             {
                 var posts = _context.Posts.Where(p => p.ForTrack == track);
 
+                // "Where" command cannot find the elements of none, so it needs to prevent these errors\
+                var headingPost = new Post();
+                try
+                {
+                    headingPost = posts.Where(p => p.ShowOnHeader).ToList().OrderByDescending(t => t.PublishTime).First();
+                }
+                catch
+                {
+                    headingPost = Post.BlankPost();
+                }
+
                 return View(new SummaryModel
                 {
                     Name = track.Name,
-                    RecentPosts = posts.ToList().Count > 0 ? posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
-                    HeadingPost = posts.ToList().Count > 0 ? posts.Where(p => p.ShowOnHeader).OrderByDescending(t => t.PublishTime).First() : Post.BlankPost()
+                    RecentPosts = posts.Count() > 0 ? posts.OrderByDescending(t => t.PublishTime).ToList() : new List<Post>(),
+                    HeadingPost = headingPost
                 });
             }
 
@@ -96,7 +107,6 @@ namespace OAHub.Status.Controllers
 
         private StatusUser GetUserProfile()
         {
-
             try
             {
                 var id = HttpContext.User.FindFirst("UserId").Value;
