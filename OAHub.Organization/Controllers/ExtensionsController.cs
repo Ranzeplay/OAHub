@@ -114,19 +114,21 @@ namespace OAHub.Organization.Controllers
                 if (organization.GetMembers().Exists(m => m.UserId == user.Id))
                 {
                     var extensionsInstalled = organization.GetExtensionsInstalled();
-
-                    var ext = new ExtensionCredential
+                    if (extensionsInstalled.FirstOrDefault(e => e.ExtId == extension.Id) == null)
                     {
-                        ExtId = extension.Id,
-                        ExtSecret = Guid.NewGuid().ToString("N")
-                    };
+                        var ext = new ExtensionCredential
+                        {
+                            ExtId = extension.Id,
+                            ExtSecret = Guid.NewGuid().ToString("N")
+                        };
 
-                    extensionsInstalled.Add(ext);
-                    organization.SetExtensionsInstalled(extensionsInstalled);
-                    _context.Organizations.Update(organization);
-                    await _context.SaveChangesAsync();
+                        extensionsInstalled.Add(ext);
+                        organization.SetExtensionsInstalled(extensionsInstalled);
+                        _context.Organizations.Update(organization);
+                        await _context.SaveChangesAsync();
 
-                    return Redirect($"{extension.WebSite.TrimEnd('/')}{extension.CreateDashboardUri}".Replace("{OrgId}", organization.Id).Replace("{ExtSecret}", ext.ExtSecret));
+                        return Redirect($"{extension.WebSite.TrimEnd('/')}{extension.CreateDashboardUri}".Replace("{OrgId}", organization.Id).Replace("{ExtSecret}", ext.ExtSecret));
+                    }
                 }
             }
 
