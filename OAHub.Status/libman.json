@@ -4,7 +4,35 @@
   "libraries": [
     {
       "library": "bulma@0.9.0",
-      "destination": "wwwroot/lib/bulma/"
+      "destination": "wwwroot/lib/bulma/",
+      "files": [
+        "css/bulma.css",
+        "css/bulma.css.map",
+        "css/bulma.min.css"
+      ]
+    },
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "dist/jquery.js",
+        "dist/jquery.min.js",
+        "dist/jquery.min.map",
+        "dist/jquery.slim.js",
+        "dist/jquery.slim.min.js",
+        "dist/jquery.slim.min.map"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.14.0",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.css",
+        "css/all.min.css",
+        "js/all.js",
+        "js/all.min.js"
+      ]
     }
   ]
 }

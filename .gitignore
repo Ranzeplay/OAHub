@@ -338,8 +338,11 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+
 /OAHub.Passport/wwwroot/lib/@coreui
 /OAHub.Passport/wwwroot/lib/popper.js
+/OAHub.Passport/wwwroot/lib/jquery
 /OAHub.Passport/wwwroot/lib/font-awesome
 
 /OAHub.Organization/wwwroot/lib/admin-lte
@@ -353,7 +356,13 @@ healthchecksdb
 /OAHub.Storage/wwwroot/lib/font-awesome
 /OAHub.Storage/wwwroot/lib/dropify
 /OAHub.Storage/Storage
+
 /OAHub.Survey/wwwroot/lib/uikit
 /OAHub.Survey/wwwroot/lib/font-awesome
 /OAHub.Survey/wwwroot/lib/iCheck
+
 /OAHub.Status/wwwroot/lib/bulma
+/OAHub.Status/wwwroot/lib/jquery
+/OAHub.Status/wwwroot/lib/font-awesome
+/OAHub.Status/wwwroot/lib/@coreui/
+/OAHub.Status/wwwroot/lib/popper.js/umd
