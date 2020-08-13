@@ -16,9 +16,12 @@ An office automation service on web for small teams
 #### Build Status (Azure DevOps Pipeline)
 
 - master: [![Build Status](https://dev.azure.com/ranzeplay/OAHub/_apis/build/status/%5BRelease%20Master%20Branch%5D%20%20OAHub-ASP.NET%20Core-CI?branchName=master)](https://dev.azure.com/ranzeplay/OAHub/_build/latest?definitionId=6&branchName=master)
-
 - Other branches: [![Build Status](https://dev.azure.com/ranzeplay/OAHub/_apis/build/status/Ranzeplay.OAHub?branchName=master)](https://dev.azure.com/ranzeplay/OAHub/_build/latest?definitionId=5&branchName=master)
-  
+
+#### Code Quality  & Code Quality (CodeFactor)
+
+- master: [![CodeFactor](https://www.codefactor.io/repository/github/ranzeplay/oahub/badge/master)](https://www.codefactor.io/repository/github/ranzeplay/oahub/overview/master)
+- develop: [![CodeFactor](https://www.codefactor.io/repository/github/ranzeplay/oahub/badge/develop)](https://www.codefactor.io/repository/github/ranzeplay/oahub/overview/develop)
 
 ## Available Services
 
