@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OAHub.Base.Models;
 using OAHub.Storage.Data;
+using OAHub.Storage.Models;
 using OAHub.Storage.Services;
 
 namespace OAHub.Storage
@@ -55,7 +56,9 @@ namespace OAHub.Storage
                 options.ExpireTimeSpan = TimeSpan.FromDays(2);
             });
 
+            services.Configure<AppSettings>(Configuration.GetSection("StorageAppSettings"));
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
+
             services.AddTransient<IStorageService, StorageService>();
             services.AddTransient<IValidationService, ValidationService>();
 

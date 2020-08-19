@@ -4,20 +4,22 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
+using OAHub.Storage.Models;
 
 namespace OAHub.Storage.Services
 {
     public class StorageService : IStorageService
     {
         private readonly StorageDbContext _context;
-        private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "Storage");
+        private readonly AppSettings _appSettings;
 
-        public StorageService(StorageDbContext context)
+        public StorageService(StorageDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
         public async Task AddFileAsync(string shelfId, string caseId, IFormFile file)
@@ -54,7 +56,7 @@ namespace OAHub.Storage.Services
 
         public void DeleteCase(string shelfId, string caseId)
         {
-            var path = Path.Combine(_storagePath, shelfId, caseId);
+            var path = Path.Combine(_appSettings.GetStoragePath(), shelfId, caseId);
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
@@ -89,7 +91,7 @@ namespace OAHub.Storage.Services
 
         public string ValidateOrCreateDirectory(string shelfId, string caseId, out string casePath)
         {
-            casePath = Path.Combine(_storagePath, shelfId);
+            casePath = Path.Combine(_appSettings.GetStoragePath(), shelfId);
             if (!Directory.Exists(casePath))
             {
                 Directory.CreateDirectory(casePath);

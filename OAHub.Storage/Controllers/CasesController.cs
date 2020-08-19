@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
 using OAHub.Storage.Models;
@@ -19,14 +20,17 @@ namespace OAHub.Storage.Controllers
         private readonly StorageDbContext _context;
         private readonly IStorageService _storageService;
         private readonly IValidationService _validationService;
+        private readonly AppSettings _appSettings;
 
-        public CasesController(StorageDbContext context)
+        public CasesController(StorageDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
-            _storageService = new StorageService(context);
+            _storageService = new StorageService(context, appSettings);
             _validationService = new ValidationService(context);
+            _appSettings = appSettings.Value;
         }
 
+        [HttpGet]
         public IActionResult List(string shelfId)
         {
             var user = GetUserProfile();
