@@ -1,21 +1,29 @@
 {
   "version": "1.0",
-  "defaultProvider": "unpkg",
+  "defaultProvider": "cdnjs",
   "libraries": [
     {
       "provider": "jsdelivr",
-      "library": "uikit@3.3.6",
-      "destination": "wwwroot/lib/uikit/"
+      "library": "uikit@3.5.5",
+      "destination": "wwwroot/lib/uikit/",
+      "files": [
+        "dist/css/uikit.css",
+        "dist/css/uikit.min.css",
+        "dist/js/uikit.js",
+        "dist/js/uikit.min.js",
+        "dist/js/uikit-icons.js",
+        "dist/js/uikit-icons.min.js",
+      ]
     },
     {
-      "provider": "cdnjs",
-      "library": "font-awesome@5.12.1",
-      "destination": "wwwroot/lib/font-awesome/"
-    },
-    {
-      "provider": "cdnjs",
-      "library": "iCheck@1.0.2",
-      "destination": "wwwroot/lib/iCheck/"
+      "library": "font-awesome@5.14.0",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.css",
+        "css/all.min.css",
+        "js/all.js",
+        "js/all.min.js"
+      ]
     }
   ]
 }

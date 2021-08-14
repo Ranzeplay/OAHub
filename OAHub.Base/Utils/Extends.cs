@@ -14,7 +14,7 @@ namespace OAHub.Base.Utils
     public static class Extends
     {
         // Copied from AiursoftWeb.Pylon
-        // Project link address: https://github.com/AiursoftWeb/Nexus followed MIT license
+        // Project link address: https://github.com/AiursoftWeb/Nexus which is on MIT license
         public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder = null) where TContext : DbContext
         {
             using (var scope = host.Services.CreateScope())
@@ -25,7 +25,7 @@ namespace OAHub.Base.Utils
                 var configuration = services.GetService<IConfiguration>();
                 var env = services.GetService<IWebHostEnvironment>();
 
-                var connectionString = configuration.GetConnectionString("SqlServerConnection");
+                var connectionString = configuration.GetConnectionString("MySQLConnection");
                 try
                 {
                     logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");

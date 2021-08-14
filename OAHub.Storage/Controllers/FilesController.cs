@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using OAHub.Base.Models;
 using OAHub.Base.Models.StorageModels;
 using OAHub.Storage.Data;
@@ -20,13 +21,16 @@ namespace OAHub.Storage.Controllers
     public class FilesController : Controller
     {
         private readonly StorageDbContext _context;
+        private readonly AppSettings _appSettings;
         private readonly IStorageService _storageService;
         private readonly IValidationService _validationService;
 
-        public FilesController(StorageDbContext context)
+
+        public FilesController(StorageDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
-            _storageService = new StorageService(context);
+            _appSettings = appSettings.Value;
+            _storageService = new StorageService(context, appSettings);
             _validationService = new ValidationService(context);
         }
 
@@ -49,7 +53,7 @@ namespace OAHub.Storage.Controllers
                             Size = new FileSize()
                         };
 
-                        cItem.Size.Byte = _storageService.CalculateTotalSize(Path.Combine(Directory.GetCurrentDirectory(), "Storage", shelfId, caseId, item.Id), false);
+                        cItem.Size.Byte = _storageService.CalculateTotalSize(Path.Combine(_appSettings.GetStoragePath(), shelfId, caseId, item.Id), false);
 
                         items.Add(cItem);
                     }

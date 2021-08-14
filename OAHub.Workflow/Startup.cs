@@ -33,7 +33,8 @@ namespace OAHub.Workflow
         {
             services.AddDbContext<WorkflowDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                // options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
             });
 
             services.Configure<CookiePolicyOptions>(options =>

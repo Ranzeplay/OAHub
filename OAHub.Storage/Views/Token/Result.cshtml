@@ -1,0 +1,22 @@
+﻿@model OAHub.Storage.Models.ViewModels.Token.ResultModel
+@{
+    ViewData["Title"] = "Result";
+}
+
+<div class="bx--row" style="margin-top: 32px">
+    <div class="bx--col-max-12">
+        <div class="bx--tile">
+            <div class="bx--tile-content" style="max-width: 100%">
+                <h2>Here's your token just created(renewed)</h2>
+                <h5>The token will be reset when you visit this page every time</h5>
+                <div class="bx--form-item bx--text-input-wrapper" style="margin-top: 16px">
+                    <label for="text-input-3" class="bx--label">Token</label>
+                    <div class="bx--text-input__field-wrapper">
+                        <input id="text-input-3" type="text" class="bx--text-input" value="@Model.Token" readonly>
+                    </div>
+                </div>
+            </div>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="bx--btn bx--btn--danger" style="width: 100%; margin-top: 16px">Delete</a>
+        </div>
+    </div>
+</div>

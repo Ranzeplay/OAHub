@@ -51,7 +51,8 @@ namespace OAHub.Passport
 
             services.AddDbContext<PassportDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                // options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
             });
 
             services.AddIdentity<OAUser, IdentityRole>()

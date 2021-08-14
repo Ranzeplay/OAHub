@@ -3,13 +3,28 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
-      "library": "admin-lte@3.0.2",
-      "destination": "wwwroot/lib/admin-lte/"
+      "library": "font-awesome@5.14.0",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.css",
+        "css/all.min.css",
+        "js/all.js",
+        "js/all.min.js"
+      ]
     },
     {
-      "provider": "cdnjs",
-      "library": "font-awesome@5.11.2",
-      "destination": "wwwroot/lib/font-awesome/"
+      "library": "admin-lte@3.0.5",
+      "destination": "wwwroot/lib/admin-lte",
+      "files": [
+        "css/adminlte.css",
+        "css/adminlte.css.map",
+        "css/adminlte.min.css",
+        "css/adminlte.min.css.map",
+        "js/adminlte.js",
+        "js/adminlte.js.map",
+        "js/adminlte.min.js",
+        "js/adminlte.min.js.map"
+      ]
     }
   ]
 }

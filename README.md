@@ -1,26 +1,27 @@
 # OAHub
 
-A working progress tracker for small teams
+An office automation service on web for small teams
 
 ---
 
-#### Project Status (Mainly on GitHub)
-![License](https://img.shields.io/github/license/SimplePlatformWeb/OAHub)
-![Language](https://img.shields.io/github/languages/top/SimplePlatformWeb/OAHub)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/SimplePlatformWeb/OAHub)
-![GitHub last commit](https://img.shields.io/github/last-commit/SimplePlatformWeb/OAHub)
-![GitHub repo size](https://img.shields.io/github/repo-size/SimplePlatformWeb/OAHub)
-![GitHub issues](https://img.shields.io/github/issues/SimplePlatformWeb/OAHub)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/SimplePlatformWeb/OAHub)
+#### Project Status (GitHub)
+![License](https://img.shields.io/github/license/Ranzeplay/OAHub)
+![Language](https://img.shields.io/github/languages/top/Ranzeplay/OAHub)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Ranzeplay/OAHub)
+![GitHub last commit](https://img.shields.io/github/last-commit/Ranzeplay/OAHub)
+![GitHub repo size](https://img.shields.io/github/repo-size/Ranzeplay/OAHub)
+![GitHub issues](https://img.shields.io/github/issues/Ranzeplay/OAHub)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Ranzeplay/OAHub)
 
 #### Build Status (Azure DevOps Pipeline)
 
-- master: [![Build status](https://dev.azure.com/SimplePlatform/OAHub/_apis/build/status/%5BRelease%20master%20branch%5D%20OAHub-ASP.NET%20Core-CI)](https://dev.azure.com/SimplePlatform/OAHub/_build/latest?definitionId=24)
+- master: [![Build Status](https://dev.azure.com/ranzeplay/OAHub/_apis/build/status/%5BRelease%20Master%20Branch%5D%20%20OAHub-ASP.NET%20Core-CI?branchName=master)](https://dev.azure.com/ranzeplay/OAHub/_build/latest?definitionId=6&branchName=master)
+- Other branches: [![Build Status](https://dev.azure.com/ranzeplay/OAHub/_apis/build/status/Ranzeplay.OAHub?branchName=master)](https://dev.azure.com/ranzeplay/OAHub/_build/latest?definitionId=5&branchName=master)
 
-- develop: [![Build Status](https://dev.azure.com/SimplePlatform/OAHub/_apis/build/status/SimplePlatformWeb.OAHub?branchName=master)](https://dev.azure.com/SimplePlatform/OAHub/_build/latest?definitionId=22&branchName=develop)
-  
+#### Code Quality  & Code Quality (CodeFactor)
 
-
+- master: [![CodeFactor](https://www.codefactor.io/repository/github/ranzeplay/oahub/badge/master)](https://www.codefactor.io/repository/github/ranzeplay/oahub/overview/master)
+- develop: [![CodeFactor](https://www.codefactor.io/repository/github/ranzeplay/oahub/badge/develop)](https://www.codefactor.io/repository/github/ranzeplay/oahub/overview/develop)
 
 ## Available Services
 
@@ -28,10 +29,12 @@ A working progress tracker for small teams
   - Integrated OAuth authorization and User authentication using ASP.NET Core Identity.
 - **Storage**
   - An online storage service, but not recommended to store personal files.
+- **Status**
+  - A monitor system to let everyone know the status of an *App*
 - **Organization**
   - A member management service.
   - *Extension-As-Body*.
-- Workflow
+- **Workflow**
   - An extension for Organization.
   - A working progress tracker.
 
@@ -39,7 +42,9 @@ A working progress tracker for small teams
 
 ## Database
 
-We are using **SQLServer** currently. But you can also use other databases(SQLite, MySQL, etc.) by editing the code.
+We are using **MySQL** currently. But you can also use other databases(SQLite, SQLServer, etc.) by editing the code.
+
+Because **SQLServer** is too expensive, I can only use *Express Edition* :)
 
 
 

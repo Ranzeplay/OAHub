@@ -29,6 +29,12 @@ namespace OAHub.Survey
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SurveyDbContext>(options =>
+            {
+                // options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -49,8 +55,6 @@ namespace OAHub.Survey
             });
 
             services.AddRazorPages();
-
-            services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
             services.Configure<AuthenticationInfomation>(Configuration.GetSection("AuthenticationInfomation"));
             services.Configure<ExtensionProps>(Configuration.GetSection("ExtensionProps"));

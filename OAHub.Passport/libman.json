@@ -3,37 +3,63 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
-      "library": "@coreui/coreui@3.0.0-beta.4",
-      "destination": "wwwroot/lib/@coreui/coreui/"
-    },
-    {
-      "library": "popper.js@1.16.0",
-      "destination": "wwwroot/lib/popper.js/"
-    },
-    {
       "provider": "cdnjs",
-      "library": "font-awesome@5.11.2",
-      "destination": "wwwroot/lib/font-awesome/"
+      "library": "popper.js@2.4.4",
+      "destination": "wwwroot/lib/popper.js/",
+      "files": [
+        "umd/popper.js",
+        "umd/popper.js.map",
+        "umd/popper.min.js",
+        "umd/popper.min.js.map"
+      ]
+    },
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "dist/jquery.js",
+        "dist/jquery.min.js",
+        "dist/jquery.min.map",
+        "dist/jquery.slim.js",
+        "dist/jquery.slim.min.js",
+        "dist/jquery.slim.min.map"
+      ]
+    },
+    {
+      "library": "@coreui/coreui@3.2.2",
+      "destination": "wwwroot/lib/@coreui/coreui/",
+      "files": [
+        "dist/js/coreui.js",
+        "dist/js/coreui.js.map",
+        "dist/js/coreui.min.js",
+        "dist/js/coreui.min.js.map",
+        "dist/css/coreui.css",
+        "dist/css/coreui.css.map",
+        "dist/css/coreui.min.css",
+        "dist/css/coreui.min.css.map"
+      ]
     },
     {
       "library": "@coreui/icons@1.0.1",
-      "destination": "wwwroot/lib/@coreui/icons/"
-    },
-    {
-      "library": "@coreui/icons@1.0.1",
-      "destination": "wwwroot/lib/@coreui/icons/"
-    },
-    {
-      "library": "@coreui/icons@1.0.1",
-      "destination": "wwwroot/lib/@coreui/icons/"
-    },
-    {
-      "library": "@coreui/icons@1.0.1",
-      "destination": "wwwroot/lib/@coreui/icons/"
-    },
-    {
-      "library": "@coreui/icons@1.0.1",
-      "destination": "wwwroot/lib/@coreui/icons/"
+      "destination": "wwwroot/lib/@coreui/icons/",
+      "files": [
+        "css/all.css",
+        "css/all.min.css",
+        "css/all.min.css.map",
+        "fonts/CoreUI-Icons-Brand.eot",
+        "fonts/CoreUI-Icons-Brand.svg",
+        "fonts/CoreUI-Icons-Brand.ttf",
+        "fonts/CoreUI-Icons-Brand.woff",
+        "fonts/CoreUI-Icons-Brand.woff2",
+        "fonts/CoreUI-Icons-Free.eot",
+        "fonts/CoreUI-Icons-Free.svg",
+        "fonts/CoreUI-Icons-Free.ttf",
+        "fonts/CoreUI-Icons-Free.woff",
+        "fonts/CoreUI-Icons-Free.woff2",
+        "js/index.js",
+        "js/svgxuse.js",
+        "js/svgxuse.min.js"
+      ]
     }
   ]
 }
